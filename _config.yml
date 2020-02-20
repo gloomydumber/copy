@@ -1,0 +1,60 @@
+# Site settings
+title: "gloomydumber"
+title_show: "namespace acoustikue { }"
+url: "https://gloomydumber.github.io/"
+baseurl: ""
+description: >
+  An experience-hungry engineer dreamer.
+
+# modded by gloomydumber
+email: chromacrow@naver.com
+author: gloomydumber
+avatar: "/assets/profile_mod.png"
+profile: The Principle Of Good Faith.
+#twitter_username: twitter_username
+#github_username:  gloomydumber
+
+logo: "/assets/logo_mod.png"
+
+profile_links:
+  Email: "mailto:chromacrow@naver.com"
+  GitHub: "https://github.com/gloomydumber"
+  # You can add more profile links above, or edit _includes/sidebar.html
+
+# Comment Service (Disqus)
+#  choose one and un-comment the line to active it
+disqus_shortname: gloomydumber   # get one: https://disqus.com/admin/signup/
+
+excerpt_separator: <!--more-->
+
+header:
+  links:             # Links on the header. Link to in-site page with a slash as prefix
+    About: /about/
+    Archive: /archivers/ # **** NEED modded *****
+    # modded by acoustikue
+
+#permalink: /archivers/:title # modded by acoustikue
+plugins:
+ - jekyll-paginate
+ - jekyll-gist
+ - jemoji
+
+# Build settings
+paginate: 5
+paginate_path: "page:num"
+
+highlighter: rouge
+markdown: kramdown
+
+defaults:
+  -
+    scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  math_engine: mathjax
