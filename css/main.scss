@@ -29,7 +29,7 @@ $header-bg: #000000; /* modded by gloomydumber(background color of nav) */
 $header-bg-hover: #292727; /* modded by gloomydumber */
 $header-link: #CFD8DC;
 $header-fg: #FFF;
-$header-fg-hover #00FF1F: /* gloomydumber lime test */
+$header-fg-hover: #00FF1F; /* gloomydumber lime test */
 
 @mixin media-query($device) {
     @media screen and (max-width: $device) {
