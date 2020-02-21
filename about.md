@@ -14,3 +14,5 @@ for studying Computer Science & Engineering and IFRS in Accounting
 ### Education
 
 - Pusan National University Computer Science & Engineering (minor: Economics)
+
+- just passing test for new git setting
