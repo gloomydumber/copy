@@ -2,7 +2,7 @@
 layout: post
 title: "DataStructure Test"
 date: 2020-02-20 17:00:00
-categories: DataStructure
+categories: Data-Structure
 permalink: /archivers/datastructureTest
 ---
 
