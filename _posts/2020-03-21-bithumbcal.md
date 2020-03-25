@@ -17,5 +17,3 @@ use_math: true
 Need Optimization and more functions
 
 ![executeCMD](/assets/posts/2020-03-21-bithumbcal/bithumbcal.gif)
-
-이 후 오타가 나지 않도록 다음과 같은 명령어를 입력해준다.
