@@ -172,13 +172,13 @@ ID / Password 를 서버 송수신의 간단 예 코드
 </html>
 ```
 
-논리 연산자 and = && / or = || 양쪽 모두 사용 가능
+논리 연산자 and = && / or = \|\| 양쪽 모두 사용 가능
 
-gettype() empty() is_null() isset() 모두 Case별로 값이 다름\
+gettype() empty() is_null() isset() 모두 Case별로 값이 다름
 
 == (loose comparison) === (strict comparison)
 
-[PHP type table Document](http://php.net/manual/en/types.comparisons.php){: target="\_blank"}
+[PHP type table Document (클릭 시 새 탭 열기)](http://php.net/manual/en/types.comparisons.php){: target="\_blank"}
 
 인자의 기본값은 아래와 같이 작성
 
@@ -190,6 +190,41 @@ function get_arguments($arg1=100){
 echo get_arguments(1);
 echo ',';
 echo get_arguments();
+?>
+```
+
+변수 선언 및 이용은 아래와 같이 작성
+
+```php
+<?php
+$member = ['leaver', 'leaveroov', 'gloomydumber']; # php 5.4 upper version
+?>
+```
+
+```php
+<?php
+$member = array('leaver', 'leaveroov', 'gloomydumber'); # php 5.4 under version
+?>
+```
+
+count : 배열 안의 요소 숫자 반환하는 함수
+
+ucfirst : 첫 번째 글자를 대문자로 반환하는 함수
+
+사용 예 코드
+
+```php
+<?php
+function get_members(){
+    return ['leaver', 'leaveroov', 'gloomydumber'];
+}
+
+$members = get_members();
+
+for($i = 0; $i < count($members); $i++){
+    echo ucfirst($members[$i]).'<br />';
+}
+
 ?>
 ```
 
