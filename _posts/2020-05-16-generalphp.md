@@ -32,7 +32,13 @@ Now, stands for Hypertext PreProcessor
 
 Interpreter 방식의 언어
 
+## Why Server-side Script
+
+Web-Server만으로 정적인 HTML을 처리하는 데에 한계가 있음
+
 CGI (Common Gateway Interface) : Web Server와 (PHP Engine) 사이의 통신 규약
+
+을 통해 php, java, python, perl 등의 script 언어로 정적인 HTML을 동적으로 처리할 수 있게 함
 
 ## Web Servers's example
 
@@ -96,6 +102,40 @@ error_reporting = E_ALL
 log_errors = On
 ```
 
+## 간단 문법 메모
+
+문자열을 합할 땐 + 가 아닌, .을 사용
+
+변수 앞에 \$를 붙여서 표기 및 선언
+
+echo = print
+
+define : 상수화 함수, 상수는 대문자로 정의하는 것이 관습
+
+```php
+define('TITLE', 'PHP Tutorial'); # TITLE을 PHP Tutorial 이라는 문자열을 갖는 상수 취급
+echo TITLE; # PHP Tutorial 출력
+define('TITLE', 'JAVA Tutorial'); # 오류, 이미 정의된 TITLE을 재정의 불가
+```
+
+gettype : 데이터 형 검사
+
+settype : 데이터 형 변환
+
+is_array / is_bool / is_callable / is_double / is_int 등의 API
+
+가변변수 (Variable Variables) : 변수의 이름을 변수로 변경
+
+```php
+$title = 'subject';
+$$title = 'PHP Tutorial';
+echo $subject; #PHP Tutorial 출력
+```
+
 <!-- ![executeCMD](/assets/posts/2020-03-21-bithumbcal/bithumbcal.gif)
 
-Need optimization and more functions -->
+Need
+URI
+URL
+HTTP
+ -->
