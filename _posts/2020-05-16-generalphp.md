@@ -10,6 +10,8 @@ use_math: true
 
 # PHP
 
+PHP에 관해 공부하며 간단 메모한 글
+
 ## What is PHP?
 
 Server Side Script
@@ -102,7 +104,25 @@ error_reporting = E_ALL
 log_errors = On
 ```
 
-## 간단 문법 메모
+## GET VS. POST
+
+GET 방식과 POST 방식의 특징 및 차이점
+
+### GET
+
+URL상에 서버로 전송하는 데이터가 포함
+
+정보 등이 URL이 포함 되어야 할 때 사용
+
+### POST
+
+GET 방식에 비해 보안성 높음
+
+ID / Password 등을 처리할 때 사용
+
+HTTP 프로토콜을 통해 송수신 데이터가 처리 (Fiddler등의 유틸리티를 통해 Server-CLient간 송수신 내용 확인)
+
+## 문법 간단 메모
 
 문자열을 합할 땐 + 가 아닌, .을 사용
 
@@ -118,6 +138,8 @@ echo TITLE; # PHP Tutorial 출력
 define('TITLE', 'JAVA Tutorial'); # 오류, 이미 정의된 TITLE을 재정의 불가
 ```
 
+var_dump : 데이터 형 출력
+
 gettype : 데이터 형 검사
 
 settype : 데이터 형 변환
@@ -130,6 +152,45 @@ is_array / is_bool / is_callable / is_double / is_int 등의 API
 $title = 'subject';
 $$title = 'PHP Tutorial';
 echo $subject; #PHP Tutorial 출력
+```
+
+주소의 ? 이후에는 값 전달
+
+& 는 값과 값사이의 구분자로 값 전달
+
+ID / Password 를 서버 송수신의 간단 예 코드
+
+```html
+<html>
+  <body>
+    <form method="get" action="2.php">
+      id : <input type="text" name="id" /> password :
+      <input type="text" name="password" />
+      <input type="submit" />
+    </form>
+  </body>
+</html>
+```
+
+논리 연산자 and = && / or = || 양쪽 모두 사용 가능
+
+gettype() empty() is_null() isset() 모두 Case별로 값이 다름\
+
+== (loose comparison) === (strict comparison)
+
+[PHP type table Document](http://php.net/manual/en/types.comparisons.php){: target="\_blank"}
+
+인자의 기본값은 아래와 같이 작성
+
+```php
+<?php
+function get_arguments($arg1=100){
+    return $arg1;
+}
+echo get_arguments(1);
+echo ',';
+echo get_arguments();
+?>
 ```
 
 <!-- ![executeCMD](/assets/posts/2020-03-21-bithumbcal/bithumbcal.gif)
