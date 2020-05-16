@@ -172,7 +172,7 @@ ID / Password 를 서버 송수신의 간단 예 코드
 </html>
 ```
 
-논리 연산자 and = && / or = \|\| 양쪽 모두 사용 가능
+논리 연산자 and = && or = \|\| 양쪽 모두 사용 가능
 
 gettype() empty() is_null() isset() 모두 Case별로 값이 다름
 
@@ -227,6 +227,63 @@ for($i = 0; $i < count($members); $i++){
 
 ?>
 ```
+
+array_push / array_merge / array_unshift / array_splice / array_shift 등으로 배열 조작 가능
+
+sort / rsort 등으로 배열 정렬 가능
+
+연관배열(associative array, indexed array) : key, value 값을 가지는 배열, python의 dictrionary
+
+연관배열에서는 for문이 아닌 foreach 라는 반복문 사용
+
+```php
+<?php
+$grades = array('leaver'=>10, 'leaveroov'=>6, 'gloomydumber'=>80);
+foreach($grades as $key => $value){
+    echo "key: {$key} value:{$value}<br />";
+}
+?>
+```
+
+include / include_once / require / require_once 로 다른 code 및 file을 load하여 사용
+
+namespace의 이용
+
+```php
+<?php
+namespace language\en;
+function welcome(){
+    return 'Hello world';
+}
+namespace language\ko;
+function welcome(){
+    return '안녕세계';
+}
+```
+
+```php
+<?php
+require_once 'greeting_lang.php';
+echo language\ko\welcome();
+echo language\en\welcome();
+?>
+```
+
+[PHP 표준 Library (클릭 시 새 탭 열기)](https://www.php.net/manual/en/){: target="\_blank"}
+
+Composer : 의존성 관리 도구
+
+copy 함수를 통해 파일 간 복사 가능, 반환 값은 복사 성공 / 실패로 True/False 반환
+
+unlink : 파일 삭제 함수
+
+file_get_contents / file_put_contents 파일 읽기/쓰기 함수
+
+file_get_contents는 URL로 불러올수도 있음, 다만 http://.../xx.php를 불러 왔다고 가정하면, css/javascript는 불러와지지 않았기 때문에 온전한 상태의 웹페이지가 불러와지진 않는다.
+
+fopen 등으로 파일을 더욱 정교하게 처리
+
+트러블슈팅 : 파일을 읽고 쓸 때 권한의 문제 등을 처리
 
 <!-- ![executeCMD](/assets/posts/2020-03-21-bithumbcal/bithumbcal.gif)
 
