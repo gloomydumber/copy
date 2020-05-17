@@ -122,6 +122,10 @@ ID / Password 등을 처리할 때 사용
 
 HTTP 프로토콜을 통해 송수신 데이터가 처리 (Fiddler등의 유틸리티를 통해 Server-CLient간 송수신 내용 확인)
 
+## Database
+
+PHP 자신은 방대한 량의 데이터의 저장하는 기능이 없기 때문에, MySQL과 같은 DBMS(Database Management System)을 이용한다.
+
 ## 문법 간단 메모
 
 문자열을 합할 땐 + 가 아닌, .을 사용
@@ -228,6 +232,8 @@ for($i = 0; $i < count($members); $i++){
 ?>
 ```
 
+배열 안에 배열을 member변수를 가질 수 있음
+
 array_push / array_merge / array_unshift / array_splice / array_shift 등으로 배열 조작 가능
 
 sort / rsort 등으로 배열 정렬 가능
@@ -284,6 +290,36 @@ file_get_contents는 URL로 불러올수도 있음, 다만 http://.../xx.php를 
 fopen 등으로 파일을 더욱 정교하게 처리
 
 트러블슈팅 : 파일을 읽고 쓸 때 권한의 문제 등을 처리
+
+getcwd : 현재 디렉토리 확인
+
+chdir : 디렉토리 변경
+
+scandir : 디렉토리 탐색
+
+mkdir : 디렉토리 추가
+
+다음과 같은 파일 용량 제한을 html로 작성시, 강제할 수 없고 보안의 의미가 없다. (value값을 clinet가 변경할 수 있음)
+
+```html
+<input type="hidden" name="MAX_FILE_SIZE" value="1000></input>
+```
+
+print_r은 var_dump()와 비슷한 역할
+
+ini_set() 으로 해당 php 코드 파일에서만 php.ini가 아닌 세팅으로 설정가능
+
+외부 라이브러리인 GD Library 등을 이용해 이미지를 프로그래밍 적으로 생성하고 변경할 수 있다.
+
+이미지에 글자를 쓰는 등의 기능을 활용할 수 있다. 다만, 서버를 다루는 PHP로 이미지를 생성하는데 많은 자원을 들인다면 서버에 부담을 줄 수 있기 때문에 권장되지 않는다.
+
+쌍따옴표("")와는 달리 따옴표('')에서는 \n 이스케이프가 적용되지 않는다. 다만 html으로 출력한다는 것 또한 참고해야한다.
+
+```php
+echo("<br\>")
+```
+
+쿠키 / 세션에 관한 이해
 
 <!-- ![executeCMD](/assets/posts/2020-03-21-bithumbcal/bithumbcal.gif)
 
