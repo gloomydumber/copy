@@ -321,6 +321,8 @@ echo("<br\>")
 
 쿠키 / 세션에 관한 이해
 
+디버깅 : log 이용, xdebug 이용
+
 <!-- ![executeCMD](/assets/posts/2020-03-21-bithumbcal/bithumbcal.gif)
 
 Need
