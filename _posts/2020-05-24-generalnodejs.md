@@ -37,6 +37,10 @@ Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor 
 console.log(letter);
 ```
 
+### CRUD
+
+Create & Read & Update & Delete
+
 <!-- ![executeCMD](/assets/posts/2020-03-21-bithumbcal/bithumbcal.gif)
  [PHP 표준 Library (클릭 시 새 탭 열기)](https://www.php.net/manual/en/){: target="\_blank"}
  [PHP type table Document (클릭 시 새 탭 열기)](http://php.net/manual/en/types.comparisons.php){: target="\_blank"}
