@@ -20,7 +20,13 @@ what is Node.js
 
 ![url](/assets/posts/2020-05-24-nodejs/url.png)
 
+[URL structure (클릭 시 새 탭 열기)](https://howurls.work/#/){: target="\_blank"}
+
 default port = 80
+
+## NPM
+
+Node.js Pacakge Manager
 
 ## 문법 간단 메모
 
@@ -40,6 +46,10 @@ console.log(letter);
 ### CRUD
 
 Create & Read & Update & Delete
+
+### synchronous & asynchronous
+
+동기 / 비동기
 
 <!-- ![executeCMD](/assets/posts/2020-03-21-bithumbcal/bithumbcal.gif)
  [PHP 표준 Library (클릭 시 새 탭 열기)](https://www.php.net/manual/en/){: target="\_blank"}
