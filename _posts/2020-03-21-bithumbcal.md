@@ -17,3 +17,5 @@ use_math: true
 ![executeCMD](/assets/posts/2020-03-21-bithumbcal/bithumbcal.gif)
 
 Need optimization and more functions
+
+based on JS -> based on Python with pyqt
