@@ -18,4 +18,4 @@ use_math: true
 
 Need optimization and more functions
 
-based on JS -> based on Python with pyqt
+based on JS -> based on Python with ccxt & pyqt
