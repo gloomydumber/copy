@@ -16,6 +16,8 @@ use_math: true
 
 [KeyCode 229에 관하여 (클릭 시 새 탭 열기)](https://circus7.tistory.com/6){: target="\_blank"}
 
+[한글 및 영문 입력 방지 input (클릭 시 새 탭 열기)](https://rockdrumy.tistory.com/1239){: target="\_blank"}
+
 ```javascript
 ime-mode:disabled
 ```
