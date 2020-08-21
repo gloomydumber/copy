@@ -28,7 +28,23 @@ JavaScript에 관해 공부하며 간단 메모한 글
 
 [XMLHttpRequest에 관하여 - zerocho (클릭 시 새 탭 열기)](https://www.zerocho.com/category/HTML&DOM/post/594bc4e9991b0e0018fff5ed){: target="\_blank"}
 
+[ajax 데이터 로딩 중 로딩 표시(클릭 시 새 탭 열기)](https://skylhs3.tistory.com/4){: target="\_blank"}
+
+[ajax 속성 등(클릭 시 새 탭 열기)](https://tutorialpost.apptilus.com/code/posts/jquery/jq-ajax/){: target="\_blank"}
+
+[ajax CORS 문제에 관하여(클릭 시 새 탭 열기)](https://infotake.tistory.com/88){: target="\_blank"}
+
+[ajax CORS 문제 nodeJS로 해결 (클릭 시 새 탭 열기)](https://kosaf04pyh.tistory.com/25){: target="\_blank"}
+
+[하나은행 환율 API 간헐적 CORS/CORB (클릭 시 새 탭 열기)](https://blog.edit.kr/entry/PHP-%ED%95%98%EB%82%98-%EC%9D%80%ED%96%89-%ED%99%98%EC%9C%A8-API%EB%A5%BC-%ED%86%B5%ED%95%9C-JSON){: target="\_blank"}
+
+[간헐적 CORS 사례 (클릭 시 새 탭 열기)](https://devtalk.kakao.com/t/cors/104823/5){: target="\_blank"}
+
 HTTP Request 할 시, setRequestHeader를 통해, Header설정 하는 방법 등
+
+script generated HTML code 를 parsing 하는 방법 (only JS?)
+
+[ /wapi/v3/assetDetail.html API (클릭 시 새 탭 열기)](https://github.com/binance-exchange/binance-official-api-docs/blob/master/wapi-api.md){: target="\_blank"}
 
 ## setTimeOut
 
@@ -43,6 +59,12 @@ HTTP Request 할 시, setRequestHeader를 통해, Header설정 하는 방법 등
 ### effect
 
 [특정 수치 이상일 경우 배경색 변경(table cell의 경우) (클릭 시 새 탭 열기)](https://www.codeproject.com/Questions/1202518/Blink-td-cells-background-in-the-row-if-value-is-g){: target="\_blank"}
+
+### 숫자 처리
+
+소수인 number 변수에 \* 1 을 하면 끝 0을 제외한 유효숫자 까지만 표기 됨
+
+(ex : var a = 0.5600 인경우 console.log(a\*1) 은 0.56으로 표기 됨)
 
 ## 문법 간단 메모
 
@@ -67,8 +89,18 @@ console.log(letter);
 
 [table Header 클릭 시 정렬되는 예제 코드 (클릭 시 새 탭 열기)](https://m.blog.naver.com/PostView.nhn?blogId=websearch&logNo=220897790755&proxyReferer=https:%2F%2Fwww.google.com%2F){: target="\_blank"}
 
+[table안에 이미지 딱 맞춰 넣기 (클릭 시 새 탭 열기)](https://namubada.net/203){: target="\_blank"}
+
 ### MutationObserver
 
-[Mutation Observer 에 관하여 (클릭 시 새 탭 열기)](https://www.zerocho.com/category/HTML&DOM/post/5be24eacdb0c31001c4c5040){: target="\_blank"}
+[Mutation Observer 에 관하여 1 (클릭 시 새 탭 열기)](https://www.zerocho.com/category/HTML&DOM/post/5be24eacdb0c31001c4c5040){: target="\_blank"}
+
+[Mutation Observer 에 관하여 2 (클릭 시 새 탭 열기)](https://uxgjs.tistory.com/170){: target="\_blank"}
 
 [Mutation Observer Stackoverflow my question (클릭 시 새 탭 열기)](https://stackoverflow.com/questions/63483340/detect-change-of-textcontentvalue-of-html-table-cell-and-apply-animation-on-ch){: target="\_blank"}
+
+(Mutation oberver에서 config를 subtree: true로 설정하라 함)
+
+### localStorage
+
+[클라이언트에 정보, 데이터 저장 (클릭 시 새 탭 열기)](http://bitly.kr/w362h3jwQ1Z){: target="\_blank"}
