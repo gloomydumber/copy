@@ -20,6 +20,8 @@ JavaScript에 관해 공부하며 간단 메모한 글
 
 [JavaScript 코드 최적화 하기 (클릭 시 새 탭 열기)](https://mollangk.tistory.com/14){: target="\_blank"}
 
+[JavaScript 비동기 처리 로직 (클릭 시 새 탭 열기)](https://medium.com/@nsh235482/%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EC%97%90%EC%84%9C%EC%9D%98-%EB%B9%84%EB%8F%99%EA%B8%B0-%EC%B2%98%EB%A6%AC-%EB%A1%9C%EC%A7%81-93a09e96dc36){: target="\_blank"}
+
 <!-- javascript구조에 관한 사진 -->
 
 ## AJAX
@@ -44,7 +46,7 @@ HTTP Request 할 시, setRequestHeader를 통해, Header설정 하는 방법 등
 
 script generated HTML code 를 parsing 하는 방법 (only JS?)
 
-[ /wapi/v3/assetDetail.html API (클릭 시 새 탭 열기)](https://github.com/binance-exchange/binance-official-api-docs/blob/master/wapi-api.md){: target="\_blank"}
+[/wapi/v3/assetDetail.html API (클릭 시 새 탭 열기)](https://github.com/binance-exchange/binance-official-api-docs/blob/master/wapi-api.md){: target="\_blank"}
 
 ## setTimeOut
 
@@ -59,6 +61,8 @@ script generated HTML code 를 parsing 하는 방법 (only JS?)
 ### effect
 
 [특정 수치 이상일 경우 배경색 변경(table cell의 경우) (클릭 시 새 탭 열기)](https://www.codeproject.com/Questions/1202518/Blink-td-cells-background-in-the-row-if-value-is-g){: target="\_blank"}
+
+[notification 효과 주는 JS (클릭 시 새 탭 열기)](https://alertifyjs.com/notifier/message.html){: target="\_blank"}
 
 ### 숫자 처리
 
@@ -104,3 +108,7 @@ console.log(letter);
 ### localStorage
 
 [클라이언트에 정보, 데이터 저장 (클릭 시 새 탭 열기)](http://bitly.kr/w362h3jwQ1Z){: target="\_blank"}
+
+### input
+
+[input에서 enter키 누를 시 이벤트 발생 (클릭 시 새 탭 열기)](https://hsol.tistory.com/550){: target="\_blank"}
