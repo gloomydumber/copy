@@ -46,6 +46,8 @@ HTTP Request 할 시, setRequestHeader를 통해, Header설정 하는 방법 등
 
 script generated HTML code 를 parsing 하는 방법 (only JS?)
 
+http -> https 요청 (가능) / https -> http 요청 (불가) ->> hosting받아서 http로 만듦...
+
 [/wapi/v3/assetDetail.html API (클릭 시 새 탭 열기)](https://github.com/binance-exchange/binance-official-api-docs/blob/master/wapi-api.md){: target="\_blank"}
 
 ## setTimeOut
@@ -65,6 +67,8 @@ script generated HTML code 를 parsing 하는 방법 (only JS?)
 [notification 효과 주는 JS (클릭 시 새 탭 열기)](https://alertifyjs.com/notifier/message.html){: target="\_blank"}
 
 ### 숫자 처리
+
+개발중, toFixed를 7주고 함수 만들어서 그 함수에 전달 후, 10000이상이면 tofixed2 등 처리 할 생각이었으나, \*1 하는 방법 사용
 
 소수인 number 변수에 \* 1 을 하면 끝 0을 제외한 유효숫자 까지만 표기 됨
 
