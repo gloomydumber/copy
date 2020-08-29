@@ -74,6 +74,24 @@ http -> https 요청 (가능) / https -> http 요청 (불가) ->> hosting받아�
 
 (ex : var a = 0.5600 인경우 console.log(a\*1) 은 0.56으로 표기 됨)
 
+### forced reflow while executing JavaSCript took Xms
+
+빈번한 DOM 구조 변경으로 인한 에러
+
+[관련링크 (클릭 시 새 탭 열기)](https://www.facebook.com/groups/codingeverybody/permalink/2210757938964730/){: target="\_blank"}
+
+tippy.js 적용시 발생.. 빈번한 DOM 구조 변경인듯
+
+### XMLHttpRequest 등으로 외부 요청 시 cache되어 데이터가 update되지 않는 문제
+
+https://stackoverflow.com/questions/6090990/how-can-i-avoid-cached-data-when-downloading-via-xmlhttprequest
+
+time을 이용
+
+https://stackoverflow.com/questions/168963/stop-jquery-load-response-from-being-cached/168977#168977
+
+ajax 에서 no cache option
+
 ## 문법 간단 메모
 
 ### array
@@ -112,6 +130,8 @@ console.log(letter);
 ### localStorage
 
 [클라이언트에 정보, 데이터 저장 (클릭 시 새 탭 열기)](http://bitly.kr/w362h3jwQ1Z){: target="\_blank"}
+
+[localStroage에 배열형식 value 저장](https://amajoy.tistory.com/entry/localStorage-%EB%B0%B0%EC%97%B4%ED%98%95%EC%8B%9D-%EC%A0%80%EC%9E%A5%ED%95%98%EA%B8%B0){: target="\_blank"}
 
 ### input
 
