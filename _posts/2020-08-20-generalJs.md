@@ -22,6 +22,8 @@ JavaScript에 관해 공부하며 간단 메모한 글
 
 [JavaScript 비동기 처리 로직 (클릭 시 새 탭 열기)](https://medium.com/@nsh235482/%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EC%97%90%EC%84%9C%EC%9D%98-%EB%B9%84%EB%8F%99%EA%B8%B0-%EC%B2%98%EB%A6%AC-%EB%A1%9C%EC%A7%81-93a09e96dc36){: target="\_blank"}
 
+[JavaScript 코드 동작 순서 (클릭 시 새 탭 열기)](https://medium.com/gdana/%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%ED%98%B8%EC%B6%9C%EC%88%9C%EC%84%9C-d51a4349be71){: target="\_blank"}
+
 <!-- javascript구조에 관한 사진 -->
 
 ## AJAX
