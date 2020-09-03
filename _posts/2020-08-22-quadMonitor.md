@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Quad Monitor Setup"
-date: 2020-04-01 20:00:00
+date: 2020-08-22 20:00:00
 categories: Settings
 permalink: /archivers/quadMonitor
 nocomments: false
