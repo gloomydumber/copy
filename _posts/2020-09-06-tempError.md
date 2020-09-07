@@ -10,6 +10,8 @@ use_math: true
 
 # Error Temp
 
+error experienced temp log
+
 <!-- ![air1](/assets/posts/2020-04-01-aircon/air1.JPG) -->
 
 <!-- ![air2](/assets/posts/2020-04-01-aircon/air2.JPG){: width="500" height="500"} -->
@@ -17,18 +19,6 @@ use_math: true
 error temp
 
 ## error from 1
-
-dusk
-
-### error 1
-
-sandle
-
-### error 2
-
-sandle
-
-## error from 2
 
 alpha
 
@@ -39,3 +29,15 @@ bravo
 ### error 2
 
 chalie
+
+## error from 2
+
+delta
+
+### error 1
+
+echo
+
+### error 2
+
+foxtrot

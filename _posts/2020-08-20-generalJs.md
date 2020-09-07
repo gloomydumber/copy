@@ -24,6 +24,8 @@ JavaScript에 관해 공부하며 간단 메모한 글
 
 [JavaScript 코드 동작 순서 (클릭 시 새 탭 열기)](https://medium.com/gdana/%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%ED%98%B8%EC%B6%9C%EC%88%9C%EC%84%9C-d51a4349be71){: target="\_blank"}
 
+[JavaScript 동기/비동기로 매끄럽게하기 \*\*\*! (클릭 시 새 탭 열기)](https://engineering.linecorp.com/ko/blog/dont-block-the-event-loop/){: target="\_blank"}
+
 <!-- javascript구조에 관한 사진 -->
 
 ## AJAX
@@ -43,6 +45,10 @@ JavaScript에 관해 공부하며 간단 메모한 글
 [하나은행 환율 API 간헐적 CORS/CORB (클릭 시 새 탭 열기)](https://blog.edit.kr/entry/PHP-%ED%95%98%EB%82%98-%EC%9D%80%ED%96%89-%ED%99%98%EC%9C%A8-API%EB%A5%BC-%ED%86%B5%ED%95%9C-JSON){: target="\_blank"}
 
 [간헐적 CORS 사례 (클릭 시 새 탭 열기)](https://devtalk.kakao.com/t/cors/104823/5){: target="\_blank"}
+
+[xmlhttprequest인자로 비동기/동기 (클릭 시 새 탭 열기)](https://funylife.tistory.com/entry/XMLHttpRequest-%EA%B0%9D%EC%B2%B4-%EB%8F%99%EA%B8%B0%EB%B0%A9%EC%8B%9D-%EB%B9%84%EB%8F%99%EA%B8%B0%EB%B0%A9%EC%8B%9D%EC%9D%98-%EC%8B%A4%ED%96%89%EC%B0%A8%EC%9D%B4){: target="\_blank"}
+
+[xmlhttpreques시 try catch로 오류판단(클릭 시 새 탭 열기)](https://stackoverflow.com/questions/5018566/catching-xmlhttprequest-cross-domain-errors){: target="\_blank"}
 
 HTTP Request 할 시, setRequestHeader를 통해, Header설정 하는 방법 등
 
