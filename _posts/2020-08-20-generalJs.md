@@ -28,6 +28,32 @@ JavaScript에 관해 공부하며 간단 메모한 글
 
 <!-- javascript구조에 관한 사진 -->
 
+## General coding rule
+
+'use strict'
+
+var hoisting
+
+avoid nested loop
+
+early return, early exit (if조건문 사용시 조건에 안맞을 시 빨리 return 후 필요한 logic 작성 등)
+
+function expression / function declaration 구분
+
+arrow function
+
+IIFE(Immeadiately Invoked Functgion Expression)
+
+class(template), object(instance of class), OOP(Object Oriented Programming)
+
+[화살표 함수](https://velog.io/@parksj3205/2019-08-30-1208-%EC%9E%91%EC%84%B1%EB%90%A8){: target="\_blank"}
+
+## script Attribute
+
+[async, defer 이미지(클릭 시 새 탭 열기)](https://appletree.or.kr/blog/web-development/javascript/script-%ED%83%9C%EA%B7%B8%EC%9D%98-async%EC%99%80-defer-%EC%86%8D%EC%84%B1/){: target="\_blank"}
+
+<!-- async defer 동작 이미지 사진 -->
+
 ## AJAX
 
 <!-- ![url](/assets/posts/2020-05-24-nodejs/url.png) -->
