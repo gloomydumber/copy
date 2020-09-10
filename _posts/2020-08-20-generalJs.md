@@ -76,6 +76,10 @@ class(template), object(instance of class), OOP(Object Oriented Programming)
 
 [xmlhttpreques시 try catch로 오류판단(클릭 시 새 탭 열기)](https://stackoverflow.com/questions/5018566/catching-xmlhttprequest-cross-domain-errors){: target="\_blank"}
 
+[CORS error catch 가능여부](https://stackoverflow.com/questions/42721584/catching-an-access-control-allow-origin-error-in-javascript){: target="\_blank"}
+
+[CORS error catch 가능여부 2 (보안문제로 불가)](https://stackoverflow.com/questions/19325314/how-to-detect-cross-origin-cors-error-vs-other-types-of-errors-for-xmlhttpreq){: target="\_blank"}
+
 HTTP Request 할 시, setRequestHeader를 통해, Header설정 하는 방법 등
 
 script generated HTML code 를 parsing 하는 방법 (only JS?)
