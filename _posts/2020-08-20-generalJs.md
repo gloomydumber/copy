@@ -28,6 +28,12 @@ JavaScript에 관해 공부하며 간단 메모한 글
 
 <!-- javascript구조에 관한 사진 -->
 
+## hoisting
+
+기본적으로 JavaScript는 Synchronous Script
+
+var, function declaration 등의 변수, 함수 선언문은 script 최상단으로 위동 되어 실행 됨
+
 ## General coding rule
 
 'use strict'
