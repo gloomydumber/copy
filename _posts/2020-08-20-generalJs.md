@@ -102,6 +102,10 @@ http -> https 요청 (가능) / https -> http 요청 (불가) ->> hosting받아�
 
 [jQuery에서 append() 사용 시 주의 할 점 (클릭 시 새 탭 열기)](https://jonnung.tistory.com/16){: target="\_blank"}
 
+## async & await
+
+[await 병렬 처리](https://www.youtube.com/watch?v=aoQSOZfz3vQ&list=PLv2d7VI9OotTVOL4QmPfvJWPJvkmv6h-2&index=13){: target="\_blank"}
+
 ## etc
 
 ### effect
