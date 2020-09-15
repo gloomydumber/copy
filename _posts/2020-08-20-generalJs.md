@@ -102,9 +102,19 @@ http -> https 요청 (가능) / https -> http 요청 (불가) ->> hosting받아�
 
 [jQuery에서 append() 사용 시 주의 할 점 (클릭 시 새 탭 열기)](https://jonnung.tistory.com/16){: target="\_blank"}
 
+[input 값 변화 실시간 감지(propertychange change keyup paste input)](https://okky.kr/article/686735){: target="\_blank"}
+
+[script src의 위치와 \$(document).ready/window.onload 상관관계](https://hellogk.tistory.com/18){: target="\_blank"}
+
+[script src의 위치와 \$(document).ready/window.onload 상관관계 2](https://dololak.tistory.com/369){: target="\_blank"}
+
 ## async & await
 
 [await 병렬 처리](https://www.youtube.com/watch?v=aoQSOZfz3vQ&list=PLv2d7VI9OotTVOL4QmPfvJWPJvkmv6h-2&index=13){: target="\_blank"}
+
+## getbyElement, querySelector
+
+[geybyElement, querySelector 차이](https://humahumahuma.tistory.com/122){: target="\_blank"}
 
 ## etc
 
@@ -139,6 +149,10 @@ time을 이용
 https://stackoverflow.com/questions/168963/stop-jquery-load-response-from-being-cached/168977#168977
 
 ajax 에서 no cache option
+
+### vanilla JS
+
+[jquery이전에 배웠으면 좋았을 것들](https://jeonghwan-kim.github.io/2018/01/25/before-jquery.html){: target="\_blank"}
 
 ## 문법 간단 메모
 
