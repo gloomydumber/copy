@@ -116,6 +116,8 @@ http -> https 요청 (가능) / https -> http 요청 (불가) ->> hosting받아�
 
 [geybyElement, querySelector 차이](https://humahumahuma.tistory.com/122){: target="\_blank"}
 
+[geybyElement, querySelector 차이 2](https://blog.eunsatio.io/develop/Javascript%EB%A1%9C-HTML-%EC%9A%94%EC%86%8C-%EC%88%9C%ED%9A%8C%ED%95%98%EA%B8%B0){: target="\_blank"}
+
 ## etc
 
 ### effect
@@ -153,6 +155,10 @@ ajax 에서 no cache option
 ### vanilla JS
 
 [jquery이전에 배웠으면 좋았을 것들](https://jeonghwan-kim.github.io/2018/01/25/before-jquery.html){: target="\_blank"}
+
+## DOM 노드 생성 및 추가
+
+[DOM 노드 생성 및 추가 \*\*](https://antaehyeon.github.io/devlog/2018/07/13/%EC%BD%94%EB%93%9C%EC%8A%A4%EC%BF%BC%EB%93%9C-DOM-node-%EC%83%9D%EC%84%B1-%EB%B0%8F-%EC%B6%94%EA%B0%80/){: target="\_blank"}
 
 ## 문법 간단 메모
 
