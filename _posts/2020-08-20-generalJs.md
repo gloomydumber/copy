@@ -204,3 +204,7 @@ console.log(letter);
 ### input
 
 [input에서 enter키 누를 시 이벤트 발생 (클릭 시 새 탭 열기)](https://hsol.tistory.com/550){: target="\_blank"}
+
+### 반복문
+
+[for loop 최적화](https://niceman.tistory.com/27){: target="\_blank"}
