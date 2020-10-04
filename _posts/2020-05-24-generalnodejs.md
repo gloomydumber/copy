@@ -55,3 +55,9 @@ Create & Read & Update & Delete
  [PHP 표준 Library (클릭 시 새 탭 열기)](https://www.php.net/manual/en/){: target="\_blank"}
  [PHP type table Document (클릭 시 새 탭 열기)](http://php.net/manual/en/types.comparisons.php){: target="\_blank"}
  -->
+
+## 필기노트
+
+### Express 두 번 호출 현상
+
+[2번 호출 현상](https://medium.com/sjk5766/node-express-api%EA%B0%80-%EB%91%90-%EB%B2%88-%ED%98%B8%EC%B6%9C%EB%90%98%EB%8A%94-%ED%98%84%EC%83%81-b11f98a064e){: target="\_blank"}
