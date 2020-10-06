@@ -61,3 +61,7 @@ Create & Read & Update & Delete
 ### Express 두 번 호출 현상
 
 [2번 호출 현상](https://medium.com/sjk5766/node-express-api%EA%B0%80-%EB%91%90-%EB%B2%88-%ED%98%B8%EC%B6%9C%EB%90%98%EB%8A%94-%ED%98%84%EC%83%81-b11f98a064e){: target="\_blank"}
+
+### 정적파일 호출
+
+[express에서 static file 호출](https://m.blog.naver.com/PostView.nhn?blogId=pjok1122&logNo=221545195520&proxyReferer=https:%2F%2Fwww.google.com%2F){: target="\_blank"}
