@@ -24,6 +24,8 @@ Ajax 구현을 위한 최신 방법
 
 https://opentutorials.org/course/3281/20565
 
+https://gs.saro.me/dev?page=6&tn=564
+
 ```html
 <html>
   <body>
