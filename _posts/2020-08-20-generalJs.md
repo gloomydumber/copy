@@ -208,3 +208,7 @@ console.log(letter);
 ### 반복문
 
 [for loop 최적화](https://niceman.tistory.com/27){: target="\_blank"}
+
+### Date() 객체
+
+[브라우저 마다 다른 Date()객체 처리 방식](https://meetup.toast.com/posts/130){: target="\_blank"}
