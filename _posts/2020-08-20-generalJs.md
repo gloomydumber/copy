@@ -212,3 +212,7 @@ console.log(letter);
 ### Date() 객체
 
 [브라우저 마다 다른 Date()객체 처리 방식](https://meetup.toast.com/posts/130){: target="\_blank"}
+
+### JS 암호화 라이브러리
+
+[JS Encrypt](https://offbyone.tistory.com/343){: target="\_blank"}
