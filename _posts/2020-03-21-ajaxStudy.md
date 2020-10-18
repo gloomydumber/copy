@@ -26,6 +26,8 @@ https://opentutorials.org/course/3281/20565
 
 https://gs.saro.me/dev?page=6&tn=564
 
+POST FETCH 참고 https://hogni.tistory.com/142
+
 ```html
 <html>
   <body>

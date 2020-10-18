@@ -118,6 +118,18 @@ http -> https 요청 (가능) / https -> http 요청 (불가) ->> hosting받아�
 
 [geybyElement, querySelector 차이 2](https://blog.eunsatio.io/develop/Javascript%EB%A1%9C-HTML-%EC%9A%94%EC%86%8C-%EC%88%9C%ED%9A%8C%ED%95%98%EA%B8%B0){: target="\_blank"}
 
+## form submit without Redirection
+
+이벤트리스너로 preventDefault() 설정해주기
+
+```js
+const ajaxtest = document.getElementById("ajaxLogin");
+ajaxtest.addEventListener("submit", function (evt) {
+  evt.preventDefault();
+  login();
+});
+```
+
 ## etc
 
 ### effect
