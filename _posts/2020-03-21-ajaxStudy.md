@@ -28,6 +28,8 @@ https://gs.saro.me/dev?page=6&tn=564
 
 POST FETCH 참고 https://hogni.tistory.com/142
 
+fetch 유튜브 in 6minutes https://www.youtube.com/watch?v=cuEtnrL9-H0
+
 ```html
 <html>
   <body>
