@@ -30,6 +30,8 @@ POST FETCH 참고 https://hogni.tistory.com/142
 
 fetch 유튜브 in 6minutes https://www.youtube.com/watch?v=cuEtnrL9-H0
 
+fetch의 기반인 promise에 대한 youtube https://www.youtube.com/watch?v=JB_yU6Oe2eE
+
 ```html
 <html>
   <body>
