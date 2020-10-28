@@ -138,6 +138,8 @@ ajaxtest.addEventListener("submit", function (evt) {
 
 [notification 효과 주는 JS (클릭 시 새 탭 열기)](https://alertifyjs.com/notifier/message.html){: target="\_blank"}
 
+[이벤트 버블링, 캡쳐, 위임](https://joshua1988.github.io/web-development/javascript/event-propagation-delegation/){: target="\_blank"}
+
 ### 숫자 처리
 
 개발중, toFixed를 7주고 함수 만들어서 그 함수에 전달 후, 10000이상이면 tofixed2 등 처리 할 생각이었으나, \*1 하는 방법 사용
