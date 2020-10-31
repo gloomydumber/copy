@@ -174,6 +174,10 @@ ajax 에서 no cache option
 
 [pm2 사용법, backend 로 옮길 것](https://engineering.linecorp.com/ko/blog/pm2-nodejs/){: target="\_blank"}
 
+### Promise.All
+
+promise.all 에 관하여..
+
 ## DOM 노드 생성 및 추가
 
 [DOM 노드 생성 및 추가 \*\*](https://antaehyeon.github.io/devlog/2018/07/13/%EC%BD%94%EB%93%9C%EC%8A%A4%EC%BF%BC%EB%93%9C-DOM-node-%EC%83%9D%EC%84%B1-%EB%B0%8F-%EC%B6%94%EA%B0%80/){: target="\_blank"}
