@@ -84,3 +84,7 @@ Status 404 : Not Found
   </body>
 </html>
 ```
+
+### GraphQL
+
+https://www.daleseo.com/graphql-quick-call/ GraphQL
