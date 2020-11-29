@@ -240,3 +240,7 @@ console.log(letter);
 ### JS 암호화 라이브러리
 
 [JS Encrypt](https://offbyone.tistory.com/343){: target="\_blank"}
+
+### 즉시 실행 SetInterval의 hack
+
+https://stackoverflow.com/questions/6685396/execute-the-setinterval-function-without-delay-the-first-time
