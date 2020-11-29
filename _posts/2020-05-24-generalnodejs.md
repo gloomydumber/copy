@@ -65,3 +65,7 @@ Create & Read & Update & Delete
 ### 정적파일 호출
 
 [express에서 static file 호출](https://m.blog.naver.com/PostView.nhn?blogId=pjok1122&logNo=221545195520&proxyReferer=https:%2F%2Fwww.google.com%2F){: target="\_blank"}
+
+### WINDOWS Node.js Update
+
+https://jamong-icetea.tistory.com/355 npm install -g n 지원안함
