@@ -69,3 +69,15 @@ Create & Read & Update & Delete
 ### WINDOWS Node.js Update
 
 https://jamong-icetea.tistory.com/355 npm install -g n 지원안함
+
+### node webkit으로 Web App .exe 만들기
+
+강좌 1 (기본) https://web-inf.tistory.com/28
+
+강좌 2 (exe 단일화) https://web-inf.tistory.com/29
+
+아이콘 변경 https://gyuha.tistory.com/473
+
+우클릭막기 https://stackoverflow.com/questions/737022/how-do-i-disable-right-click-on-my-web-page
+
+F12막기 https://stackoverflow.com/questions/28575722/how-can-i-block-f12-keyboard-key-in-jquery-for-all-my-pages-and-elements
