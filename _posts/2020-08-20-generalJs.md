@@ -12,6 +12,8 @@ use_math: true
 
 JavaScript에 관해 공부하며 간단 메모한 글
 
+https://ko.javascript.info/?utm_source=Nomad+Academy&utm_campaign=8026b5711e-EMAIL_CAMPAIGN_2020_12_09_07_02_COPY_01&utm_medium=email&utm_term=0_4313d957c9-8026b5711e-155724345 모던 자바스크립트 총 정리
+
 ## What is JavaScript?
 
 [JavaScript 언어 동작 방식 1 (클릭 시 새 탭 열기)](https://doitnow-man.tistory.com/128){: target="\_blank"}
