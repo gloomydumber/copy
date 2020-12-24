@@ -110,6 +110,8 @@ http -> https 요청 (가능) / https -> http 요청 (불가) ->> hosting받아�
 
 [script src의 위치와 \$(document).ready/window.onload 상관관계 2](https://dololak.tistory.com/369){: target="\_blank"}
 
+[$(function(){})의 의미](https://mine-it-record.tistory.com/288){: target="\_blank"}
+
 ## async & await
 
 [await 병렬 처리](https://www.youtube.com/watch?v=aoQSOZfz3vQ&list=PLv2d7VI9OotTVOL4QmPfvJWPJvkmv6h-2&index=13){: target="\_blank"}
