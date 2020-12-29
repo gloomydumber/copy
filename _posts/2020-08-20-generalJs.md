@@ -118,9 +118,9 @@ http -> https 요청 (가능) / https -> http 요청 (불가) ->> hosting받아�
 
 ## getbyElement, querySelector
 
-[geybyElement, querySelector 차이](https://humahumahuma.tistory.com/122){: target="\_blank"}
+[getbyElement, querySelector 차이](https://humahumahuma.tistory.com/122){: target="\_blank"}
 
-[geybyElement, querySelector 차이 2](https://blog.eunsatio.io/develop/Javascript%EB%A1%9C-HTML-%EC%9A%94%EC%86%8C-%EC%88%9C%ED%9A%8C%ED%95%98%EA%B8%B0){: target="\_blank"}
+[forEach 사용 가능 여부에 있어서의 차이](https://blog.eunsatio.io/develop/Javascript%EB%A1%9C-HTML-%EC%9A%94%EC%86%8C-%EC%88%9C%ED%9A%8C%ED%95%98%EA%B8%B0){: target="\_blank"}
 
 ## form submit without Redirection
 
