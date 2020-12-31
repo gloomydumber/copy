@@ -10,6 +10,8 @@ use_math: true
 
 # Chrome Extension 개발 관련 POSTING
 
+https://brownbears.tistory.com/33
+
 It is important to understand the difference between rate and return here.
 
 A rate tells you how much you will get for 1 unit.
