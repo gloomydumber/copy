@@ -16,7 +16,7 @@ use_math: true
 
 Uniswap UI won't let us do swap with Zero Balance ERC20 to ETH like Above Image.
 
-## 
+## Silly way
 
 ![approvebutton](/assets/posts/2021-01-23-uniApprove/approveActive.png)
 
