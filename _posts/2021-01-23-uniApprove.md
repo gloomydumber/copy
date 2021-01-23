@@ -30,9 +30,9 @@ This way is so bothersome and annoying.
 
 Use EtherScan and excecute Approve() Function Directly.
 
-1. visit https://etherscan.io/token/{tokenAddress}#writeContract
+1. visit below URL (Token Address! Don't type Pair Address or other Wrong Addresses)
 
-> Check Token Address! Don't type Pair Address or other Wrong Addresses.
+> https://etherscan.io/token/{tokenAddress}#writeContractCheck 
 
 2. Connect your Wallet(e.g. Metamask) on Web3
 
