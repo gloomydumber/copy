@@ -30,17 +30,17 @@ This way is so bothersome and annoying.
 
 Use EtherScan and excecute Approve() Function Directly.
 
-1. visit below URL (Token Address! Don't type Pair Address or other Wrong Addresses)
+First, visit below URL (Token Address! Don't type Pair Address or other Wrong Addresses)
 
 > https://etherscan.io/token/{tokenAddress}#writeContractCheck 
 
-2. Connect your Wallet(e.g. Metamask) on Web3
+Second, Connect your Wallet(e.g. Metamask) on Web3
 
-3. type below on spender (Uniswap Router V2 Address)
+Third, type below on spender (Uniswap Router V2 Address)
 
 > 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D
 
-4. type infinite value in uint256
+Fourth, type infinite value in uint256
 
 > 115792089237316195423570985008687907853269984665640564039457584007913129639935
 
