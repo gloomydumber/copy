@@ -252,3 +252,7 @@ console.log(letter);
 ### 즉시 실행 SetInterval의 hack
 
 https://stackoverflow.com/questions/6685396/execute-the-setinterval-function-without-delay-the-first-time
+
+### UTF-8 en/decrypt 관련
+
+https://velog.io/@ryu/JavaScript-%EB%94%94%EC%BD%94%EB%94%A9-decodeURI-vs-decodeURIComponent-vs-unescape
