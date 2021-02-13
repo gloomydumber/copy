@@ -81,3 +81,7 @@ https://jamong-icetea.tistory.com/355 npm install -g n 지원안함
 우클릭막기 https://stackoverflow.com/questions/737022/how-do-i-disable-right-click-on-my-web-page
 
 F12막기 https://stackoverflow.com/questions/28575722/how-can-i-block-f12-keyboard-key-in-jquery-for-all-my-pages-and-elements
+
+### request module 관련
+
+node request module https://medium.com/harrythegreat/node-js%EC%97%90%EC%84%9C-request-js-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0-28744c52f68d
