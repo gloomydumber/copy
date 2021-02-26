@@ -20,7 +20,7 @@ https://ko.javascript.info/?utm_source=Nomad+Academy&utm_campaign=8026b5711e-EMA
 
 [JavaScript 언어 동작 방식 2 (클릭 시 새 탭 열기)](https://engineering.huiseoul.com/%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%8A%94-%EC%96%B4%EB%96%BB%EA%B2%8C-%EC%9E%91%EB%8F%99%ED%95%98%EB%8A%94%EA%B0%80-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EB%A3%A8%ED%94%84%EC%99%80-%EB%B9%84%EB%8F%99%EA%B8%B0-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D%EC%9D%98-%EB%B6%80%EC%83%81-async-await%EC%9D%84-%EC%9D%B4%EC%9A%A9%ED%95%9C-%EC%BD%94%EB%94%A9-%ED%8C%81-%EB%8B%A4%EC%84%AF-%EA%B0%80%EC%A7%80-df65ffb4e7e){: target="\_blank"}
 
-[JavaScript 코드 최적화 하기 (클릭 시 새 탭 열기)](https://mollangk.tistory.com/14){: target="\_blank"}
+[JavaScript 코드 최적화 하기 (DOM 제어는 최소한으로)](https://mollangk.tistory.com/14){: target="\_blank"}
 
 [JavaScript 비동기 처리 로직 (클릭 시 새 탭 열기)](https://medium.com/@nsh235482/%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EC%97%90%EC%84%9C%EC%9D%98-%EB%B9%84%EB%8F%99%EA%B8%B0-%EC%B2%98%EB%A6%AC-%EB%A1%9C%EC%A7%81-93a09e96dc36){: target="\_blank"}
 
