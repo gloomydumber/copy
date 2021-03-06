@@ -192,6 +192,12 @@ promise.AllSettled 에 관하여 ...
 
 [DOM 노드 생성 및 추가 \*\*](https://antaehyeon.github.io/devlog/2018/07/13/%EC%BD%94%EB%93%9C%EC%8A%A4%EC%BF%BC%EB%93%9C-DOM-node-%EC%83%9D%EC%84%B1-%EB%B0%8F-%EC%B6%94%EA%B0%80/){: target="\_blank"}
 
+### SSE(Server Sent Event), EventSource 객체
+
+https://developer.mozilla.org/ko/docs/Web/API/EventSource
+
+WSS의 대안, 자신이 서버를 구성할 때
+
 ## 문법 간단 메모
 
 ### array
