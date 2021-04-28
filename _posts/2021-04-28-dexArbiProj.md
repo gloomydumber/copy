@@ -214,30 +214,4 @@ Transaction이 발생할 때마다, Ethereum Transaction Fee가 발생함은 물
 
 ## Specification
 
-### Uniswap의 가격 산정 방식
-
-#### Execution Price
-
-#### Mid Price
-
-### Ethereum Transaction Fee
-
-#### Gas Limit
-
-#### Gas Price
-
-### Risk
-
-#### CEX의 Transaction Risk
-
-##### 입급 리스크
-
-##### 출금 리스크
-
-#### Infinite Pending
-
-#### Tx pool
-
-#### Front-Running
-
-GraphQL
+BLOG 비공개
