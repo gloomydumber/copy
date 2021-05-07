@@ -2,7 +2,7 @@
 layout: post
 title: "Bithumb eventus Calculator"
 date: 2020-03-25 15:15:00
-categories: Investments
+categories: INVESTMENTS
 permalink: /archivers/bithumbcal
 nocomments: false
 use_math: true
