@@ -198,6 +198,58 @@ https://developer.mozilla.org/ko/docs/Web/API/EventSource
 
 WSS의 대안, 자신이 서버를 구성할 때
 
+### JS memo
+
+[정규표현식 태그만제거 js](https://webisfree.com/2015-12-22/[%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8]-%EC%A0%95%EA%B7%9C%ED%91%9C%ED%98%84%EC%8B%9D%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%98%EC%97%AC-%ED%83%9C%EA%B7%B8%EB%A7%8C-%EC%A0%9C%EA%B1%B0%ED%95%98%EA%B8%B0){: target="\_blank"}
+
+[katalbot](https://m.blog.naver.com/PostView.nhn?blogId=dt3141592&logNo=221696604789&targetKeyword=&targetRecommendationCode=1){: target="\_blank"}
+
+[katalbot2](https://blog.naver.com/qncoehtk000/221675430021){: target="\_blank"}
+
+[트래딩뷰 embed](https://kr.tradingview.com/widget/advanced-chart/){: target="\_blank"}
+
+[자바스크립트 getday](https://jootc.com/p/201811241474){: target="\_blank"}
+
+[자바스크립트 title추출](https://jootc.com/p/201811242253){: target="\_blank"}
+
+[JavaScript ==, ===](https://dorey.github.io/JavaScript-Equality-Table/){: target="\_blank"}
+
+[JavaScript 사전](https://opentutorials.org/course/50){: target="\_blank"}
+
+[jquery 강의](https://opentutorials.org/course/53){: target="\_blank"}
+
+[json](https://opentutorials.org/course/1597/3473){: target="\_blank"}
+
+[launch4j.sourceforge.net](https://launch4j.sourceforge.net){: target="\_blank"}
+
+cors문제
+
+prompt, confirm, location, window
+
+BOM, DOM
+
+기명/익명 함수
+
+객체 생성자 함수 -> 객체 생성
+
+queryselector
+
+``백틱 \${}
+
+https://lgphone.tistory.com/122 웹소켓 사용 예제
+
+## JS 관련
+
+https://ui.toast.com/weekly-pick/ko_20210611 JS 메모리 관리 관련
+
+https://stackoverflow.com/questions/21397809/create-a-trusted-self-signed-ssl-cert-for-localhost-for-use-with-express-node node.js localhost에 SSL 적용하기
+
+https://hi098123.tistory.com/152 strict-origin-when-cross-origin : http --> https 요청 불가?
+
+https://stackoverflow.com/questions/1723287/calling-a-javascript-function-named-in-a-variable 메소드에 변수 사용
+
+https://stackoverflow.com/questions/46067702/how-to-call-a-javascript-function-using-variable 메소드에 변수 사용 2
+
 ## 문법 간단 메모
 
 ### array
