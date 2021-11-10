@@ -214,4 +214,4 @@ Transaction이 발생할 때마다, Ethereum Transaction Fee가 발생함은 물
 
 ## Specification
 
-BLOG 비공개
+encrypted
