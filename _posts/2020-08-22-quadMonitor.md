@@ -8,7 +8,7 @@ nocomments: false
 use_math: true
 ---
 
-# Quad
+# Quad Monitor Set up
 
 <!-- ![air1](/assets/posts/2020-04-01-aircon/air1.JPG) -->
 
@@ -17,11 +17,3 @@ use_math: true
 ## 메모리 할당
 
 dusk
-
-## GTX 970 STRIX DVI
-
-재건축 노림
-
-## 제품
-
-옥상권한
