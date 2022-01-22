@@ -114,6 +114,8 @@ http -> https 요청 (가능) / https -> http 요청 (불가) ->> hosting받아�
 
 ## async & await
 
+[바보들을 위한 Promise 강의](https://programmingsummaries.tistory.com/325){: target="\_blank"}
+
 [await 병렬 처리](https://www.youtube.com/watch?v=aoQSOZfz3vQ&list=PLv2d7VI9OotTVOL4QmPfvJWPJvkmv6h-2&index=13){: target="\_blank"}
 
 ## getbyElement, querySelector
