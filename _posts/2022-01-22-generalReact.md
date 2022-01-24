@@ -16,6 +16,18 @@ hooks, error handling, etc...
 
 editing...
 
+## React가 렌더링을 수행하는 시점
+
+React 컴포넌트가 렌더링을 수행하는 시점은 다음과 같습니다.
+
+1. Props가 변경되었을 때
+
+2. State가 변경되었을 때
+
+3. forceUpdate() 를 실행하였을 때
+
+4. 부모 컴포넌트가 렌더링되었을 때
+
 ## React 관련
 
 https://github.com/skidding/cosmos component 개별 정리
