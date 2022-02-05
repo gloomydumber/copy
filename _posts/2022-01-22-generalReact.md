@@ -32,6 +32,10 @@ React 컴포넌트가 렌더링을 수행하는 시점은 다음과 같습니다
 
 https://github.com/skidding/cosmos component 개별 정리
 
+https://sohyunsaurus.tistory.com/37 react 개발자라면 알아야하는 15가지 custom hooks
+
+reddit.com/r/reactjs/redit react게
+
 ### react table 관련
 
 https://www.daleseo.com/react-table/ react-table 관련
@@ -56,13 +60,35 @@ https://velog.io/@pius712/useEffect-race-condition-%EB%8B%A4%EB%A3%A8%EA%B8%B0 r
 
 https://webclub.tistory.com/607 throttle, debounce
 
-### react에서 setInterval 사용하기
+### useState
+
+https://velog.io/@seongkyun/React%EC%9D%98-setState%EA%B0%80-%EB%B9%84%EB%8F%99%EA%B8%B0-%EC%B2%98%EB%A6%AC%EB%90%98%EB%8A%94-%EC%9D%B4%EC%9C%A0 useState가 비동기처럼 작동하는 이유
+
+### useRef
+
+https://velog.io/@juno7803/React-useRef-200-%ED%99%9C%EC%9A%A9%ED%95%98%EA%B8%B0 useRef 200% 활용하기
+
+### react에서 setInterval 사용하기 (useInterval Custom Hook)
 
 https://iborymagic.tistory.com/96
 
 https://bsnn.tistory.com/50
 
+https://mingule.tistory.com/65
+
+https://www.suzie.world/blog/making-setinterval-declarative-with-react-hooks
+
 https://velog.io/@jakeseo_me/%EB%B2%88%EC%97%AD-%EB%A6%AC%EC%95%A1%ED%8A%B8-%ED%9B%85%EC%8A%A4-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8%EC%97%90%EC%84%9C-setInterval-%EC%82%AC%EC%9A%A9-%EC%8B%9C%EC%9D%98-%EB%AC%B8%EC%A0%9C%EC%A0%90
+
+### useLayoutEffect
+
+https://merrily-code.tistory.com/46 useLayoutEffect 에관하여
+
+https://always-develop.tistory.com/73 useEffect와 useLayoutEffect 차이
+
+### websocket 수신 데이터를 state로 이용할 때
+
+https://stackoverflow.com/questions/66615601/react-websocket-is-there-a-way-to-throttle-to-limit-the-number-of-times-the-c
 
 ## References
 
