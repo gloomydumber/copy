@@ -90,6 +90,8 @@ https://always-develop.tistory.com/73 useEffect와 useLayoutEffect 차이
 
 https://stackoverflow.com/questions/66615601/react-websocket-is-there-a-way-to-throttle-to-limit-the-number-of-times-the-c
 
+https://velog.io/@seongkyun/React-%EC%B5%9C%EC%A0%81%ED%99%94-buffer%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%98%EC%97%AC-%EC%83%81%ED%83%9C-%EA%B0%B1%EC%8B%A0-%EC%A4%84%EC%9D%B4%EA%B8%B0 buffer로 해결(업비트 클론코딩)
+
 ## References
 
 [jbee.io](https://jbee.io/){: target="\_blank"}
