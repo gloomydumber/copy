@@ -6,6 +6,7 @@ categories: WEB-FRONTEND
 permalink: /archivers/jsSprdStx
 nocomments: false
 use_math: true
+future: true
 ---
 
 # JavaScript Spread Syntax
