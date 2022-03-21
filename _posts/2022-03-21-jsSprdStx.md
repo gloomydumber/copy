@@ -1,12 +1,11 @@
 ---
 layout: post
 title: "JavaScript Spread Syntax"
-date: 2022-03-21 20:30:00
+date: 2022-03-20 20:30:00
 categories: WEB-FRONTEND
 permalink: /archivers/jsSprdStx
 nocomments: false
 use_math: true
-future: true
 ---
 
 # JavaScript Spread Syntax
