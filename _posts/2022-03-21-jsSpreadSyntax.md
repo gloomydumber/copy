@@ -18,4 +18,4 @@ contents
 
 ## References
 
-[jbee.io](https://jbee.io/){: target="\_blank"}
+[Mozilla Spread Syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScaript/Reference/Operators/Spread_syntax){: target="\_blank"}
