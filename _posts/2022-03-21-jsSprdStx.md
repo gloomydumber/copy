@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "JavaScript Spread Syntax (자바스크립트 전개 구문)"
-date: 2022-03-21 23:30:00
+date: 2022-03-21 22:30:00
 categories: WEB-FRONTEND
 permalink: /archivers/jsSprdStx
 nocomments: false
