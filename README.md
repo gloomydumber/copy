@@ -1,22 +1,5 @@
-## default
+## blog
 
-default
+built with jekyll...
 
-### default
-
-- default
-
-### default
-
-#### default
-
-- default
-
-#### default
-
-- default
-
-### default
-
-- default
-- readme test for git
+hassle to tidying up
