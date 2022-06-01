@@ -99,3 +99,61 @@ https://velog.io/@seongkyun/React-%EC%B5%9C%EC%A0%81%ED%99%94-buffer%EB%A5%BC-%E
 https://react.vlpt.us/ react 공부 사이트 (벨로퍼트와함께하는모던리액트)
 
 <!-- ![permasecond](/assets/posts/2020-02-21-cmdcolor/permasecond.png) -->
+
+## from nomad...
+
+### styled-components
+
+```javascript
+function App() {
+  return (
+    <div style={{ display: "flex" }}>
+      <div style={{ backgroundColor: "teal", width: 100, height: 100 }}></div>
+      <div style={{ backgroundColor: "tomato", width: 100, height: 100 }}></div>
+    </div>
+  );
+}
+
+export default App;
+```
+
+위와 같이 작성해야할 CSS를, 아래와 같이 적용
+
+```javascript
+import styled from "styled-components";
+
+const Father = styled.div`
+  display: flex;
+`;
+
+const BoxOne = styled.div`
+  background-color: teal;
+  width: 100px;
+  height: 100px;
+`;
+
+const BoxTwo = styled.div`
+  background-color: tomato;
+  width: 100px;
+  height: 100px;
+`;
+
+const Text = styled.span`
+  color: white;
+`;
+
+function App() {
+  return (
+    <Father>
+      <BoxOne>
+        <Text>Hello</Text>
+      </BoxOne>
+      <BoxTwo />
+    </Father>
+  );
+}
+
+export default App;
+```
+
+class명은 styled-components에서 unique한 이름으로 dynamically 생성. (duplication, overlap, misspelling 방지)
