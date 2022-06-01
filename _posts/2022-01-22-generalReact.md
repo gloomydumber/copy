@@ -157,3 +157,5 @@ export default App;
 ```
 
 class명은 styled-components에서 unique한 이름으로 dynamically 생성. (duplication, overlap, misspelling 방지)
+
+CSS part와 Component 구현 part를 분리
