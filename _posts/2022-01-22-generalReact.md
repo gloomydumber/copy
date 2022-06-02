@@ -156,6 +156,243 @@ function App() {
 export default App;
 ```
 
+```javascript
+import styled from "styled-components";
+
+const Father = styled.div`
+  display: flex;
+`;
+
+const Box = styled.div`
+  background-color: ${(props) => props.bgColor};
+  width: 100px;
+  height: 100px;
+`;
+
+const Circle = styled(Box)`
+  border-radius: 50px;
+`;
+
+function App() {
+  return (
+    <Father>
+      <Box bgColor="teal" />
+      <Circle bgColor="tomato" />
+    </Father>
+  );
+}
+
+export default App;
+```
+
 class명은 styled-components에서 unique한 이름으로 dynamically 생성. (duplication, overlap, misspelling 방지)
 
+props, extend(상속과 유사) 사용 가능
+
 CSS part와 Component 구현 part를 분리
+
+```javascript
+import styled from "styled-components";
+
+const Father = styled.div`
+  display: flex;
+`;
+
+const Input = styled.input.attrs({ required: true })`
+  background-color: tomato;
+`;
+
+function App() {
+  return (
+    <Father as="header">
+      // 원래, father는 div로 작성되었지만, as로 header tag로 render
+      <Input /> // attrs를 통해 require: true 속성을 한 번에 부여
+      <Input />
+      <Input />
+      <Input />
+      <Input />
+    </Father>
+  );
+}
+export default App;
+```
+
+as를 사용함으로써, CSS 속성은 유지하되 다른 tag로 작성되도록 할 수 있음
+
+attrs를 사용함으로써, tag에 하나하나 속성 부여할 필요 없이, 한 번에 부여
+
+```javascript
+import styled, { keyframes } from "styled-components";
+
+const Wrapper = styled.div`
+  display: flex;
+`;
+
+const rotationAnimation = keyframes`
+  0% {
+    transform: rotate(0deg);
+    border-radius: 0px;
+  }
+  50% {
+    border-radius: 100px;
+  }
+  100%{
+    transform: rotate(360deg);
+    border-radius: 0px;
+  }
+`;
+
+const Box = styled.div`
+  height: 200px;
+  width: 200px;
+  background-color: tomato;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: ${rotationAnimation} 1s linear infinite; // animation을 string interpolation으로 처리
+  span {
+    font-size: 150px;
+    &:hover {
+      // & 로 간편하게 액션 처리 가능
+      font-size: 50px;
+    }
+  }
+`;
+
+function App() {
+  return (
+    <Wrapper>
+      <Box>
+        <span>🧐</span>
+      </Box>
+    </Wrapper>
+  );
+}
+
+export default App;
+```
+
+animation을 따로 정의하여, string interpolation으로 처리 가능
+
+HTML 요소안의 다른 요소에도 CSS 적용 가능, 또 내부 scope에 '&'로 그러한 요소에 액션까지 간편하게 추가 가능 (pseudo selector)
+
+```javascript
+import styled, { keyframes } from "styled-components";
+
+const Wrapper = styled.div`
+  display: flex;
+`;
+
+const rotationAnimation = keyframes`
+  0% {
+    transform: rotate(0deg);
+    border-radius: 0px;
+  }
+  50% {
+    border-radius: 100px;
+  }
+  100%{
+    transform: rotate(360deg);
+    border-radius: 0px;
+  }
+`;
+
+const Emoji = styled.span`
+  font-size: 150px;
+`;
+
+const Box = styled.div`
+  height: 200px;
+  width: 200px;
+  background-color: tomato;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: ${rotationAnimation} 1s linear infinite;
+  ${Emoji} {
+    &:hover {
+      // Component로 분리해도 다른 Component 내부에서 적용 가능
+      font-size: 50px;
+    }
+  }
+`;
+
+function App() {
+  return (
+    <Wrapper>
+      <Box>
+        <Emoji as="p">🧐</Emoji>
+        {/* as로 다른 HTML tag로 작용하더라도 CSS 효과, Animation은 그대로 적용 */}
+      </Box>
+      <Emoji as="p">🧐</Emoji>
+      {/* Box밖의 Emoji는 CSS Animation 효과가 적용되지 않음. */}
+    </Wrapper>
+  );
+}
+
+export default App;
+```
+
+다른 Component 내부에 있는 Component의 CSS도 정의할 수 있음 (pseudo selector)
+
+```javascript
+// index.js
+
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { ThemeProvider } from "styled-components"; // ThemeProvider를 import 해야 함.
+import App from "./App";
+
+// darkTheme & lightTheme 객체를 선언, 속성값이 같아야함.
+
+const darkTheme = {
+  textColor: "whitesmoke",
+  backgroundColor: "#111",
+};
+
+const lightTheme = {
+  textColor: "#111",
+  backgroundColor: "whitesmoke",
+};
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+  <React.StrictMode>
+    <ThemeProvider theme={darkTheme}>
+      {" "}
+      // theme props
+      <App />
+    </ThemeProvider>
+  </React.StrictMode>
+);
+```
+
+```javascript
+import styled, { keyframes } from "styled-components";
+
+const Title = styled.h1`
+  color: ${(props) => props.theme.textColor}; // theme props 이용
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  justify-content: center;
+  align-items: center;
+  background-color: ${(props) =>
+    props.theme.backgroundColor}; // theme props 이용
+`;
+
+function App() {
+  return (
+    <Wrapper>
+      <Title>Hello</Title>
+    </Wrapper>
+  );
+}
+
+export default App;
+```
+
+styled-components에서 ThemeProvider를 제공 함. theme 객체들을 생성하고 props로 넘겨주면, 편리한 theme 기능 이용 가능
