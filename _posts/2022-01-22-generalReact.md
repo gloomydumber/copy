@@ -410,3 +410,71 @@ styled-components에서 ThemeProvider를 제공 함. theme 객체들을 생성�
 ### general
 
 for type protection
+
+```bash
+npx create-react-app appName --template typescript
+yarn create react-app appName --template typescript
+```
+
+처음 create-react-app을 typescript template로 시작하는 방법
+
+```bash
+npm install --save typescript @types/node @types/react @types/react-dom @types/jest
+```
+
+기존 create-react-app에 typescript를 새로 적용하는 방법
+
+```bash
+npm i --save-dev @types/styled-components
+```
+
+js로 작성된 module을 ts에서 사용할 때, ts지원 module을 설치 해줘야 함.
+
+DefinitelyTyped 에서 오픈소스로 여러 모듈들의 typescript 지원 중
+
+### interface
+
+```tsx
+// App.tsx
+import Circle from "./Circle";
+
+function App() {
+  return (
+    <div>
+      <Circle bgColor="teal" /> // bgColor라는 props 이용 중
+      <Circle bgColor="tomato" />
+    </div>
+  );
+}
+
+export default App;
+```
+
+```typescript
+import styled from "styled-components";
+
+interface ContainerProps {
+  bgColor: string;
+}
+
+const Container = styled.div<ContainerProps>`
+  // styled-components 에서 Props Interface는 이런 방식으로.
+  width: 200px;
+  height: 200px;
+  background-color: ${(props) => props.bgColor};
+  border-radius: 100px;
+`;
+
+interface CircleProps {
+  bgColor: string;
+}
+
+function Circle({ bgColor }: CircleProps) {
+  // props에 type 부여를 위해 interface 정의 및 이용
+  return <Container bgColor={bgColor} />;
+}
+
+export default Circle;
+```
+
+component의 props에 types을 주려면 interface를 이용
