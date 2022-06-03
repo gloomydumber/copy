@@ -16,7 +16,15 @@ hooks, error handling, etc...
 
 editing...
 
-## React가 렌더링을 수행하는 시점
+## React 관련
+
+https://github.com/skidding/cosmos component 개별 정리
+
+https://sohyunsaurus.tistory.com/37 react 개발자라면 알아야하는 15가지 custom hooks
+
+reddit.com/r/reactjs/redit react게
+
+### React가 렌더링을 수행하는 시점
 
 React 컴포넌트가 렌더링을 수행하는 시점은 다음과 같습니다.
 
@@ -27,14 +35,6 @@ React 컴포넌트가 렌더링을 수행하는 시점은 다음과 같습니다
 3. forceUpdate() 를 실행하였을 때
 
 4. 부모 컴포넌트가 렌더링되었을 때
-
-## React 관련
-
-https://github.com/skidding/cosmos component 개별 정리
-
-https://sohyunsaurus.tistory.com/37 react 개발자라면 알아야하는 15가지 custom hooks
-
-reddit.com/r/reactjs/redit react게
 
 ### react table 관련
 
@@ -100,9 +100,11 @@ https://react.vlpt.us/ react 공부 사이트 (벨로퍼트와함께하는모던
 
 <!-- ![permasecond](/assets/posts/2020-02-21-cmdcolor/permasecond.png) -->
 
-## from nomad...
+## from nomad
 
 ### styled-components
+
+#### general
 
 ```javascript
 function App() {
@@ -191,6 +193,8 @@ props, extend(상속과 유사) 사용 가능
 
 CSS part와 Component 구현 part를 분리
 
+#### as / attrs
+
 ```javascript
 import styled from "styled-components";
 
@@ -220,6 +224,8 @@ export default App;
 as를 사용함으로써, CSS 속성은 유지하되 다른 tag로 작성되도록 할 수 있음
 
 attrs를 사용함으로써, tag에 하나하나 속성 부여할 필요 없이, 한 번에 부여
+
+#### animation string interpolation
 
 ```javascript
 import styled, { keyframes } from "styled-components";
@@ -275,6 +281,8 @@ export default App;
 animation을 따로 정의하여, string interpolation으로 처리 가능
 
 HTML 요소안의 다른 요소에도 CSS 적용 가능, 또 내부 scope에 '&'로 그러한 요소에 액션까지 간편하게 추가 가능 (pseudo selector)
+
+#### pseudo selector
 
 ```javascript
 import styled, { keyframes } from "styled-components";
@@ -334,6 +342,8 @@ export default App;
 ```
 
 다른 Component 내부에 있는 Component의 CSS도 정의할 수 있음 (pseudo selector)
+
+#### ThemeProvider
 
 ```javascript
 // index.js
