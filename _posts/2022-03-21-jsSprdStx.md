@@ -18,4 +18,4 @@ contents
 
 ## References
 
-[Mozilla Spread Syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScaript/Reference/Operators/Spread_syntax){: target="\_blank"}
+[Mozilla Spread Syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax){: target="\_blank"}
