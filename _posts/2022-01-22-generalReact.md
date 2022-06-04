@@ -451,6 +451,7 @@ export default App;
 ```
 
 ```typescript
+// Circle.tsx
 import styled from "styled-components";
 
 interface ContainerProps {
@@ -478,3 +479,65 @@ export default Circle;
 ```
 
 component의 props에 types을 주려면 interface를 이용
+
+### default props / optional props
+
+```typescript
+// App.tsx
+import Circle from "./Circle";
+
+function App() {
+  return (
+    <div>
+      <Circle borderColor="lime" bgColor="teal" />
+      <Circle text="i'm here" bgColor="tomato" />
+    </div>
+  );
+}
+
+export default App;
+```
+
+```typescript
+// Circle.tsx
+import styled from "styled-components";
+
+interface ContainerProps {
+  bgColor: string;
+  borderColor: string; // ContainerProps에서는 required props.
+  text?: string;
+}
+
+const Container = styled.div<ContainerProps>`
+  width: 200px;
+  height: 200px;
+  background-color: ${(props) => props.bgColor};
+  border-radius: 100px;
+  border: 1px solid ${(props) => props.borderColor};
+`;
+
+interface CircleProps {
+  bgColor: string;
+  borderColor?: string; // CircleProps에서는 Optional Props.
+  text?: string;
+}
+
+function Circle({ bgColor, borderColor, text = "default text" }: CircleProps) {
+  // = 을 통해 default props 이용.
+  return (
+    <Container
+      bgColor={bgColor}
+      borderColor={borderColor ?? bgColor} // borderColor가 undefined인 경우, bgColor를 전달
+      text={text}
+    >
+      {text}
+    </Container>
+  );
+}
+
+export default Circle;
+```
+
+? 연산자를 통해, optional props 설정 가능. default props의 경우 typescript의 기능은 아니지만, props 전달시 = 연산자를 통해 설정 가능
+
+?? 연산자를 통해, props가 undefined인 경우에 따로 props로 전달할 parameter 설정 가능
