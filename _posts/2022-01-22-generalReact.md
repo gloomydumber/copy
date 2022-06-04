@@ -682,3 +682,5 @@ export default App;
 ```
 
 이후 props에서 theme props 객체로 접근하여 attribute들을 이용해 색상 접근 및 설정
+
+c.f.) [React.js Official docs for events](https://reactjs.org/docs/events.html){: target="\_blank"} (React Synthetic Event)
