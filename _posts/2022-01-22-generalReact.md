@@ -541,3 +541,144 @@ export default Circle;
 ? 연산자를 통해, optional props 설정 가능. default props의 경우 typescript의 기능은 아니지만, props 전달시 = 연산자를 통해 설정 가능
 
 ?? 연산자를 통해, props가 undefined인 경우에 따로 props로 전달할 parameter 설정 가능
+
+### React state with ts
+
+```tsx
+const [counter, setCounter] = useState(1); // 초기값을 1로 주었으므로, ts compiler에서 counter state는 number 값으로 예상
+```
+
+```tsx
+const [counter, setCounter] = useState<number | string>(1); // number 또는 string type을 state로 가질 수 있음을 선언
+```
+
+default state를 설정해주면 해당 type만을 state로 추론해서 해당 type으로만 변경을 허용하고, 다른 type으로 setState를 시도하는 순간 ts compiler는 error notify
+
+### ts on react example (form event)
+
+```tsx
+import React from "react";
+import { useState } from "react";
+
+function App() {
+  const [value, setValue] = useState("");
+  const onChange = (e: React.FormEvent<HTMLInputElement>) => {
+    setValue(e.currentTarget.value); // React.js TS는 target이 아니라 currentTarget 사용
+    // same as below
+    // const {
+    //   currentTarget: { value },
+    // } = e;
+    // setValue(value);
+  };
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("hello", value);
+  };
+  return (
+    <div>
+      <form onSubmit={onSubmit}>
+        <input
+          value={value}
+          onChange={onChange}
+          type="text"
+          placeholder="username"
+        />
+        <button>Log in</button>
+      </form>
+    </div>
+  );
+}
+
+export default App;
+```
+
+React.FormEvent<HTMLFormElement> 와 같은 type setting이 필요함. 구글링 등으로 html event등이 ts에서는 어떤 type인지 알아내야 함.
+
+React.js를 ts에서 사용할 경우 event.target이 아닌, event.currentTarget을 사용하기로 함 (event.target vs event.currentTarget)
+
+### ts on react example (styled-components module)
+
+react에 적용할 module에서의 ts 사용 예제로 styled-components에서 theme을 설정해본다.
+
+```ts
+//styled.d.ts
+// import original module declarations
+import "styled-components";
+
+// and extend them!
+declare module "styled-components" {
+  export interface DefaultTheme {
+    textColor: string;
+    bgColor: string;
+  }
+}
+```
+
+[styled-components Official docs for ts](https://styled-components.com/docs/api#typescript){: target="\_blank"}
+
+우선, 공식문서의 설명대로 styled.d.ts를 생성해서 설정 코드를 입력한다.
+
+```typescript
+// theme.ts
+import { DefaultTheme } from "styled-components";
+
+export const lightTheme: DefaultTheme = {
+  textColor: "black",
+  bgColor: "whitesmoke",
+  btnColor: "teal",
+};
+
+export const darkTheme: DefaultTheme = {
+  textColor: "lime",
+  bgColor: "black",
+  btnColor: "teal",
+};
+```
+
+이후 theme.ts에서 DefaultTheme type의 theme 객체들을 설정해준다.
+
+```tsx
+// index.tsx
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+import { ThemeProvider } from "styled-components";
+import { lightTheme, darkTheme } from "./theme";
+
+ReactDOM.render(
+  <React.StrictMode>
+    <ThemeProvider theme={lightTheme}>
+      <App />
+    </ThemeProvider>
+  </React.StrictMode>,
+  document.getElementById("root")
+);
+```
+
+마찬가지로 index.tsx에서 ThemeProvider Component를 import하여 설정한다. theme객체 또한 import한다.
+
+```tsx
+// App.tsx
+import React from "react";
+import styled from "styled-components";
+
+const Container = styled.div`
+  background-color: ${(props) => props.theme.bgColor};
+`;
+
+const H1 = styled.h1`
+  color: ${(props) => props.theme.textColor};
+`;
+
+function App() {
+  return (
+    <Container>
+      <H1>protected</H1>
+    </Container>
+  );
+}
+
+export default App;
+```
+
+이후 props에서 theme props 객체로 접근하여 attribute들을 이용해 색상 접근 및 설정
