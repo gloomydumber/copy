@@ -1296,6 +1296,338 @@ ZombieFactory.NewZombie(function(error, result) {
 })
 ```
 
+## 컨트랙트의 불변성
+
+컨트랙트에 코드를 배포하고나면 컨트랙트는 불변(Immutable)임
+
+이에, DApp에서 컨트랙트 주소를 바꿀 수 있도록 외부 의존성 처리를 해두는 것이 좋음
+
+즉, 어떤 컨트랙트 주소를 다루어야 한다면, *address contractAddress = 0x...*과 같으로 컨트랙트 내부에 직접 주소를 대입해서 선언하는 것보다,
+
+컨트랙트 주소가 변할 가능성을 열어두고 변수로 처리
+
+```solidity
+pragma solidity ^0.4.19;
+
+import "./zombiefactory.sol";
+
+contract KittyInterface {
+  function getKitty(uint256 _id) external view returns (
+    bool isGestating,
+    bool isReady,
+    uint256 cooldownIndex,
+    uint256 nextActionAt,
+    uint256 siringWithId,
+    uint256 birthTime,
+    uint256 matronId,
+    uint256 sireId,
+    uint256 generation,
+    uint256 genes
+  );
+}
+
+contract ZombieFeeding is ZombieFactory {
+
+  // 1. 이 줄을 지우게:
+  address ckAddress = 0x06012c8cf97BEaD5deAe237070F9587f8E7A266d;
+  // 2. 여기서 대입을 빼고 그냥 선언으로 바꾸게:
+  KittyInterface kittyContract = KittyInterface(ckAddress);
+
+  // 3. 여기 setKittyContractAddress 메소드를 추가하게
+
+  function feedAndMultiply(uint _zombieId, uint _targetDna, string _species) public {
+    require(msg.sender == zombieToOwner[_zombieId]);
+    Zombie storage myZombie = zombies[_zombieId];
+    _targetDna = _targetDna % dnaModulus;
+    uint newDna = (myZombie.dna + _targetDna) / 2;
+    if (keccak256(_species) == keccak256("kitty")) {
+      newDna = newDna - newDna % 100 + 99;
+    }
+    _createZombie("NoName", newDna);
+  }
+
+  function feedOnKitty(uint _zombieId, uint _kittyId) public {
+    uint kittyDna;
+    (,,,,,,,,,kittyDna) = kittyContract.getKitty(_kittyId);
+    feedAndMultiply(_zombieId, kittyDna, "kitty");
+  }
+
+}
+```
+
+위의 코드에서,
+
+*ckAddress*를 지우고, *kittyContract*를 어떤 것도 대입하지 않고 변수 선언만 하도록 함
+
+*setKittyContractAddress*라는 이름의 함수를 생성하고, _address_ 타입의 *\_address*를 인자로 받고 *external*로 선언
+
+함수 내에서 *kittyContract*에 \*KittyInterface(\_address)를 대입하는 코드 작성
+
+```solidity
+pragma solidity ^0.4.19;
+
+import "./zombiefactory.sol";
+
+contract KittyInterface {
+  function getKitty(uint256 _id) external view returns (
+    bool isGestating,
+    bool isReady,
+    uint256 cooldownIndex,
+    uint256 nextActionAt,
+    uint256 siringWithId,
+    uint256 birthTime,
+    uint256 matronId,
+    uint256 sireId,
+    uint256 generation,
+    uint256 genes
+  );
+}
+
+contract ZombieFeeding is ZombieFactory {
+  KittyInterface kittyContract;
+
+  function setKittyContractAddress(address _address) external {
+    kittyContract = KittyInterface(_address);
+  }
+
+  function feedAndMultiply(uint _zombieId, uint _targetDna, string _species) public {
+    require(msg.sender == zombieToOwner[_zombieId]);
+    Zombie storage myZombie = zombies[_zombieId];
+    _targetDna = _targetDna % dnaModulus;
+    uint newDna = (myZombie.dna + _targetDna) / 2;
+    if (keccak256(_species) == keccak256("kitty")) {
+      newDna = newDna - newDna % 100 + 99;
+    }
+    _createZombie("NoName", newDna);
+  }
+
+  function feedOnKitty(uint _zombieId, uint _kittyId) public {
+    uint kittyDna;
+    (,,,,,,,,,kittyDna) = kittyContract.getKitty(_kittyId);
+    feedAndMultiply(_zombieId, kittyDna, "kitty");
+  }
+}
+```
+
+## 소유 가능한 컨트랙트
+
+앞선 예제에서 *setKittyContractAddress*는 *external*로 선언됨
+
+즉, 누구든 이 함수를 호출할 수 있다는 의미
+
+따라서, 컨트랙트를 소유 가능하게 만들어서 특별한 권리를 가지게 해서 소유자만이 호출 가능하도록 해야함
+
+아래는 _OpenZepplin_ 솔리디티 라이브러리에서 가져온 _Ownable_ 컨트랙트임
+
+```solidity
+/**
+ * @title Ownable
+ * @dev The Ownable contract has an owner address, and provides basic authorization control
+ * functions, this simplifies the implementation of "user permissions".
+ */
+contract Ownable {
+  address public owner;
+  event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+
+  /**
+   * @dev The Ownable constructor sets the original `owner` of the contract to the sender
+   * account.
+   */
+  function Ownable() public {
+    owner = msg.sender;
+  }
+
+  /**
+   * @dev Throws if called by any account other than the owner.
+   */
+  modifier onlyOwner() {
+    require(msg.sender == owner);
+    _;
+  }
+
+  /**
+   * @dev Allows the current owner to transfer control of the contract to a newOwner.
+   * @param newOwner The address to transfer ownership to.
+   */
+  function transferOwnership(address newOwner) public onlyOwner {
+    require(newOwner != address(0));
+    OwnershipTransferred(owner, newOwner);
+    owner = newOwner;
+  }
+}
+```
+
+여기서 *Solidity*의 몇가지 새로운 문법 및 요소를 알 수 있음
+
+_생성자 (Constructor)_ : *function Ownable()*은 컨트랙트와 동일한 이름을 가진 함수로서 생성자임
+
+생성자는 생략할 수 있음, 생성자 함수는 컨트랙트가 생성될 때 딱 한번만 실행 됨
+
+_함수 제어자(Function Modifier)_ : *modifier onlyOwner()*는 제어자로서, 다른 함수들에 대한 접근을 제어하기 위해 사용되는 일종의 유사 함수임
+
+보통 함수 실행 전의 요구사항 충족 여부를 확인하는 데에 사용 *onlyOwner*의 경우, 오직 컨트랙트의 소유자만 해당 함수를 실행할 수 있도록 접근을 제한
+
+_indexed_ 키워드 : 이후에 다시 알아보고 지금은 무시
+
+위의 _Ownable_ 컨트랙트는 다음과 같은 것들을 수행
+
+1. 컨트랙트가 생성되면 컨트랙트의 생성자가 *owner*에 *msg.sender(컨트랙트를 배포한 사람)*를 대입
+
+2. 특정한 함수들에 대해서 오직 *소유자*만 접근할 수 있도록 제한 가능한 _onlyOwner_ 제어자를 추가함
+
+3. 새로운 *소유자*에게 해당 컨트랙트의 소유권을 옮길 수 있도록 함
+
+*onlyOwner*는 컨트랙트에서 흔히 쓰이는 것 중 하나라, 대부분의 솔리디티 DApp들은 _Ownable_ 컨트랙트를 복사/붙여넣기 하면서 시작됨
+
+이후, 첫 컨트랙트는 이 컨트랙트를 상속해서 만듦
+
+아래 코드로 실습, _Ownable_ 컨트랙트를 활용하여 접근 제한
+
+우리 코드가 *ownable.sol*의 내용을 *import*하게 하고, _ZombieFactory_ 컨트랙트가 _Ownable_ 컨트랙트를 상속 하도록 수정
+
+```solidity
+pragma solidity ^0.4.19;
+
+import "./ownable.sol"; // 1. 여기서 import하게
+
+contract ZombieFactory is Ownable { // 2. 상속을 추가하게
+    event NewZombie(uint zombieId, string name, uint dna);
+
+    uint dnaDigits = 16;
+    uint dnaModulus = 10 ** dnaDigits;
+
+    struct Zombie {
+        string name;
+        uint dna;
+    }
+
+    Zombie[] public zombies;
+
+    mapping (uint => address) public zombieToOwner;
+    mapping (address => uint) ownerZombieCount;
+
+    function _createZombie(string _name, uint _dna) internal {
+        uint id = zombies.push(Zombie(_name, _dna)) - 1;
+        zombieToOwner[id] = msg.sender;
+        ownerZombieCount[msg.sender]++;
+        NewZombie(id, _name, _dna);
+    }
+
+    function _generateRandomDna(string _str) private view returns (uint) {
+        uint rand = uint(keccak256(_str));
+        return rand % dnaModulus;
+    }
+
+    function createRandomZombie(string _name) public {
+        require(ownerZombieCount[msg.sender] == 0);
+        uint randDna = _generateRandomDna(_name);
+        randDna = randDna - randDna % 100;
+        _createZombie(_name, randDna);
+    }
+}
+```
+
+## onlyOwner 함수 제어자
+
+_ZombieFactory_ 컨트랙트가 _Ownable_ 컨트랙트를 상속하고 있으니, 이제 _onlyOwner_ 함수 제어자를 _ZombieFeeding_ 에서도 사용할 수 있음
+
+```solidity
+ZombieFeeding is ZombieFactory
+ZombieFactory is Ownable
+```
+
+상속의 구조가 위와 같기 때문임
+
+함수 제어자는 함수처럼 보이지만, _function_ 키워드가 아니라 _modifier_ 키워드를 사용
+
+*modifer*를 함수 호출하듯이 호출하는 것은 불가능
+
+대신에 함수 정의부 끝에 붙여서 해당 함수의 작동 방식을 제어함
+
+```solidity
+/**
+ * @dev Throws if called by any account other than the owner.
+ */
+modifier onlyOwner() {
+  require(msg.sender == owner);
+  _;
+}
+```
+
+위의 제어자를 아래와 같은 방식으로 사용
+
+```solidity
+contract MyContract is Ownable {
+  event LaughManiacally(string laughter);
+
+  // 아래 `onlyOwner`의 사용 방법을 잘 보게:
+  function likeABoss() external onlyOwner {
+    LaughManiacally("Muahahahaha");
+  }
+}
+```
+
+_likeABoss_ 함수를 호출하면, _onlyOwner_ 제어자 부분의 코드가 먼저 실행됨
+
+그리고 *onlyOwner*의 _\_;_ 부분을 _likeABoss_ 함수로 되돌아가 해당 코드를 실행하게 됨
+
+*\_;*는 *modifier*가 붙은 원본 함수를 실행시키는 위치로 이해하면 됨
+
+아래의 실습에서 _onlyOwner_ 제어자를 *setKittyContractAddress*에 추가해봄
+
+```solidity
+pragma solidity ^0.4.19;
+
+import "./zombiefactory.sol";
+
+contract KittyInterface {
+  function getKitty(uint256 _id) external view returns (
+    bool isGestating,
+    bool isReady,
+    uint256 cooldownIndex,
+    uint256 nextActionAt,
+    uint256 siringWithId,
+    uint256 birthTime,
+    uint256 matronId,
+    uint256 sireId,
+    uint256 generation,
+    uint256 genes
+  );
+}
+
+contract ZombieFeeding is ZombieFactory {
+  KittyInterface kittyContract;
+
+  // 이 함수를 수정하게:
+  function setKittyContractAddress(address _address) external onlyOwner{
+    kittyContract = KittyInterface(_address);
+  }
+
+  function feedAndMultiply(uint _zombieId, uint _targetDna, string _species) public {
+    require(msg.sender == zombieToOwner[_zombieId]);
+    Zombie storage myZombie = zombies[_zombieId];
+    _targetDna = _targetDna % dnaModulus;
+    uint newDna = (myZombie.dna + _targetDna) / 2;
+    if (keccak256(_species) == keccak256("kitty")) {
+      newDna = newDna - newDna % 100 + 99;
+    }
+    _createZombie("NoName", newDna);
+  }
+
+  function feedOnKitty(uint _zombieId, uint _kittyId) public {
+    uint kittyDna;
+    (,,,,,,,,,kittyDna) = kittyContract.getKitty(_kittyId);
+    feedAndMultiply(_zombieId, kittyDna, "kitty");
+  }
+}
+```
+
+## 가스(Gas)
+
+누군가가 무한 반복문을 써서 네트워크를 방해하거나, 자원 소모가 큰 연산을 써서 네트워크 자원을 모두 사용하지 못하도록 만드는 것을 방지하기위해 도입
+
+가스를 아끼기 위한 구조체 압축~
+
 ## References
 
 add here
