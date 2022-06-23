@@ -1626,7 +1626,627 @@ contract ZombieFeeding is ZombieFactory {
 
 누군가가 무한 반복문을 써서 네트워크를 방해하거나, 자원 소모가 큰 연산을 써서 네트워크 자원을 모두 사용하지 못하도록 만드는 것을 방지하기위해 도입
 
-가스를 아끼기 위한 구조체 압축~
+가스를 아끼기 위한 구조체 압축이 필요함
+
+한편, *uint*에는 _uint8_, _uint16_, _uint32_ 등의 하위 타입이 있으나, *uint*의 크기에 관계없이 256비트의 저장 공간을 할당하기 때문에 저장 공간 측면에서는 의미가 없음
+
+즉, _uint(uint256)_ 대신에 *uint8*을 쓴다고해서 가스 소모를 줄이는데 영향이 없음
+
+그러나 예외가 있는데, 구조차 안에서 여러개의 _uint_ 변수를 사용할 경우, 이 때는 더 작은 크기의 *uint*를 사용하는 것이 저장 공간을 실질적으로 줄임
+
+따라서 구조체 안에서의 변수 할당은 가스 비용에 영향을 끼침
+
+또, *uint c; uint32 a; uint32 b;*가 *uint32 a; uintc; uint32 b;*로 구성된 구조체 보다 가스를 덜 소모함
+
+_uint32_ 형태의 변수 선언 순서가 영향을 끼침
+
+```solidity
+struct NormalStruct {
+  uint a;
+  uint b;
+  uint c;
+}
+
+struct MiniMe {
+  uint32 a;
+  uint32 b;
+  uint c;
+}
+
+// `mini`는 구조체 압축을 했기 때문에 `normal`보다 가스를 조금 사용할 것이네.
+NormalStruct normal = NormalStruct(10, 20, 30);
+MiniMe mini = MiniMe(10, 20, 30);
+```
+
+실습에서는, Zombie 구조체에 2개의 속성인 _level(uint32)_, *readyTime(uint32)*을 더 추가함
+
+```solidity
+pragma solidity ^0.4.19;
+
+import "./ownable.sol";
+
+contract ZombieFactory is Ownable {
+    event NewZombie(uint zombieId, string name, uint dna);
+
+    uint dnaDigits = 16;
+    uint dnaModulus = 10 ** dnaDigits;
+
+    struct Zombie {
+        string name;
+        uint dna;
+        uint32 level; // 여기 새 데이터를 입력하게
+        uint32 readyTime;
+    }
+
+    Zombie[] public zombies;
+
+    mapping (uint => address) public zombieToOwner;
+    mapping (address => uint) ownerZombieCount;
+
+    function _createZombie(string _name, uint _dna) internal {
+        uint id = zombies.push(Zombie(_name, _dna)) - 1;
+        zombieToOwner[id] = msg.sender;
+        ownerZombieCount[msg.sender]++;
+        NewZombie(id, _name, _dna);
+    }
+
+    function _generateRandomDna(string _str) private view returns (uint) {
+        uint rand = uint(keccak256(_str));
+        return rand % dnaModulus;
+    }
+
+    function createRandomZombie(string _name) public {
+        require(ownerZombieCount[msg.sender] == 0);
+        uint randDna = _generateRandomDna(_name);
+        randDna = randDna - randDna % 100;
+        _createZombie(_name, randDna);
+    }
+}
+```
+
+## 시간 단위
+
+솔리디티는 _now_, _seconds_, _minutes_, _hours_, _days_, _weeks_, _years_ 같은 시간 단위를 제공함
+
+*now*는 현재시간을 32비트 유닉스 타임스탬프로 제공 (다만, 타입은 *uint256*형으로 제공함. 필요한 경우 *uint32*로 형 변환을 해야함)
+
+다른 시간 단위들은 그에 해당하는 초 단위의 _uint_ 숫자로 변환됨
+
+가령, *1 hours*는 *3600*의 *uint*형으로 변환됨
+
+```solidity
+uint lastUpdated;
+
+// `lastUpdated`를 `now`로 설정
+function updateTimestamp() public {
+  lastUpdated = now;
+}
+
+// 마지막으로 `updateTimestamp`가 호출된 뒤 5분이 지났으면 `true`를, 5분이 아직 지나지 않았으면 `false`를 반환
+function fiveMinutesHavePassed() public view returns (bool) {
+  return (now >= (lastUpdated + 5 minutes));
+}
+```
+
+실습에서는, 좀비들이 공격하거나 먹이를 먹은 후 1일이 지나야만 다시 공격하거나 먹이를 먹을 수 있는 _cooldown_ 기능을 위해 시간 단위 변수들을 활용
+
+우선 *uint*형의 *cooldownTime*이라는 변수를 선언하고, *1 days*를 할당
+
+이후, _Zombie_ 구조체에 *level*과 *readyTime*을 추가한 것을 고려하여, _\_createZombie()_ 함수를 업데이트함
+
+즉, *zombie.push*에 2개의 인수를 추가 (_1 (level)_, _uint32(now + cooldownTime) (readyTime)_))
+
+```solidity
+pragma solidity ^0.4.19;
+
+import "./ownable.sol";
+
+contract ZombieFactory is Ownable {
+    event NewZombie(uint zombieId, string name, uint dna);
+
+    uint dnaDigits = 16;
+    uint dnaModulus = 10 ** dnaDigits;
+    uint cooldownTime = 1 days; // 1. `cooldownTime`을 여기에 정의하게
+
+    struct Zombie {
+        string name;
+        uint dna;
+        uint32 level;
+        uint32 readyTime;
+    }
+
+    Zombie[] public zombies;
+
+    mapping (uint => address) public zombieToOwner;
+    mapping (address => uint) ownerZombieCount;
+
+    function _createZombie(string _name, uint _dna) internal {
+        // 2. 아래 줄을 업데이트하게:
+        uint id = zombies.push(Zombie(_name, _dna, 1, uint32(now + cooldownTime))) - 1;
+        zombieToOwner[id] = msg.sender;
+        ownerZombieCount[msg.sender]++;
+        NewZombie(id, _name, _dna);
+    }
+
+    function _generateRandomDna(string _str) private view returns (uint) {
+        uint rand = uint(keccak256(_str));
+        return rand % dnaModulus;
+    }
+
+    function createRandomZombie(string _name) public {
+        require(ownerZombieCount[msg.sender] == 0);
+        uint randDna = _generateRandomDna(_name);
+        randDna = randDna - randDna % 100;
+        _createZombie(_name, randDna);
+    }
+}
+```
+
+## 진행 챕터
+
+해당 Chapter는 _Solidity_ 문법을 따로 다루지않고 함수 내용만 추가 (좀비 재사용 대기 시간)
+
+*feedAndMultiPly*를 다음과 같이 수정할 것임
+
+1. 먹이를 먹으면 좀비가 재사용 대기에 들어가고,
+
+2. 좀비는 재사용 대기 시간이 지날 때까지 고양이들을 먹을 수 없음
+
+먼저, 우리가 좀비의 *readyTime*을 설정하고 확인할 수 있도록 하는 헬퍼 함수를 정의 할 것임
+
+한편, 구조체를 인수로 전달할 수 있음
+
+_private_ 또는 _internal_ 함수에 인수로서 구조체의 storage 포인터를 전달할 수 있음
+
+```solidity
+function _doStuff(Zombie storage _zombie) internal {
+  // _zombie로 할 수 있는 것들을 처리
+}
+```
+
+실습은 우선, _triggerCooldown_ 함수를 정의, _Zombie storage_ 포인터 타입인 *\_zombie*를 인수로 받고, *internal*임
+
+함수의 내용으로, _\_zombie.readyTime_ 을 *uint32(noew + cooldownTime)*으로 설정
+
+다음으로, _\_isReady_ 라는 함수를 정의, _\_zombie_ 라는 이름의 _Zombie storage_ 타입을 인수로 받고, *internal view*이며 *bool*을 리턴
+
+함수의 내용으로, *(\_zombie.readyTime <= now)*를 리턴하고 이 값은 _true_ 혹은 *false*일 것임
+
+```solidity
+pragma solidity ^0.4.19;
+
+import "./zombiefactory.sol";
+
+contract KittyInterface {
+  function getKitty(uint256 _id) external view returns (
+    bool isGestating,
+    bool isReady,
+    uint256 cooldownIndex,
+    uint256 nextActionAt,
+    uint256 siringWithId,
+    uint256 birthTime,
+    uint256 matronId,
+    uint256 sireId,
+    uint256 generation,
+    uint256 genes
+  );
+}
+
+contract ZombieFeeding is ZombieFactory {
+  KittyInterface kittyContract;
+
+  function setKittyContractAddress(address _address) external onlyOwner {
+    kittyContract = KittyInterface(_address);
+  }
+
+  function _triggerCooldown(Zombie storage _zombie) internal { // 1. `_triggerCooldown` 함수를 여기에 정의하게
+    _zombie.readyTime = uint32(now + cooldownTime);
+  }
+
+  function _isReady(Zombie storage _zombie) internal view returns (bool){ // 2. `_isReady` 함수를 여기에 정의하게
+    return (_zombie.readyTime <= now);
+  }
+
+  function feedAndMultiply(uint _zombieId, uint _targetDna, string _species) public {
+    require(msg.sender == zombieToOwner[_zombieId]);
+    Zombie storage myZombie = zombies[_zombieId];
+    _targetDna = _targetDna % dnaModulus;
+    uint newDna = (myZombie.dna + _targetDna) / 2;
+    if (keccak256(_species) == keccak256("kitty")) {
+      newDna = newDna - newDna % 100 + 99;
+    }
+    _createZombie("NoName", newDna);
+  }
+
+  function feedOnKitty(uint _zombieId, uint _kittyId) public {
+    uint kittyDna;
+    (,,,,,,,,,kittyDna) = kittyContract.getKitty(_kittyId);
+    feedAndMultiply(_zombieId, kittyDna, "kitty");
+  }
+}
+```
+
+## Public 함수 & 보안
+
+보안을 점검하는 좋은 방법은, 코딩한 모든 *public*과 _external_ 함수를 검사하고, 사용자들이 그 함수들을 남용할 수 있는 방법이 있는지 고민해보는 것임
+
+_onlyOwner_ 같은 제어자를 갖지 않는 이상, 어떤 사용자든 이 함수들을 호출할 수 있음을 주의
+
+실습에서는, _feedAndMultiply_ 함수의 경우 유저가 마음대로, 인자인 *\_targetDna*나 *\_species*의 값을 정해서 전달할 수 있음
+
+이 함수를 고려해볼때, 오직 *feedOnKitty()*에 의해서만 호출이 될 필요가 있음
+
+따라서 함수를 *internal*로 처리하는 것이 옳은 방법임
+
+우선, *feedAndMultiply*를 *public*에서 *internal*로 수정
+
+이후, *feedAndMultiply*가 *cooldownTime*을 고려하도록 코딩해야함
+
+먼저, *myZombie*를 찾은후에, *\_isReady()*를 확인하는 _require_ 문을 추가하고, 거기에 *myZombie*를 전달
+
+이렇게 하면 좀비의 재사용 대기 시간이 끝난 다음에만 함수 호출이 가능
+
+함수의 끝에서 *\_triggerCooldown(myZombie)*로 함수 호출하여, 먹이를 먹는 것이 좀비의 재사용 대기시간을 만들도록 함
+
+```solidity
+pragma solidity ^0.4.19;
+
+import "./zombiefactory.sol";
+
+contract KittyInterface {
+  function getKitty(uint256 _id) external view returns (
+    bool isGestating,
+    bool isReady,
+    uint256 cooldownIndex,
+    uint256 nextActionAt,
+    uint256 siringWithId,
+    uint256 birthTime,
+    uint256 matronId,
+    uint256 sireId,
+    uint256 generation,
+    uint256 genes
+  );
+}
+
+contract ZombieFeeding is ZombieFactory {
+  KittyInterface kittyContract;
+
+  function setKittyContractAddress(address _address) external onlyOwner {
+    kittyContract = KittyInterface(_address);
+  }
+
+  function _triggerCooldown(Zombie storage _zombie) internal {
+    _zombie.readyTime = uint32(now + cooldownTime);
+  }
+
+  function _isReady(Zombie storage _zombie) internal view returns (bool) {
+      return (_zombie.readyTime <= now);
+  }
+
+  // 1. 이 함수를 internal로 만들게
+  function feedAndMultiply(uint _zombieId, uint _targetDna, string _species) internal {
+    require(msg.sender == zombieToOwner[_zombieId]);
+    Zombie storage myZombie = zombies[_zombieId];
+    require(_isReady(myZombie)); // 2. 여기에 `_isReady`를 확인하는 부분을 추가하게
+    _targetDna = _targetDna % dnaModulus;
+    uint newDna = (myZombie.dna + _targetDna) / 2;
+    if (keccak256(_species) == keccak256("kitty")) {
+      newDna = newDna - newDna % 100 + 99;
+    }
+    _createZombie("NoName", newDna);
+    _triggerCooldown(myZombie); // 3. `_triggerCooldown`을 호출하게
+  }
+
+  function feedOnKitty(uint _zombieId, uint _kittyId) public {
+    uint kittyDna;
+    (,,,,,,,,,kittyDna) = kittyContract.getKitty(_kittyId);
+    feedAndMultiply(_zombieId, kittyDna, "kitty");
+  }
+}
+```
+
+## 함수 제어자의 또 다른 특징
+
+함수 제어자는 인수 또한 받을 수 있음
+
+```solidity
+// 사용자의 나이를 저장하기 위한 매핑
+mapping (uint => uint) public age;
+
+// 사용자가 특정 나이 이상인지 확인하는 제어자
+modifier olderThan(uint _age, uint _userId) {
+  require (age[_userId] >= _age);
+  _;
+}
+
+// 차를 운전하기 위햐서는 16살 이상이어야 하네(적어도 미국에서는).
+// `olderThan` 제어자를 인수와 함께 호출하려면 이렇게 하면 되네:
+function driveCar(uint _userId) public olderThan(16, _userId) {
+  // 필요한 함수 내용들
+}
+```
+
+실습에서는, 좀비의 특정 레벨에 도달할 때 특정 능력을 부여하는 용도로 함수 제어자의 인수 활용
+
+우선 _zombiehelper.sol_ 을 생성
+
+_ZombieHelper_ 컨트랙트에서, _aboveLevel_ 이라는 _modifier_ 생성
+
+이 *modifer(제어자)*는 _\_level(uint)_, _\_zombieId(uint)_ 두 개의 인수를 받음
+
+함수 내용에서는 *zombies[_zombieId].level*이 _\_level_ 이상인지 확실하게 확인
+
+_modifier_ 사용 시 _\_;_ 위치를 꼭 고려
+
+```solidity
+pragma solidity ^0.4.19;
+
+import "./zombiefeeding.sol";
+
+contract ZombieHelper is ZombieFeeding {
+
+  modifier aboveLevel(uint _level, uint _zombieId){ // 여기서 시작하게
+    require(zombies[_zombieId].level >= _level);
+    _;
+  }
+}
+```
+
+## 진행 챕터
+
+해당 Chapter는 _Solidity_ 문법을 따로 다루지않고 함수 내용만 추가 (좀비 제어자)
+
+_aboveLevel_ 제어자를 활용하여 다음 기능을 부여
+
+레벨 2 이상인 좀비인 경우, 사용자들은 그 좀비의 이름을 바꿀 수 있도록 함
+
+레벨 20 이상인 좀비인 경우, 사용자들은 그 좀비에게 임의의 DNA를 줄 수 있음
+
+다음은 예제 코드임
+
+```solidity
+// 사용자의 나이를 저장하기 위한 매핑
+mapping (uint => uint) public age;
+
+// 사용자가 특정 나이 이상인지 확인하는 제어자
+modifier olderThan(uint _age, uint _userId) {
+  require (age[_userId] >= _age);
+  _;
+}
+
+// 차를 운전하기 위햐서는 16살 이상이어야 하네(적어도 미국에서는).
+function driveCar(uint _userId) public olderThan(16, _userId) {
+  // 필요한 함수 내용들
+}
+```
+
+실습에서는, _changeName_ 이라는 함수를 만드는데, _\_zombieId(uint)_, *\_newName(string)*을 인자로 받고 *external*이며 _aboveLevel_ 제어자를 가짐
+
+제어자에서, *\_level*에는 _2_ 값을 전달해야하고, _\_zombieId_ 또한 전달 되어야 함
+
+함수의 내용에서는, *require*문을 활용하여 *msg.sender*가 *zombieToOwner[_zombieId]*와 같은지 검증
+
+이후, *zombies[_zombieId].name*에 *\_newName*을 대입해야함
+
+_changeName_ 함수 아래에, *changeDna*라는 또다른 함수를 *external*로 만듦
+
+*changeName*과 거의 유사하나, 두 번째 인수를 *\_newDna(uint)*로 받고, *aboveLevel*의 _\_level_ 매개 변수에 *20*을 전달해야함
+
+이후, 좀비의 *dna*를 *\_newDna*로 설정
+
+```solidity
+pragma solidity ^0.4.19;
+
+import "./zombiefeeding.sol";
+
+contract ZombieHelper is ZombieFeeding {
+  modifier aboveLevel(uint _level, uint _zombieId) {
+    require(zombies[_zombieId].level >= _level);
+    _;
+  }
+
+  function changeName(uint _zombieId, string _newName) external aboveLevel(2, _zombieId){ // 여기서 시작하게
+    require(msg.sender == zombieToOwner[_zombieId]);
+    zombies[_zombieId].name = _newName;
+  }
+
+  function changeDna(uint _zombieId, uint _newDna) external aboveLevel(20, _zombieId){
+    require(msg.sender == zombieToOwner[_zombieId]);
+    zombies[_zombieId].dna = _newDna;
+  }
+}
+```
+
+## View 함수를 사용해 가스 절약하기
+
+_view_ 함수는 사용자에 의해 외부에서 호출되었을 때 가스를 전혀 소모하지 않는다
+
+이는 _view_ 함수가 블록체인 상에서 데이터를 읽기만 하고, 어떤 것도 수정하지 않기 때문이다
+
+즉, 함수에 *view*를 부여하는 것은, *web3.js*에 "이 함수는 실행할 때 로컬 이더리움 노드에 질의만 날리면 되지, 트랜잭션을 만들 필요는 없다"라는 얘기를 하는 것과 같다
+
+참고로, _view_ 함수가 동일 컨트랙트 내에 있는, _view_ 함수가 아닌 다른 함수에서 내부적으로 호출될 경우에는 가스를 소모할 것임
+
+즉, _view_ 함수는 외부에서 호출됐을 때에만 무료이다
+
+실습에서, 사용자의 전체 좀비를 볼 수 있는 메소드인 *getZombiesByOwner*를 만들어 본다
+
+*getZombiesByOwner*라는 이름의 함수를 만들되, _address_ 타입의 *\_owner*를 인수로 받고 _external view_ 함수로 구성하여 호출 시 가스를 쓸 필요없도록 한다
+
+반환값은 _uint[]_ 를 반환하도록한다
+
+```solidity
+pragma solidity ^0.4.19;
+
+import "./zombiefeeding.sol";
+
+contract ZombieHelper is ZombieFeeding {
+  modifier aboveLevel(uint _level, uint _zombieId) {
+    require(zombies[_zombieId].level >= _level);
+    _;
+  }
+
+  function changeName(uint _zombieId, string _newName) external aboveLevel(2, _zombieId) {
+    require(msg.sender == zombieToOwner[_zombieId]);
+    zombies[_zombieId].name = _newName;
+  }
+
+  function changeDna(uint _zombieId, uint _newDna) external aboveLevel(20, _zombieId) {
+    require(msg.sender == zombieToOwner[_zombieId]);
+    zombies[_zombieId].dna = _newDna;
+  }
+
+  function getZombiesByOwner(address _owner) external view returns (uint[]){ // 자네의 함수를 여기에 만들게
+
+  }
+
+}
+```
+
+## Storage는 비싸다
+
+비용을 최소화하기 위해서, 진짜 필요한 경우가 아니면 storage에 데이터를 쓰지 않는 것이 좋음
+
+이를 위해, 때때로는 겉보기에 비효율적으로 보이는 프로그래밍 구성을 할 필요가 있음
+
+예를들면, 어떤 배열에서 내용을 찾기 위해, 단순히 변수에 저장하는 것 대신 함수가 호출될 때마다 배열을 memory에서 만드는 것과 같은 경우다
+
+이에 storage를 사용하지 않고 메모리에 배열을 선언하는 법을 알아본다
+
+이를 위해 단순히 배열에 _memory_ 키워드를 사용해준다
+
+단, 메모리 배열은 고정된 크기의 인수와 함께 생성되어야함
+
+예제의 경우 다음과 같다
+
+```solidity
+function getArray() external pure returns(uint[]) {
+  // 메모리에 길이 3의 새로운 배열을 생성한다.
+  uint[] memory values = new uint[](3);
+  // 여기에 특정한 값들을 넣는다.
+  values.push(1);
+  values.push(2);
+  values.push(3);
+  // 해당 배열을 반환한다.
+  return values;
+}
+```
+
+실습의 경우, 우선, *result*라는 이름의 _uint[] memory_ 변수를 선언한다
+
+해당 변수에 _uint_ 배열을 대입하고, 배열의 길이는 이 *\_owner*가 소유한 좀비의 개수여야 함
+
+이는 *mapping*을 통해 찾을 수 있는데, *ownerZombieCount[_owner]*임
+
+또 반환은 _result_ 값으로 함
+
+```solidity
+pragma solidity ^0.4.19;
+
+import "./zombiefeeding.sol";
+
+contract ZombieHelper is ZombieFeeding {
+  modifier aboveLevel(uint _level, uint _zombieId) {
+    require(zombies[_zombieId].level >= _level);
+    _;
+  }
+
+  function changeName(uint _zombieId, string _newName) external aboveLevel(2, _zombieId) {
+    require(msg.sender == zombieToOwner[_zombieId]);
+    zombies[_zombieId].name = _newName;
+  }
+
+  function changeDna(uint _zombieId, uint _newDna) external aboveLevel(20, _zombieId) {
+    require(msg.sender == zombieToOwner[_zombieId]);
+    zombies[_zombieId].dna = _newDna;
+  }
+
+  function getZombiesByOwner(address _owner) external view returns(uint[]) {
+    uint[] memory result = new uint[](ownerZombieCount[_owner]); // 여기서 시작하게
+    return result;
+  }
+}
+```
+
+## For 반복문
+
+이전의 실습에서와 같이, _ownerToZombies_ 배열에다가 소유한 좀비를 하나씩 저장해둔다면,
+
+좀비의 소유권이 바뀔 때에 배열의 인덱스 하나하나를 감소시켜야하는데, 이는 굉장히 비효율적인 가스 소모를 일으킬 수 있다
+
+이에 *view*함수로 _getZombiesByOwner_ 함수에서 _for_ 반복문을 통해 좀비 배열의 모든 요소를 접근한 후, 그것으 활용하여 *tranfer*를 시도하면
+
+_view_ 함수이기 때문에, *storage*를 사용하지 않기 때문에 가스 비용 소모가 없을 것이다
+
+이에 _for_ 반복문 사용법을 알아본다. 아래는 에시이다
+
+```solidity
+function getEvens() pure external returns(uint[]) {
+  uint[] memory evens = new uint[](5);
+  // 새로운 배열의 인덱스를 추적하는 변수
+  uint counter = 0;
+  // for 반복문에서 1부터 10까지 반복함
+  for (uint i = 1; i <= 10; i++) {
+    // `i`가 짝수라면...
+    if (i % 2 == 0) {
+      // 배열에 i를 추가함
+      evens[counter] = i;
+      // `evens`의 다음 빈 인덱스 값으로 counter를 증가시킴
+      counter++;
+    }
+  }
+  return evens; // [2, 4, 6, 8, 10]
+}
+```
+
+실습에서는 _uint_ 형의 *counter*라는 이름의 변수를 선언하고 *0*을 대입한다
+
+_result_ 배열에서 인덱스를 추적하기 위해 _counter_ 변수를 사용한다
+
+*uint i = 0*에서 시작해서 _i < zombies.length_ 까지 증가하는 _for_ 반복문을 선언한다
+
+_for_ 반복문 안에서, *zombieToOwner[i]*가 *\_owner*와 같은지 확인하는 _if_ 문을 만든다
+
+_if_ 문 안에서, *result[counter]*에 *i*를 대입해서 _result_ 배열에 좀비의 ID를 추가한다
+
+또, *counter*를 1 증가시킨다
+
+이 경우, *\_owner*가 소유한 모든 좀비를 가스 소모없이 반환하는 함수가 완성된다
+
+```solidity
+pragma solidity ^0.4.19;
+
+import "./zombiefeeding.sol";
+
+contract ZombieHelper is ZombieFeeding {
+  modifier aboveLevel(uint _level, uint _zombieId) {
+    require(zombies[_zombieId].level >= _level);
+    _;
+  }
+
+  function changeName(uint _zombieId, string _newName) external aboveLevel(2, _zombieId) {
+    require(msg.sender == zombieToOwner[_zombieId]);
+    zombies[_zombieId].name = _newName;
+  }
+
+  function changeDna(uint _zombieId, uint _newDna) external aboveLevel(20, _zombieId) {
+    require(msg.sender == zombieToOwner[_zombieId]);
+    zombies[_zombieId].dna = _newDna;
+  }
+
+  function getZombiesByOwner(address _owner) external view returns(uint[]) {
+    uint[] memory result = new uint[](ownerZombieCount[_owner]);
+    uint counter = 0; // 여기서 시작하게
+    for (uint i = 0; i < zombies.length; i++){
+      if(zombieToOwner[i] == _owner){
+        result[counter] = i;
+        counter++;
+      }
+    }
+    return result;
+  }
+}
+```
 
 ## References
 
