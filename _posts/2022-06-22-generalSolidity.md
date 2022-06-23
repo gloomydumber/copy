@@ -960,7 +960,7 @@ contract LuckyNumber {
 }
 ```
 
-위 _LuckyNumbeR_ 컨트랙트의 _getNum_ 함수를 읽고자하는 _external_ 함수를 위해 인터페이스를 아래와 같이 정의
+위 _LuckyNumber_ 컨트랙트의 _getNum_ 함수를 읽고자하는 _external_ 함수를 위해 인터페이스를 아래와 같이 정의
 
 ```solidity
 contract NumberInterface {
@@ -2244,6 +2244,671 @@ contract ZombieHelper is ZombieFeeding {
       }
     }
     return result;
+  }
+}
+```
+
+## Payable
+
+지금까지 함수가 언제, 어디서 호출 될 수 있는지 제어하는 접근 제어자(visibility modifier)를 다뤄보았음
+
+*private*은 컨트랙트 내부의 다른 함수들에 의해서만 호출될 수 있음을 의미
+
+*internal*은 *prvate*과 비슷하지만, 해당 컨트랙트를 상속하는 컨트랙트에서도 호출할 수 있음을 의미
+
+*external*은 오직 컨트랙트 외부에서만 호출 가능함
+
+*public*은 컨트랙트 내외부 모두에서, 어디서든 호출 가능함
+
+또한 상태 제어자(state modifier)에 관해서도 배웠음
+
+*view*는 해당 함수를 실행해도 어떤 데이터를 저장하거나 변경하지 않음을 알려줌
+
+*pure*는 해당 함수가 어떤 데이터도 저장하거나 변경하지 않을 뿐만아니라, 읽는 것 조차 하지않음을 알려줌, 순수 연산하는 함수임을 표현한다고 이해
+
+*제어자*에 대해서도 배웠음. _onlyOwner_, *aboveLevel*과 같은 것들임
+
+*제어자*에는 _payable_ 또한 존재함
+
+_payable_ 제어자는 컨트랙트를 통해 ETH를 지불하는 기능을 구현할 때 사용함
+
+다음은 예시 코드
+
+```solidity
+contract OnlineStore {
+  function buySomething() external payable {
+    // 함수 실행에 0.001이더가 보내졌는지 확실히 하기 위해 확인:
+    require(msg.value == 0.001 ether);
+    // 보내졌다면, 함수를 호출한 자에게 디지털 아이템을 전달하기 위한 내용 구성:
+    transferThing(msg.sender);
+  }
+}
+```
+
+이 에제에서, *msg.value*는 컨트랙트로 이더가 얼마나 보내졌는지 확인하는 방법임
+
+단위는 기본적으로 *ehter*임
+
+위의 예제 컨트랙트를 *web3.js*에서는 아래와 같이 호출 했을 것임
+
+```javascript
+// `OnlineStore`는 자네의 이더리움 상의 컨트랙트를 가리킨다고 가정하네:
+OnlineStore.buySomething({
+  from: web3.eth.defaultAccount,
+  value: web3.utils.toWei(0.001),
+});
+```
+
+_value_ 필드에 *ether*를 얼마나 보낼지 설정
+
+만약, 함수에 _payable_ 제어자가 없는 데 이더를 보내려고 한다면, 함수에서 트랜잭션을 거부할 것임
+
+실습의 경우, _uint_ 타입의 _levelUpFee_ 변수를 정의하고, *0.001 ether*를 할당
+
+_levelUp_ 이라는 함수를 생성하되, _uint_ 타입의 *\_zombieId*라는 변수를 받고, *external*이면서 _payable_ 이어야 함
+
+이 함수는 먼저, *msg.value*가 *levelUpFee*와 같은지 *require*로 확인해야함
+
+그 후, *level*을 증가시킴 : _zobmies[_zombieId].level++_
+
+```solidity
+pragma solidity ^0.4.19;
+
+import "./zombiefeeding.sol";
+
+contract ZombieHelper is ZombieFeeding {
+  uint levelUpFee = 0.001 ether; // 1. 여기에 levelUpFee를 정의하게
+
+  modifier aboveLevel(uint _level, uint _zombieId) {
+    require(zombies[_zombieId].level >= _level);
+    _;
+  }
+
+  function levelUp(uint _zombieId) external payable{  // 2. 여기에 levelUp 함수를 삽입하게
+    require(msg.value == levelUpFee);
+    zombies[_zombieId].level++;
+  }
+
+  function changeName(uint _zombieId, string _newName) external aboveLevel(2, _zombieId) {
+    require(msg.sender == zombieToOwner[_zombieId]);
+    zombies[_zombieId].name = _newName;
+  }
+
+  function changeDna(uint _zombieId, uint _newDna) external aboveLevel(20, _zombieId) {
+    require(msg.sender == zombieToOwner[_zombieId]);
+    zombies[_zombieId].dna = _newDna;
+  }
+
+  function getZombiesByOwner(address _owner) external view returns(uint[]) {
+    uint[] memory result = new uint[](ownerZombieCount[_owner]);
+    uint counter = 0;
+    for (uint i = 0; i < zombies.length; i++) {
+      if (zombieToOwner[i] == _owner) {
+        result[counter] = i;
+        counter++;
+      }
+    }
+    return result;
+  }
+}
+```
+
+## 출금
+
+컨트랙트에 출금 기능을 하는 함수를 만들지 않으면, 이더가 해당 컨트랙트에 갇히게 됨
+
+다음의 예시 처럼, 컨트랙트에서 이더를 인출하는 함수를 작성할 수 있음
+
+(해당 예시는 _Owanble_ 컨트랙트를 Import 하여, *owner*와 *onlyOwner*를 사용하고 있음을 참고)
+
+```solidity
+contract GetPaid is Ownable {
+  function withdraw() external onlyOwner {
+    owner.transfer(this.balance);
+  }
+}
+```
+
+해당 예시 처럼, _transfer_ 함수를 이용하여 특정 이더리움 주소에 송금이 가능함
+
+그리고, *this.balance*는 컨트랙트에 저장돼있는 전체 잔액을 반환함
+
+만약, 누군가 한 아이템에 대해 초과 지불을 했다면, 이더를 *msg.sender*로 환불해주는 기능 또한 다음과 같이 만들 수 있음
+
+```solidity
+uint itemFee = 0.001 ether;
+msg.sender.transfer(msg.value - itemFee);
+```
+
+실습에서는, 먼저, _withdraw_ 함수를 생성함
+
+위의 예제의 _GetPaid_ 컨트랙트의 구성과 동일하도록 코딩
+
+이더의 가격은 계속 변하므로, *levelUpFee*를 고정적으로 코딩하지말고, 설정할 수 있도록 함수를 만드는 것이 좋은 설계일 것임
+
+*setLevelUpFee*라는 이름의 *uint*형 *\_fee*라는 이름의 인자를 받고, *external*이며 _onlyOwner_ 제어자를 사용하는 함수를 생성함
+
+이 함수는 *levelUpFee*를 *\_fee*로 설정해야함
+
+```solidity
+pragma solidity ^0.4.19;
+
+import "./zombiefeeding.sol";
+
+contract ZombieHelper is ZombieFeeding {
+  uint levelUpFee = 0.001 ether;
+
+  modifier aboveLevel(uint _level, uint _zombieId) {
+    require(zombies[_zombieId].level >= _level);
+    _;
+  }
+
+  function withdraw() external onlyOwner { // 1. 여기에 withdraw 함수를 생성하게
+    owner.transfer(this.balance);
+  }
+
+  function setLevelUpFee(uint _fee) external onlyOwner {  // 2. 여기에 setLevelUpFee를 생성하게
+    levelUpFee = _fee;
+  }
+
+  function levelUp(uint _zombieId) external payable {
+    require(msg.value == levelUpFee);
+    zombies[_zombieId].level++;
+  }
+
+  function changeName(uint _zombieId, string _newName) external aboveLevel(2, _zombieId) {
+    require(msg.sender == zombieToOwner[_zombieId]);
+    zombies[_zombieId].name = _newName;
+  }
+
+  function changeDna(uint _zombieId, uint _newDna) external aboveLevel(20, _zombieId) {
+    require(msg.sender == zombieToOwner[_zombieId]);
+    zombies[_zombieId].dna = _newDna;
+  }
+
+  function getZombiesByOwner(address _owner) external view returns(uint[]) {
+    uint[] memory result = new uint[](ownerZombieCount[_owner]);
+    uint counter = 0;
+    for (uint i = 0; i < zombies.length; i++) {
+      if (zombieToOwner[i] == _owner) {
+        result[counter] = i;
+        counter++;
+      }
+    }
+    return result;
+  }
+}
+```
+
+## 진행 챕터
+
+해당 Chapter는 _Solidity_ 문법을 따로 다루지않고 함수 내용만 추가 (좀비 전투)
+
+좀비 전투를 위한 기능을 추가할 것임
+
+_zombieattack.sol_ 파일을 생성하고, _^0.4.19_ 솔리디티 버전을 선언
+
+*zombiehelper.sol*을 *import*함
+
+*ZombieHelper*를 상속하는 *ZombieBattle*이라는 이름의 새 *contract*를 선언
+
+```solidity
+pragma solidity ^0.4.19;
+
+import "./zombiehelper.sol";
+
+contract ZombieBattle is ZombieHelper{
+
+}
+```
+
+## 난수(Random Numbers)
+
+게임 등에서 일정 수준의 무작위성를 요구하는 때가 있음
+
+*Solidity*에서는 _keccak256_ 해시함수를 통해 난수를 생성할 수 있음
+
+다음은 예제 코드
+
+```solidity
+// Generate a random number between 1 and 100:
+uint randNonce = 0;
+uint random = uint(keccak256(now, msg.sender, randNonce)) % 100;
+randNonce++;
+uint random2 = uint(keccak256(now, msg.sender, randNonce)) % 100;
+```
+
+%100 을 써서, 마지막 2자리 숫자만 받도록 함
+
+다만, *nonce*는 딱 한번만 사용되어야함
+
+그러나, 이더리움의 트랜잭션 처리 구조 상, 이 방법은 공격에 취약함
+
+_random >= 50_ 이면 돈이 두배가 되고, _random < 50_ 이면 돈을 다 잃는 컨트랙트가 있다고 가정하면,
+
+본인의 노드에서 이를 실행했을 때, 50 이상 일때만 트랜잭션을 전파하면 되기 때문임
+
+따라서, 이더리움에서 안전하게 난수를 만드는 방법은 굉장히 어려운 문제임
+
+https://ethereum.stackexchange.com/questions/191/how-can-i-securely-generate-a-random-number-in-my-smart-contract
+
+결국 실습에서는 경제적 보상을 다루는 난수가 아닌, 순전히 공부나 재미용의 난수 생성을 시도해 볼것임
+
+우선, 컨트랙트에 *randNonce*라는 이름의 _uint_ 타입의 변수를 *0*을 할당하여 선언
+
+이후, _randMod_ (random-modulus)라는 이름의 함수를 생성, 함수는 _uint_ 타입의 *\_modulus*라는 인자를 받고, *internal*이며 _uint_ 타입을 반환함
+
+해당 함수는 먼저 _randNonnce_ 값을 증가시킴
+
+이후, 한줄의 코드로 _now_, _msg.sender_, *randNonce*의 _keccak256_ 해시 값을 계산하고 *uint*로 변환함 그리고 그 값을 *% \_modulus*를 한 후 _return_
+
+```solidity
+import "./zombiehelper.sol";
+
+contract ZombieBattle is ZombieHelper {
+  uint randNonce = 0; // 여기서 시작하게
+  function randMod(uint _modulus) internal returns(uint) {
+    randNonce++;
+    return uint(keccak256(now, msg.sender, randNonce)) % _modulus;
+  }
+}
+```
+
+## 진행 챕터
+
+해당 Chapter는 _Solidity_ 문법을 따로 다루지않고 함수 내용만 추가 (좀비 싸움)
+
+좀비 전투는 다음과 같이 진행될 것임
+
+좀비 중 하나를 고르고, 상대방의 좀비를 공격 대상으로 선택함
+
+공격하는 쪽의 좀비라면, 70%의 승리 확률를 가지고, 방어하는 쪽의 좀비는 30% 쪽의 승리 확률을 가짐
+
+공격하는 쪽, 방어하는 쪽 양측 좀비들은 전투 결과에 따라 증가하는 *winCount*와 *lossCount*를 가질 것임
+
+공격하는 쪽의 좀비가 이기면, 좀비의 레벨이 오르고 새로운 좀비가 생성됨
+
+공격하는 쪽의 좀비가 패배하면, *lossCount*가 증가하는 일 말고는 아무일도 일어나지 않음
+
+좀비가 이기든 지든, 공격하는 쪽 좀비의 재사용 대기시간이 활성화됨
+
+구현할 내용이 많기 때문에 여러 챕터에 나누어 구현할 것임
+
+현재 챕터에서는, 컨트랙트에 *attackVictoryProbability*라는 이름의 _uint_ 변수를 추가하고, *70*을 할당
+
+_attack_ 이라는 이름의 함수를 생성하고, *\_zombieId(uint)*와 _targetId(uint)_ 두 개의 매개변수를 받아오는 _external_ 함수로 설정
+
+```solidity
+import "./zombiehelper.sol";
+
+contract ZombieBattle is ZombieHelper {
+  uint randNonce = 0;
+  uint attackVictoryProbability = 70; // 여기에 attackVictoryProbability를 만들게
+
+  function randMod(uint _modulus) internal returns(uint) {
+    randNonce++;
+    return uint(keccak256(now, msg.sender, randNonce)) % _modulus;
+  }
+
+  function attack(uint _zombieId, uint _targetId) external{ // 여기에 새로운 함수를 만들게
+
+  }
+}
+```
+
+## 공통 로직 구조 개선하기(Refactoring)
+
+_attack_ 함수를 *zombieId*의 소유자만이 실행할 수 있도록 해야함
+
+이전, _changeName()_, _changeDna()_, _feedMultiply()_ 함수에서 우리는 다음과 같은 방식을 사용함
+
+```solidity
+require(msg.sender == zombieToOwner[_zombieId]);
+```
+
+_attack_ 함수에도 이와 똑같은 내용을 적용할 필요가 있음
+
+그런데, 이렇게 계속 반복되는 경우 *modifer*로 지정해주는 것이 좋음
+
+실습의 경우, *zombiefeeding.sol*을 열어서 리팩토링함
+
+우선, *modifer*를 *ownerOf*라는 이름으로 생성하고, *\_zombieId(uint)*를 인수로 받음
+
+제어자 내용으로 *msg.sender*와 *zombieToOwner[_zombieId]*가 같은지 *require*문을 통해 확인함
+
+이후, _feedAndMultiply_ 함수 정의 부분을 _ownerOf_ 제어자를 사용하도록 변경
+
+이제 *modifier*를 사용하게 되었으니, _require(msg.sender == zombieToOwner[_zombieId]);_ 부분을 삭제
+
+```solidity
+pragma solidity ^0.4.19;
+
+import "./zombiefactory.sol";
+
+contract KittyInterface {
+  function getKitty(uint256 _id) external view returns (
+    bool isGestating,
+    bool isReady,
+    uint256 cooldownIndex,
+    uint256 nextActionAt,
+    uint256 siringWithId,
+    uint256 birthTime,
+    uint256 matronId,
+    uint256 sireId,
+    uint256 generation,
+    uint256 genes
+  );
+}
+
+contract ZombieFeeding is ZombieFactory {
+
+  KittyInterface kittyContract;
+
+  modifier ownerOf(uint _zombieId){  // 1. 여기에 제어자를 생성하게
+    require(msg.sender == zombieToOwner[_zombieId]);
+    _;
+  }
+
+  function setKittyContractAddress(address _address) external onlyOwner {
+    kittyContract = KittyInterface(_address);
+  }
+
+  function _triggerCooldown(Zombie storage _zombie) internal {
+    _zombie.readyTime = uint32(now + cooldownTime);
+  }
+
+  function _isReady(Zombie storage _zombie) internal view returns (bool) {
+      return (_zombie.readyTime <= now);
+  }
+
+  // 2. 함수 정의 부분에 제어자를 추가하게:
+  function feedAndMultiply(uint _zombieId, uint _targetDna, string _species) internal ownerOf(_zombieId) {
+    // 3. 이 줄을 지우게 (주석처리함)
+    // require(msg.sender == zombieToOwner[_zombieId]);
+    Zombie storage myZombie = zombies[_zombieId];
+    require(_isReady(myZombie));
+    _targetDna = _targetDna % dnaModulus;
+    uint newDna = (myZombie.dna + _targetDna) / 2;
+    if (keccak256(_species) == keccak256("kitty")) {
+      newDna = newDna - newDna % 100 + 99;
+    }
+    _createZombie("NoName", newDna);
+    _triggerCooldown(myZombie);
+  }
+
+  function feedOnKitty(uint _zombieId, uint _kittyId) public {
+    uint kittyDna;
+    (,,,,,,,,,kittyDna) = kittyContract.getKitty(_kittyId);
+    feedAndMultiply(_zombieId, kittyDna, "kitty");
+  }
+}
+```
+
+## 구조 더 개선하기
+
+*zombiehelper.sol*에 우리의 새로운 *modifer*인 *ownerOf*를 적용할 부분의 두 군데 더 있으므로 적용한다
+
+우선, *changeName()*에 *ownerOf*를 적용한다
+
+또, *changeDna()*에 *ownerOf*를 적용한다
+
+기존의 _require_ 문은 제거 또는 주석처리
+
+```solidity
+pragma solidity ^0.4.19;
+
+import "./zombiefeeding.sol";
+
+contract ZombieHelper is ZombieFeeding {
+  uint levelUpFee = 0.001 ether;
+
+  modifier aboveLevel(uint _level, uint _zombieId) {
+    require(zombies[_zombieId].level >= _level);
+    _;
+  }
+
+  function withdraw() external onlyOwner {
+    owner.transfer(this.balance);
+  }
+
+  function setLevelUpFee(uint _fee) external onlyOwner {
+    levelUpFee = _fee;
+  }
+
+  // 1. 이 함수를 `ownerOf`를 사용하도록 변경하게:
+  function changeName(uint _zombieId, string _newName) external aboveLevel(2, _zombieId) ownerOf(_zombieId) {
+    // require(msg.sender == zombieToOwner[_zombieId]);
+    zombies[_zombieId].name = _newName;
+  }
+
+  // 2. 이 함수에도 똑같이 적용하게:
+  function changeDna(uint _zombieId, uint _newDna) external aboveLevel(20, _zombieId) ownerOf(_zombieId) {
+    // require(msg.sender == zombieToOwner[_zombieId]);
+    zombies[_zombieId].dna = _newDna;
+  }
+
+  function getZombiesByOwner(address _owner) external view returns(uint[]) {
+    uint[] memory result = new uint[](ownerZombieCount[_owner]);
+    uint counter = 0;
+    for (uint i = 0; i < zombies.length; i++) {
+      if (zombieToOwner[i] == _owner) {
+        result[counter] = i;
+        counter++;
+      }
+    }
+    return result;
+  }
+}
+```
+
+## 진행 챕터
+
+해당 Chapter는 _Solidity_ 문법을 따로 다루지않고 함수 내용만 추가 (공격으로 돌아가자!)
+
+다시 *zombieattack.sol*을 편집한다
+
+이제 _onwerOf_ 제어자도 사용할 수 있으니, _attack_ 함수를 계속 정의하도록 한다
+
+우선, 함수 호출자가 *\_zombieId*를 소유하고 있는지 확인하기 위해 _attack_ 함수에 _ownerOf_ 제어자를 추가한다
+
+우리가 함수에서 해야할 것은 두 좀비의 _stroage_ 포인터를 얻어서 그것을 활용하는 것임
+
+*Zombie storage*를 *myZombie*라는 이름으로 선언하고, 여기에 *zombies[_zombieId]*를 대입
+
+*Zombie storage*를 *enemyZombie*라는 이름으로 선언하고, 여기에 *zombies[_targetId]*를 대입
+
+전투의 결과를 결정하기 위해 0과 99 사이의 난수를 사용할 것임
+
+*uint*형의 _rand_ 변수를 선언하고, 여기에 _randMod_ 함수에 *100*을 인수로 사용한 값을 대입
+
+```solidity
+import "./zombiehelper.sol";
+
+contract ZombieBattle is ZombieHelper {
+  uint randNonce = 0;
+  uint attackVictoryProbability = 70;
+
+  function randMod(uint _modulus) internal returns(uint) {
+    randNonce++;
+    return uint(keccak256(now, msg.sender, randNonce)) % _modulus;
+  }
+
+  // 1. 여기에 제어자를 추가하게
+  function attack(uint _zombieId, uint _targetId) external ownerOf(_zombieId) {
+    Zombie storage myZombie = zombies[_zombieId]; // 2. 여기서 함수 정의를 시작하게
+    Zombie storage enemyZombie = zombies[_targetId];
+    uint rand = randMod(100);
+  }
+}
+```
+
+## 진행 챕터
+
+해당 Chapter는 _Solidity_ 문법을 따로 다루지않고 함수 내용만 추가 (좀비 승리와 패배)
+
+좀비 싸움에서 얼마나 많이 이기고 졌는지의 기록을 통해 좀비 순위표를 생성할 수 있음
+
+다양한 방법이 있지만, _Zombie_ 구조체에 *winCount*와 _lossCount_ 상태를 만들어서 저장하도록함
+
+*zombiefactory.sol*의 _Zombie_ 구조체 정의에서 이 상태 속성을 추가해보도록 함
+
+실습에서, _Zombie_ 구조체가 _uint16_ 타입의 *winCount*와 *lossCount*를 추가하도록 함
+
+참고로, 구조체 안에서는 *uint*를 압축할 수 있으므로, 되도록 작은 수의 타입을 사용하는 것이 좋음
+
+*uint8*의 경우 2^8 = 256이므로 너무 작을 것이므로 *uint16*으로 설정함
+
+이는 2^16 = 65536이므로, 한 사용자가 매일 179년 동안 이기거나 패배해야하는 수치로 비교적 안전함
+
+_Zombie_ 구조체가 변경되었으니, _\_createZombie()_ 함수 또한 수정되어야함
+
+새로운 좀비가 0승 0패로 생성되도록 수정처리
+
+```solidity
+pragma solidity ^0.4.19;
+
+import "./ownable.sol";
+
+contract ZombieFactory is Ownable {
+
+    event NewZombie(uint zombieId, string name, uint dna);
+
+    uint dnaDigits = 16;
+    uint dnaModulus = 10 ** dnaDigits;
+    uint cooldownTime = 1 days;
+
+    struct Zombie {
+      string name;
+      uint dna;
+      uint32 level;
+      uint32 readyTime;
+      uint16 winCount; // 1. 여기에 새로운 속성을 추가하게
+      uint16 lossCount;
+    }
+
+    Zombie[] public zombies;
+
+    mapping (uint => address) public zombieToOwner;
+    mapping (address => uint) ownerZombieCount;
+
+    function _createZombie(string _name, uint _dna) internal {
+        // 2. 여기서 새로운 좀비의 생성을 수정하게:
+        uint id = zombies.push(Zombie(_name, _dna, 1, uint32(now + cooldownTime), 0, 0)) - 1;
+        zombieToOwner[id] = msg.sender;
+        ownerZombieCount[msg.sender]++;
+        NewZombie(id, _name, _dna);
+    }
+
+    function _generateRandomDna(string _str) private view returns (uint) {
+        uint rand = uint(keccak256(_str));
+        return rand % dnaModulus;
+    }
+
+    function createRandomZombie(string _name) public {
+        require(ownerZombieCount[msg.sender] == 0);
+        uint randDna = _generateRandomDna(_name);
+        randDna = randDna - randDna % 100;
+        _createZombie(_name, randDna);
+    }
+}
+```
+
+## 진행 챕터
+
+해당 Chapter는 _Solidity_ 문법을 따로 다루지않고 함수 내용만 추가 (좀비 승리)
+
+좀비 승리 시의 컨트랙트를 구현해보자
+
+우선 *rand*가 *attackVictoryProbability*와 같거나 더 작은지 확인하는 _if_ 문을 작성
+
+만약 이 조건이 참이라면, 다음과 같은 코드 진행 :
+
+*myZombie*의 *winCount*를 증가시킴
+
+*myZombie*의 *level*을 증가시킴
+
+*enemyZombie*의 *lossCount*를 증가시킴
+
+_feedAndMultiply_ 함수를 실행시키되, 3번째 인자의 *\_species*는 *"zombie"*라는 문자열을 전달
+
+```solidity
+import "./zombiehelper.sol";
+
+contract ZombieBattle is ZombieHelper {
+  uint randNonce = 0;
+  uint attackVictoryProbability = 70;
+
+  function randMod(uint _modulus) internal returns(uint) {
+    randNonce++;
+    return uint(keccak256(now, msg.sender, randNonce)) % _modulus;
+  }
+
+  function attack(uint _zombieId, uint _targetId) external ownerOf(_zombieId) {
+    Zombie storage myZombie = zombies[_zombieId];
+    Zombie storage enemyZombie = zombies[_targetId];
+    uint rand = randMod(100);
+    if(rand <= attackVictoryProbability){ // 여기서 시작하게
+      myZombie.winCount++;
+      myZombie.level++;
+      enemyZombie.lossCount++;
+      feedAndMultiply(_zombieId, enemyZombie.dna, "zombie");
+    }
+  }
+}
+```
+
+## 진행 챕터
+
+해당 Chapter는 _Solidity_ 문법을 따로 다루지않고 함수 내용만 추가 (좀비 패배)
+
+좀비 패배 시의 컨트랙트를 구현해보자
+
+이를 위해서는 _else_ 문을 활용해야함
+
+아래는 _else_ 문의 예시
+
+```solidity
+if (zombieCoins[msg.sender] > 100000000) {
+  // 엄청난 부자다!!!
+} else {
+  // 더 많은 좀비 코인이 필요해...
+}
+```
+
+실습에서, *else*문을 추가하여, 우리의 좀비가 질 때 다음과 같이 구현함 :
+
+*myZombie*의 *lossCount*를 증가시킴
+
+*enemyZombie*의 *winCount*를 증가시킴
+
+_else_ 문 밖에서, *myZombie*에 대해 _\_triggerCooldown_ 함수를 실행하여 하루에 한번만 공격 시도가 가능하도록 함
+
+```solidity
+import "./zombiehelper.sol";
+
+contract ZombieBattle is ZombieHelper {
+  uint randNonce = 0;
+  uint attackVictoryProbability = 70;
+
+  function randMod(uint _modulus) internal returns(uint) {
+    randNonce++;
+    return uint(keccak256(now, msg.sender, randNonce)) % _modulus;
+  }
+
+  function attack(uint _zombieId, uint _targetId) external ownerOf(_zombieId) {
+    Zombie storage myZombie = zombies[_zombieId];
+    Zombie storage enemyZombie = zombies[_targetId];
+    uint rand = randMod(100);
+    if (rand <= attackVictoryProbability) {
+      myZombie.winCount++;
+      myZombie.level++;
+      enemyZombie.lossCount++;
+      feedAndMultiply(_zombieId, enemyZombie.dna, "zombie");
+    } else { // 여기서 시작하게
+      myZombie.lossCount++;
+      enemyZombie.winCount++;
+    }
+    _triggerCooldown(myZombie);
   }
 }
 ```
