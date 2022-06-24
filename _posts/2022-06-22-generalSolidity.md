@@ -2913,9 +2913,895 @@ contract ZombieBattle is ZombieHelper {
 }
 ```
 
+## 이더리움 상의 토큰
+
+이더리움 상에서 *토큰*은 기본적으로 몇몇 공통 규약을 따르는 스마트 컨트랙트이다
+
+즉, 다른 모든 토큰 컨트랙트가 사용하는 표준 함수 집합을 구현한 것이 *토큰*이다
+
+대표적인 *토큰*으로 *ERC20*이 있다
+
+*ERC20*의 표준 함수 집합으로는 *transfer(address \_to, uint256 \_value)*나 _balanceOf(address \_owner)_ 같은 함수들이 있다
+
+내부적으로 스마트 컨트랙트는 보통 *mapping(address => uint256) balances*와 같은 매핑을 가지고 있다
+
+이는 각각의 주소에 잔액이 얼마나 있는지 기록한 것이다
+
+_ERC20_ *토큰*이 똑같은 이름의 동일한 함수 집합을 공유하기 때문에, 이러한 형식을 지닌 다른 DApp에서도 호환이 가능하다
+
+우리 실습에서는 좀비를 다루는데, 이는 대체불가능한 토큰으로 설계하는 것이 옳다
+
+이에 _ERC20_ *토큰*이 아닌 *ERC721 토큰*으로 설계한다
+
+*ERC721 표준*을 사용하면 우리의 컨트랙트에서 거래/판매나 경매나 중계 로직을 직접 구현하지 않아도 된다
+
+우리가 *ERC721 표준*을 따르기만 하면, 누군가 *ERC 721 표준*에 맞게 거래가 가능한 DApp을 구현한 곳에서 이용이 될 수 있다
+
+실습에서는, 우선 *ZombieOwnership*이라는 컨트랙트를 새로 코딩한다
+
+먼저, *zombieownership.sol*을 생성하고, _pragma_ 버전을 표기해준다
+
+*zombieattack.sol*을 *import*하고, *ZombieOnwership*이라는 새로운 컨트랙트를 선언하고 *ZombieAttack*을 상속한다
+
+```solidity
+pragma solidity ^0.4.19; // 여기서 시작하게
+
+import "./zombieattack.sol";
+
+contract ZombieOwnership is ZombieAttack {
+
+}
+```
+
+## ERC721 표준, 다중 상속
+
+아래는 _ERC721 표준_ 이다
+
+```solidity
+contract ERC721 {
+  event Transfer(address indexed _from, address indexed _to, uint256 _tokenId);
+  event Approval(address indexed _owner, address indexed _approved, uint256 _tokenId);
+
+  function balanceOf(address _owner) public view returns (uint256 _balance);
+  function ownerOf(uint256 _tokenId) public view returns (address _owner);
+  function transfer(address _to, uint256 _tokenId) public;
+  function approve(address _to, uint256 _tokenId) public;
+  function takeOwnership(uint256 _tokenId) public;
+}
+```
+
+토큰 컨트랙트를 구현할 때, 처음 해야 할 일은 _표준_ 인터페이스를 따로 복사하여 저장하고, *import "./erc721.sol"*과 같이 임포트하는 것이다
+
+그리고 해당 컨트랙트를 상속하는 우리의 컨트랙트를 만들고, 각각의 함수를 오버라이딩 하여 정의한다
+
+그런데 실습에서, *ZombieOwnership*은 이미 *ZombieAttack*을 상속하고 있다
+
+이 때, 어떻게 하면 _ERC721_ 또한 상속하게 할 수 있을까?
+
+*Solidity*에서는 다음과 같이 다중 상속을 허용한다
+
+```solidity
+contract SatoshiNakamoto is NickSzabo, HalFinney {
+  // 오 이런, 이 세계의 비밀이 밝혀졌군!
+}
+```
+
+실습에서는 우선, _erc721.sol_ 파일을 _zombieownership.sol_ 파일에서 임포트한다
+
+이후, *ZombieOwnership*이 *ZombieAttack*과 _ERC721_ 모두 상속하는 것으로 선언한다
+
+```solidity
+pragma solidity ^0.4.19;
+
+import "./zombieattack.sol";
+import "./erc721.sol"; // 여기서 import 하게.
+
+// 여기서 ERC721 상속을 선언하게.
+contract ZombieOwnership is ZombieAttack, ERC721 {
+
+}
+```
+
+## balanceOf & ownerOf
+
+*balanceOf*는 단순히 *address*를 인자로 받아, 해당 *address*가 토큰을 얼마나 가지고 있는지 반환함
+
+```solidity
+ function balanceOf(address _owner) public view returns (uint256 _balance);
+```
+
+*ownerOf*는 토큰 ID를 인자로 받아, 해당 토큰 ID를 소유하고 있는 사람의 *address*를 반환함
+
+이 정보를 저장하고 있는 *mapping*을 구현해 놓았다면, 그것을 쉽게 활용할 수 있음
+
+```solidity
+  function ownerOf(uint256 _tokenId) public view returns (address _owner);
+```
+
+실습에서는, *\_owner*가 가진 좀비의 수를 반환하도록 *balanceOf*를 구현하고,
+
+ID가 *\_tokenId*인 좀비를 가진 주소를 반환하도록 *ownerOf*를 구현한다
+
+```solidity
+pragma solidity ^0.4.19;
+
+import "./zombieattack.sol";
+import "./erc721.sol";
+
+contract ZombieOwnership is ZombieAttack, ERC721 {
+
+  function balanceOf(address _owner) public view returns (uint256 _balance) {
+    return ownerZombieCount[_owner]; // 1. 여기서 `_owner`가 가진 좀비의 수를 반환하게.
+  }
+
+  function ownerOf(uint256 _tokenId) public view returns (address _owner) {
+    return zombieToOwner[_tokenId]; // 2. 여기서 `_tokenId`의 소유자를 반환하게.
+  }
+
+  function transfer(address _to, uint256 _tokenId) public {
+
+  }
+
+  function approve(address _to, uint256 _tokenId) public {
+
+  }
+
+  function takeOwnership(uint256 _tokenId) public {
+
+  }
+}
+```
+
+## 리팩토링
+
+실습에서, 기존에 _ownerOf_ 라는 *modifer*가 있는데도 불구하고, *ownerOf*라는 이름의 함수를 또 정의함
+
+그렇다면 *ZombieOwnership*의 *ownerOf*라는 함수 이름을 다른 것으로 바꾸어야 할까?
+
+아니다. _ERC721_ 표준을 따르는 컨트랙트들은 모두 *ownerOf*라는 이름의 함수를 지니고 있을 것이다
+
+이에 우리가 함수 이름을 다른 것으로 변경한다면 표준을 위배하는 것이고, 다른 DApp들과 호환되지 않을 것이다
+
+이에, 함수가 아닌 *modifier*인 *ownerOf*의 이름을 바꾸는것이 옳은 선택이다
+
+실습에서는, *zombiefeeding.sol*에서 _modifier_ 이름을 *ownerOf*에서 *onlyOwnerOf*로 바꾼다
+
+먼저, 제어자를 정의 하는 이름을 *onlyOwnerOf*로 바꾸고, 이 제어자를 사용하는 _feedAndMultiply_ 함수에서도 제어자 이름을 변경해서 사용한다
+
+(_zombiehelper.sol_, _zombieattack.sol_ 에서도 변경해준다)
+
+```solidity
+pragma solidity ^0.4.19;
+
+import "./zombiefactory.sol";
+
+contract KittyInterface {
+  function getKitty(uint256 _id) external view returns (
+    bool isGestating,
+    bool isReady,
+    uint256 cooldownIndex,
+    uint256 nextActionAt,
+    uint256 siringWithId,
+    uint256 birthTime,
+    uint256 matronId,
+    uint256 sireId,
+    uint256 generation,
+    uint256 genes
+  );
+}
+
+contract ZombieFeeding is ZombieFactory {
+
+  KittyInterface kittyContract;
+  // 1. 제어자의 이름을 `onlyOwnerOf`로 바꾸게.
+  modifier onlyOwnerOf(uint _zombieId) {
+    require(msg.sender == zombieToOwner[_zombieId]);
+    _;
+  }
+
+  function setKittyContractAddress(address _address) external onlyOwner {
+    kittyContract = KittyInterface(_address);
+  }
+
+  function _triggerCooldown(Zombie storage _zombie) internal {
+    _zombie.readyTime = uint32(now + cooldownTime);
+  }
+
+  function _isReady(Zombie storage _zombie) internal view returns (bool) {
+      return (_zombie.readyTime <= now);
+  }
+
+  // 2. 여기서도 제어자의 이름을 바꾸게.
+  function feedAndMultiply(uint _zombieId, uint _targetDna, string _species) internal onlyOwnerOf(_zombieId) {
+    Zombie storage myZombie = zombies[_zombieId];
+    require(_isReady(myZombie));
+    _targetDna = _targetDna % dnaModulus;
+    uint newDna = (myZombie.dna + _targetDna) / 2;
+    if (keccak256(_species) == keccak256("kitty")) {
+      newDna = newDna - newDna % 100 + 99;
+    }
+    _createZombie("NoName", newDna);
+    _triggerCooldown(myZombie);
+  }
+
+  function feedOnKitty(uint _zombieId, uint _kittyId) public {
+    uint kittyDna;
+    (,,,,,,,,,kittyDna) = kittyContract.getKitty(_kittyId);
+    feedAndMultiply(_zombieId, kittyDna, "kitty");
+  }
+}
+```
+
+## ERC721 전송 로직
+
+*ERC721*에서는 토큰을 전송할 때 2개의 다른 방식이 있음
+
+```solidity
+function transfer(address _to, uint256 _tokenId) public;
+function approve(address _to, uint256 _tokenId) public;
+function takeOwnership(uint256 _tokenId) public;
+```
+
+우선, 토큰의 소유자가 전송 상대의 *address*와 전송하고자 하는 *\_tokenId*와 함께 _transfer_ 함수를 호출 하는 방법이 있고,
+
+당므으로는 토큰의 소유자가 마찬가지로 전송 상대의 *address*와, 전송하고자 하는 *\_tokenId*를 가지고 *approve*를 호출함
+
+이를 통해, 컨트랙트에 누가 해당 토큰을 가질 수 있도록 *허가*받았는지 저장함
+
+(주로, *mapping(uint256 => address)*를 통함)
+
+이후 누군가가 *takeOwnership*을 호출하면, 해당 컨트랙트는 이 _msg.sender_ 가 소유자로 부터 토큰을 받을 수 있게 허가를 받았는지 확인하고,
+
+허가를 받은 상대면 해당 토큰을 그에게 전송함
+
+결과적으로, *transfer*와 _takeOwnership_ 모두 전송 로직 자체는 동일하지만 순서는 반대임
+
+(전자는 토큰을 보내는 사람이 함수를 호출하고, 후자는 토큰을 받는 사람이 함수를 호출함)
+
+그래서, 이 두 로직에서 공통된 프라이빗 함수 *\_transfer*를 만들어서 추상화 하는 것이 중복을 막아 좋은 코딩을 할 수 있음
+
+실습에서는, 먼저 *\_transfer*에 대한 로직을 정의할 것임
+
+우선 *\_transfer*라는 이름의 함수를 정의하고, _address \_from_, _address \_to_, 그리고 _uint256 \_tokenId_ 세 개의 인수를 받고, _private_ 함수여야 함
+
+이후 소유자가 바뀌면 바뀔 2개의 매핑을 쓸것임
+
+_ownerZombieCount_ 매핑(한 소유자가 얼마나 많은 좀비를 가지고 있는지 기록)과 _zombieToOwner_ 매핑(어떤 좀비를 누가 가지고 있는지 기록)임
+
+이 함수에서 처음 해야 할 일은 바로 좀비를 받는 사람(_address \_to_)의 *ownerZombieCount*를 증가시키는 것임
+
+다음으로, 좀비를 보내는 사람(_address \_from_)의 *ownerZombieCount*를 감소시켜야 함
+
+또, 이 *\_tokenId*에 해당하는 _zombieToOwner_ 매핑 값이 *\_to*를 가르키도록 변경함
+
+*ERC721 스펙*에는 _Transfer_ 이벤트가 포함되어 있음
+
+이 함수의 마지막 줄에서 적절한 정보와 함께 _Transfer_ 이벤트를 실행해야함
+
+이를 위해 *erc721.sol*을 참고하여 작성
+
+```solidity
+pragma solidity ^0.4.19;
+
+import "./zombieattack.sol";
+import "./erc721.sol";
+
+contract ZombieOwnership is ZombieAttack, ERC721 {
+
+  function balanceOf(address _owner) public view returns (uint256 _balance) {
+    return ownerZombieCount[_owner];
+  }
+
+  function ownerOf(uint256 _tokenId) public view returns (address _owner) {
+    return zombieToOwner[_tokenId];
+  }
+
+  function _transfer(address _from, address _to, uint256 _tokenId) private{ // 여기에 _transfer()를 정의하게.
+  ownerZombieCount[_to]++;
+  ownerZombieCount[_from]--;
+  zombieToOwner[_tokenId] = _to;
+  Transfer(_from, _to, _tokenId);
+  }
+
+  function transfer(address _to, uint256 _tokenId) public {
+
+  }
+
+  function approve(address _to, uint256 _tokenId) public {
+
+  }
+
+  function takeOwnership(uint256 _tokenId) public {
+
+  }
+}
+```
+
+## ERC721 전송 (이어서)
+
+이제 퍼블릭 _transfer_ 함수를 구현한다
+
+어려운 부분은 이미 구현한 _\_transfer_ 함수가 다 처리 했기 때문에 쉬울 것이다
+
+먼저, 해당 토큰의 소유자만 전송할 수 있도록 해야 하므로, _onlyOwnerOf_ 제어자를 활용한다
+
+_transfer_ 내부에서 *\_transfer*를 호출 하는 것으로 함수를 끝마치되, _address \_from_ 인수에, *msg.sender*를 전달하는 것을 참고한다
+
+```solidity
+pragma solidity ^0.4.19;
+
+import "./zombieattack.sol";
+import "./erc721.sol";
+
+contract ZombieOwnership is ZombieAttack, ERC721 {
+  function balanceOf(address _owner) public view returns (uint256 _balance) {
+    return ownerZombieCount[_owner];
+  }
+
+  function ownerOf(uint256 _tokenId) public view returns (address _owner) {
+    return zombieToOwner[_tokenId];
+  }
+
+  function _transfer(address _from, address _to, uint256 _tokenId) private {
+    ownerZombieCount[_to]++;
+    ownerZombieCount[_from]--;
+    zombieToOwner[_tokenId] = _to;
+    Transfer(_from, _to, _tokenId);
+  }
+
+  // 1. 여기에 제어자를 추가하게.
+  function transfer(address _to, uint256 _tokenId) public onlyOwnerOf(_tokenId) {
+    _transfer(msg.sender, _to, _tokenId); // 2. 여기서 함수를 정의하게.
+  }
+
+  function approve(address _to, uint256 _tokenId) public {
+
+  }
+
+  function takeOwnership(uint256 _tokenId) public {
+
+  }
+}
+```
+
+## ERC721: Approve
+
+_approve_ / *takeOwnership*을 사용하는 전송은 2 단계로 나뉜다
+
+1. 소유자가 새로운 소유자에게 *address*와 보내고 싶은 토큰의 *\_tokenId*를 이용하여 *approve*를 호출한다
+
+2. 새로운 소유자가 *\_tokenId*를 사용하여 _takeOwnership_ 함수를 호출하면, 컨트랙트는 *approve*가 이미 됐는지 확인하고 토큰을 전송한다
+
+2번의 함수 호출이 발생하게 되는데, 함수 호출 사이에 누가 무엇에 대해 승인이 되었는지 저장할 매핑 등의 데이터 구조가 필요하다
+
+실습에서는, _zombieApprovals_ 매핑을 먼저 정의하는데, *uint*를 *address*로 연결하는 매핑이다
+
+이 매핑으로, 누군가 *\_tokenId*로 *takeOwnership*을 호출하면, 이 매핑을 써서 누가 그 토큰을 가지도록 승인받았는지 확인할 수 있다
+
+_approve_ 함수에서, 오직 소유자만이 *approve*를 실행 할 수 있도록 해야 하므로 _onlyOwnerOf_ 제어자를 추가한다
+
+함수의 내용에서는 *zombieApprovals*의 _\_tokenId_ 요소를 *\_to*와 같게 해야 한다
+
+마지막으로, _ERC721_ 표준에는 _Approval_ 이벤트 또한 존재한다
+
+_erc721.sol_ 에서 인수를 확인하고 이벤트 발생 처리하고, 특히 *msg.sender*를 *\_owner*에 전달해준다
+
+```solidity
+pragma solidity ^0.4.19;
+
+import "./zombieattack.sol";
+import "./erc721.sol";
+
+contract ZombieOwnership is ZombieAttack, ERC721 {
+  mapping (uint => address) zombieApprovals; // 1. 여기에 mapping을 정의하게.
+
+  function balanceOf(address _owner) public view returns (uint256 _balance) {
+    return ownerZombieCount[_owner];
+  }
+
+  function ownerOf(uint256 _tokenId) public view returns (address _owner) {
+    return zombieToOwner[_tokenId];
+  }
+
+  function _transfer(address _from, address _to, uint256 _tokenId) private {
+    ownerZombieCount[_to]++;
+    ownerZombieCount[_from]--;
+    zombieToOwner[_tokenId] = _to;
+    Transfer(_from, _to, _tokenId);
+  }
+
+  function transfer(address _to, uint256 _tokenId) public onlyOwnerOf(_tokenId) {
+    _transfer(msg.sender, _to, _tokenId);
+  }
+
+  // 2. 여기에 함수 제어자를 추가하게.
+  function approve(address _to, uint256 _tokenId) public onlyOwnerOf(_tokenId) {
+    zombieApprovals[_tokenId] = _to; // 3. 여기서 함수를 정의하게.
+    Approval(msg.sender, _to, _tokenId);
+  }
+
+  function takeOwnership(uint256 _tokenId) public {
+
+  }
+}
+```
+
+## ERC721: takeOwnership
+
+_takeOwnership_ 함수에서는, *msg.sender*가 이 토큰을 지닐 수 있게 이미 승인되었는지 확인하고, 승인이 되었다면 *\_transfer*를 호출하도록 코딩한다
+
+실습에서는 먼저, _require_ 문을 써서 *zombieApprovals*의 _\_tokenId_ 요소가 *msg.sender*와 같은지 확인한다
+
+*\_transfer*를 호출하기 위해, 토큰을 소유한 사람의 주소를 알 필요가 있는데, 이를 _ownerOf_ 함수를 통해 알 수 있다
+
+이에, _address_ 변수를 _owner_ 라는 이름으로 선언하고, 여기에 _ownerOf(\_tokenId)_ 와 같이 대입한다
+
+마지막으로, *\_transfer*에 필요한 인자들을 전달하고 호출하되, *\_to*에 *msg.sender*를 사용하는 것을 상기한다
+
+```solidity
+pragma solidity ^0.4.19;
+
+import "./zombieattack.sol";
+import "./erc721.sol";
+
+contract ZombieOwnership is ZombieAttack, ERC721 {
+  mapping (uint => address) zombieApprovals;
+
+  function balanceOf(address _owner) public view returns (uint256 _balance) {
+    return ownerZombieCount[_owner];
+  }
+
+  function ownerOf(uint256 _tokenId) public view returns (address _owner) {
+    return zombieToOwner[_tokenId];
+  }
+
+  function _transfer(address _from, address _to, uint256 _tokenId) private {
+    ownerZombieCount[_to]++;
+    ownerZombieCount[_from]--;
+    zombieToOwner[_tokenId] = _to;
+    Transfer(_from, _to, _tokenId);
+  }
+
+  function transfer(address _to, uint256 _tokenId) public onlyOwnerOf(_tokenId) {
+    _transfer(msg.sender, _to, _tokenId);
+  }
+
+  function approve(address _to, uint256 _tokenId) public onlyOwnerOf(_tokenId) {
+    zombieApprovals[_tokenId] = _to;
+    Approval(msg.sender, _to, _tokenId);
+  }
+
+  function takeOwnership(uint256 _tokenId) public {
+    require(zombieApprovals[_tokenId] == msg.sender); // 여기서 시작하게.
+    address owner = ownerOf(_tokenId);
+    _transfer(owner, msg.sender, _tokenId);
+  }
+}
+```
+
+## 오버플로우 막기
+
+(더 깊은 *ERC721 표준*에 관한 컨트랙트를 보려면 _OpenZeppelin ERC721_ 컨트랙트 등을 참고할것)
+
+8비트 데이터를 저장 할 수 있는 _uint8_ 변수 하나에 저장 될 수 있는 가장 큰 수 는 이진수로 11111111(십진수로는 2^8 - 1 = 255)이다
+
+```solidity
+uint8 number = 255;
+number++;
+```
+
+이 경우, _number_ 변수에 저장 된 값은 이진수로 *00000000*으로 되돌아간다
+
+이것을 *오버플로우*라 한다
+
+이러한 *오버플로우*나 *언더플로우*를 막기 위해서 *OpenZeppelin*에서 제공하는 *SafeMath*라는 라이브러리를 사용할 수 있다
+
+*Solidity*에서 *라이브러리*는 특별한 종류의 컨트랙트로, 기본(native) 데이터 타입에 함수를 붙일 때도 유용하게 사용된다
+
+_SafeMath_ 라이브러리를 사용 할 때에는 *using SafeMath for uint256*과 같은 구문을 사용한다
+
+_SafeMath_ 라이브러리는 4개의 함수(_add_, _sub_, _mul_, _div_)를 가지고 있다
+
+```solidity
+using SafeMath for uint256;
+
+uint256 a = 5;
+uint256 b = a.add(3); // 5 + 3 = 8
+uint256 c = a.mul(2); // 5 * 2 = 10
+```
+
+실습에서는, _SafeMath_ 라이브러리를 프로젝트에 추가해본다
+
+먼저, *safemath.sol*을 *zombiefactory.sol*에 임포트하고, _using SafeMath for uint256;_ 을 선언한다
+
+```solidity
+pragma solidity ^0.4.19;
+
+import "./ownable.sol";
+import "./safemath.sol"; // 1. 여기서 import 하게.
+
+contract ZombieFactory is Ownable {
+  using SafeMath for uint256; // 2. 여기에 using safemath를 선언하게.
+
+  event NewZombie(uint zombieId, string name, uint dna);
+
+  uint dnaDigits = 16;
+  uint dnaModulus = 10 ** dnaDigits;
+  uint cooldownTime = 1 days;
+
+  struct Zombie {
+    string name;
+    uint dna;
+    uint32 level;
+    uint32 readyTime;
+    uint16 winCount;
+    uint16 lossCount;
+  }
+
+  Zombie[] public zombies;
+
+  mapping (uint => address) public zombieToOwner;
+  mapping (address => uint) ownerZombieCount;
+
+  function _createZombie(string _name, uint _dna) internal {
+    uint id = zombies.push(Zombie(_name, _dna, 1, uint32(now + cooldownTime), 0, 0)) - 1;
+    zombieToOwner[id] = msg.sender;
+    ownerZombieCount[msg.sender]++;
+    NewZombie(id, _name, _dna);
+  }
+
+  function _generateRandomDna(string _str) private view returns (uint) {
+    uint rand = uint(keccak256(_str));
+    return rand % dnaModulus;
+  }
+
+  function createRandomZombie(string _name) public {
+    require(ownerZombieCount[msg.sender] == 0);
+    uint randDna = _generateRandomDna(_name);
+    randDna = randDna - randDna % 100;
+    _createZombie(_name, randDna);
+  }
+}
+```
+
+## SafeMath 파트 2
+
+이하는 _SafeMath_ 내부의 코드이다
+
+```solidity
+library SafeMath {
+
+  function mul(uint256 a, uint256 b) internal pure returns (uint256) {
+    if (a == 0) {
+      return 0;
+    }
+    uint256 c = a * b;
+    assert(c / a == b);
+    return c;
+  }
+
+  function div(uint256 a, uint256 b) internal pure returns (uint256) {
+    // assert(b > 0); // Solidity automatically throws when dividing by 0
+    uint256 c = a / b;
+    // assert(a == b * c + a % b); // There is no case in which this doesn't hold
+    return c;
+  }
+
+  function sub(uint256 a, uint256 b) internal pure returns (uint256) {
+    assert(b <= a);
+    return a - b;
+  }
+
+  function add(uint256 a, uint256 b) internal pure returns (uint256) {
+    uint256 c = a + b;
+    assert(c >= a);
+    return c;
+  }
+}
+```
+
+먼저 _library_ 키워드가 사용된 것을 알 수 있다
+
+_library_ 키워드는, *contract*와 비슷하지만 조금 다른 점이 있는데, _using_ 키워드를 사용할 수 있도록 해주는 것이 그것이다
+
+```solidity
+using SafeMath for uint;
+// 우리는 이제 이 메소드들을 아무 uint에서나 쓸 수 있네.
+uint test = 2;
+test = test.mul(3); // test는 이제 6이 되네
+test = test.add(5); // test는 이제 11이 되네
+```
+
+윗윗 코드에서, *mul*과 _add_ 함수는 2개의 인수를 필요로 하지만, *using SafeMath for uint*를 선언 할 때,
+
+우리가 함수를 적용하는 *uint(test)*는 첫 번째 인수로 자동으로 전달 됨
+
+*SafeMath*의 역할을 알기 위해, _add_ 함수의 내용을 통해 알아보고자 한다
+
+```solidity
+function add(uint256 a, uint256 b) internal pure returns (uint256) {
+  uint256 c = a + b;
+  assert(c >= a);
+  return c;
+}
+```
+
+기본적으로 *add*는 그저 2개의 *uint*를 _+_ 처럼 더한다
+
+그런데, _assert_ 구문을 써서 그 합이 *a*보다 크도록 보장한다
+
+즉, 저 _assert_ 구문이 오버플로우를 막아주는 것이다
+
+*assert*는 조건을 만족하지 않으면 에러를 발생시킨다는 점에서 *require*와 비슷하다
+
+*assert*와 *require*의 차이점은, *require*는 함수 실행이 실패하면 남은 가스를 사용자에게 되돌려주지만,
+
+*assert*는 되돌려 주지 않는다
+
+이 사실만으로는 *assert*가 아닌 *require*를 사용하고 싶을것이다
+
+따라서 *assert*는 이와 같은 _uint_ 오버플로우 처럼 코드가 심각하게 잘못 실행 될 때 사용하는 구문이다
+
+즉, *SafeMath*의 _add_, _sub_, _mul_, *div*는 간단히 4가지 기본 사칙연산을 수행하지만, 오버플로우나 언더플로우가 발생하면 에러를 발생시키는 역할이다
+
+실습에서는, 우리의 컨트랙트에 *SafeMath*를 도입하는 것이다
+
+즉, _+_, _-_, _\*_, */*를 사용하는 곳은 _add_, _sub_, _mul_, *div*로 교체한다
+
+예를 들어,
+
+```solidity
+myUint++;
+```
+
+와 같은 코드를,
+
+```solidity
+myUint = myUint.add(1);
+```
+
+과 같이 처리한다
+
+이에, _ZombieOwnership_ 컨트랙트에서 수학 연산한 곳 2곳을 찾아 _SafeMath_ 메소드로 처리한다
+
+```solidity
+pragma solidity ^0.4.19;
+
+import "./zombieattack.sol";
+import "./erc721.sol";
+import "./safemath.sol";
+
+contract ZombieOwnership is ZombieAttack, ERC721 {
+  using SafeMath for uint256;
+
+  mapping (uint => address) zombieApprovals;
+
+  function balanceOf(address _owner) public view returns (uint256 _balance) {
+    return ownerZombieCount[_owner];
+  }
+
+  function ownerOf(uint256 _tokenId) public view returns (address _owner) {
+    return zombieToOwner[_tokenId];
+  }
+
+  function _transfer(address _from, address _to, uint256 _tokenId) private {
+    // 1. SafeMath의 `add`로 교체하게.
+    ownerZombieCount[_to] = ownerZombieCount[_to].add(1);
+    // 2. SafeMath의 `sub`로 교체하게.
+    ownerZombieCount[_from] = ownerZombieCount[_from].sub(1);
+    zombieToOwner[_tokenId] = _to;
+    Transfer(_from, _to, _tokenId);
+  }
+
+  function transfer(address _to, uint256 _tokenId) public onlyOwnerOf(_tokenId) {
+    _transfer(msg.sender, _to, _tokenId);
+  }
+
+  function approve(address _to, uint256 _tokenId) public onlyOwnerOf(_tokenId) {
+    zombieApprovals[_tokenId] = _to;
+    Approval(msg.sender, _to, _tokenId);
+  }
+
+  function takeOwnership(uint256 _tokenId) public {
+    require(zombieApprovals[_tokenId] == msg.sender);
+    address owner = ownerOf(_tokenId);
+    _transfer(owner, msg.sender, _tokenId);
+  }
+}
+```
+
+## SafeMath 파트 3
+
+_ZombieAttack_ 컨트랙트의 아래와 같은 코드에도 오버플로우 문제가 존재한다
+
+```solidity
+myZombie.winCount++;
+myZombie.level++;
+enemyZombie.lossCount++;
+```
+
+그런데, *winCount*와 *lossCount*는 *uint16*이고, *level*은 *uint32*이다
+
+이런 인수들에 *SafeMath*의 _add_ 메소드를 사용하면, 이 타입들을 *uint256*으로 변경해버리기 때문에, 오버플로우를 막지 못한다
+
+```solidity
+function add(uint256 a, uint256 b) internal pure returns (uint256) {
+  uint256 c = a + b;
+  assert(c >= a);
+  return c;
+}
+
+// 만약 `uint8`에 `.add`를 호출한다면, 타입이 `uint256`로 변환되네.
+// 그러니 2^8에서 오버플로우가 발생하지 않을 것이네. 256은 `uint256`에서 유효한 숫자이기 때문이지.
+```
+
+따라서, *uint16*과 *uint32*에서도 오버플로우 / 언더플로우를 막기 위해서 2개의 라이브러리를 더 만들어야 한다는 것을 의미한다
+
+이를 *SafeMath16*과 *SafeMath32*라고 정의한다
+
+실습에서는, *SafeMath32*를 *uint32*에 쓴다는 것을 선언
+
+또, *SafeMath16*을 *uint16*에 쓴다는 것을 선언
+
+*ZombieFactory*에 *SafeMath*를 써야할 곳을 수정
+
+```solidity
+pragma solidity ^0.4.19;
+
+import "./ownable.sol";
+import "./safemath.sol";
+
+contract ZombieFactory is Ownable {
+  using SafeMath for uint256;
+  using SafeMath32 for uint32; // 1. using SafeMath32 for uint32를 선언하게.
+  using SafeMath16 for uint16; // 2. using SafeMath16 for uint16를 선언하게.
+
+  event NewZombie(uint zombieId, string name, uint dna);
+
+  uint dnaDigits = 16;
+  uint dnaModulus = 10 ** dnaDigits;
+  uint cooldownTime = 1 days;
+
+  struct Zombie {
+    string name;
+    uint dna;
+    uint32 level;
+    uint32 readyTime;
+    uint16 winCount;
+    uint16 lossCount;
+  }
+
+  Zombie[] public zombies;
+
+  mapping (uint => address) public zombieToOwner;
+  mapping (address => uint) ownerZombieCount;
+
+  function _createZombie(string _name, uint _dna) internal {
+    // 참고: 우리는 Year 2038 문제를 막지 않기로 하겠네... 그러니 readyTime에서 오버플로우를 걱정할 필요는 없네.
+    // 우리 앱은 2038년에는 좀 꼬이겠지 ;)
+    uint id = zombies.push(Zombie(_name, _dna, 1, uint32(now + cooldownTime), 0, 0)) - 1;
+    zombieToOwner[id] = msg.sender;
+    // 3. 여기에 SafeMath의 `add`를 사용하게:
+    ownerZombieCount[msg.sender] = ownerZombieCount[msg.sender].add(1);
+    NewZombie(id, _name, _dna);
+  }
+
+  function _generateRandomDna(string _str) private view returns (uint) {
+    uint rand = uint(keccak256(_str));
+    return rand % dnaModulus;
+  }
+
+  function createRandomZombie(string _name) public {
+    require(ownerZombieCount[msg.sender] == 0);
+    uint randDna = _generateRandomDna(_name);
+    randDna = randDna - randDna % 100;
+    _createZombie(_name, randDna);
+  }
+}
+```
+
+## SafeMath 파트 4
+
+이제 *ZOmbieAttacK*에서 _++_ 증가 부분을 _SafeMath_ 메소드로 구성한다
+
+주석부분으로 처리해놓아서, 그 부분만 수정하면된다
+
+```solidity
+pragma solidity ^0.4.19;
+
+import "./zombiehelper.sol";
+
+contract ZombieAttack is ZombieHelper {
+  uint randNonce = 0;
+  uint attackVictoryProbability = 70;
+
+  function randMod(uint _modulus) internal returns(uint) {
+    // 여기 하나 있네!
+    randNonce = randNonce.add(1);
+    return uint(keccak256(now, msg.sender, randNonce)) % _modulus;
+  }
+
+  function attack(uint _zombieId, uint _targetId) external onlyOwnerOf(_zombieId) {
+    Zombie storage myZombie = zombies[_zombieId];
+    Zombie storage enemyZombie = zombies[_targetId];
+    uint rand = randMod(100);
+    if (rand <= attackVictoryProbability) {
+      // 여기 세 개 더 있군!
+      myZombie.winCount = myZombie.winCount.add(1);
+      myZombie.level = myZombie.level.add(1);
+      enemyZombie.lossCount = enemyZombie.lossCount.add(1);
+      feedAndMultiply(_zombieId, enemyZombie.dna, "zombie");
+    } else {
+      // ...그리고 2개 더!
+      myZombie.lossCount = myZombie.lossCount.add(1);
+      enemyZombie.winCount = enemyZombie.winCount.add(1);
+      _triggerCooldown(myZombie);
+    }
+  }
+}
+```
+
+## 주석(Comment)
+
+```solidity
+// 주석은 // 를 사용하여 사용
+
+/*
+혹은 이렇게 여러줄 주석 사용
+This is a multi-lined comment. I'd like to thank all of you
+ who have taken your time to try this programming course.
+ I know it's free to all of you, and it will stay free
+ forever, but we still put our heart and soul into making
+ this as good as it can be.
+*/
+```
+
+_Solidity_ 커뮤니티에서 주석을 위해 표준으로 쓰이는 형식은 *natspec*이다
+
+https://docs.soliditylang.org/en/develop/natspec-format.html
+
+```solidity
+/// @title 기본적인 산수를 위한 컨트랙트
+/// @author H4XF13LD MORRIS 💯💯😎💯💯
+/// @notice 지금은 곱하기 함수만 추가한다.
+contract Math {
+  /// @notice 2개의 숫자를 곱한다.
+  /// @param x 첫 번쨰 uint.
+  /// @param y 두 번째 uint.
+  /// @return z (x * y) 곱의 값
+  /// @dev 이 함수는 현재 오버플로우를 확인하지 않는다.
+  function multiply(uint x, uint y) returns (uint z) {
+    // 이것은 일반적인 주석으로, natspec에 포함되지 않는다.
+    z = x * y;
+  }
+}
+```
+
+*@title*과 *@author*는 말 그대로 타이틀과 저작자이다
+
+*@notice*는 사용자에게 컨트랙트 / 함수가 무엇인지 설명한다
+
+*@dev*는 개발자에게 추가적인 상세 정보를 설명하기 위해 사용한다
+
+*@param*과 *@return*은 함수에서 어떤 매개 변수와 반환값을 가지는지 설명한다
+
+모든 함수에 대해 이러한 모든 태그들을 쓸 필요는 없다
+
+다만, _@dev_ 정도는 작성하여, 함수가 어떤것을 하는지 설명하는 것이 좋다
+
+실습에서는, *@title*과 *@author*와 *@dev*를 작성해본다
+
+*ZombieOwnership*에 _natspec_ 태그의 주석을 작성한다
+
+*@title*에는 좀비 소유권 전송을 관리하는 컨트랙트라고 작성한다
+
+*@author*에는 이름을 쓴다
+
+*@dev*에는 OpenZepplin의 ERC721 표준 초안 구현을 따른다고 설명한다
+
 ## References
 
-add here
+[natspec for Solidity Comment](https://docs.soliditylang.org/en/develop/natspec-format.html){: target="\_blank"}
 
 <!-- [Array on mozzila.org](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array){: target="\_blank"} -->
 
