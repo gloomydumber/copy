@@ -3,7 +3,7 @@ layout: post
 title: "Upgradable Smart Contracts"
 date: 2022-06-26 20:00:00
 categories: BLOCKCHAIN
-permalink: /archivers/upgradableSC
+permalink: /archivers/upsc
 nocomments: false
 use_math: true
 ---
