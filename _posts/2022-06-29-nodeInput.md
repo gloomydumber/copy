@@ -12,7 +12,7 @@ use_math: true
 
 | ![keyboardInput](/assets/posts/2022-06-29-nodeInput/keyboardInput.gif) |
 | :--------------------------------------------------------------------: |
-|                         <b>Keyboard Input</b>                          |
+|                        <b>Input & Output...</b>                        |
 
 본 포스팅에서는 *Node.js*에서 *데이터 및 파일 입출력*을 처리 하는 방법을 알아본다.
 
@@ -105,7 +105,79 @@ console.log("%cYin %cand %cYang", "color: red", "color: black", "color: blue");
 
 ### readline
 
-_readline_ module은 ~
+_readline_ module은 *Node.js*의 기본 내장 모듈이다.
+
+### readline / 한 줄 입력받기
+
+```javascript
+const readline = require("readline");
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on("line", (line) => {
+  // 한 줄 입력 후 실행 되는 영역
+  console.log("you typed:", line);
+  rl.close(); // close를 표기하지 않으면 무한히 입력 받음
+});
+
+rl.on("close", () => {
+  // 입력 종료시 실행 됨
+  process.exit();
+});
+```
+
+### fs
+
+*fs*는 *File System*의 약자로, 마찬가지로 *Node.js*의 기본 내장 모듈이다
+
+### fs / readFile()
+
+```javascript
+fs.readFile(filename, [options], callback);
+```
+
+파일을 *asynchronous (비동기적)*으로 읽는다.
+
+### fs / readFileSync()
+
+```javascript
+fs.readFileSync(filename, [options]);
+```
+
+*readFile()*과는 달리, 파일을 *synchronous (동기적)*으로 읽는다.
+
+## ✔️ process.stdin
+
+```javascript
+async function userEnterInputForExecutionOnError() {
+  while (true) {
+    try {
+      console.log("execute instructions here");
+      throw "intentional error";
+    } catch (error) {
+      console.log("Press enter to try again...");
+      await new Promise(function (resolve, reject) {
+        process.stdin.resume();
+        process.stdin.once("data", function (data) {
+          process.stdin.pause();
+          resolve();
+        });
+      });
+    }
+  }
+}
+
+userEnterInputForExecutionOnError();
+```
+
+반복적인 비동기적 요청 등을 할 때, 오류가 발생했을 때 터미널을 통해 해당 요청을 다시 시도할 것인의 여부를 _enter_ 입력을 통해 받아들이는 코드 예제
+
+_Promise_ 객체와 *process.stdin*을 활용하였다.
+
+*process.stdin*에 관한 자세한 명세 파악 확인 필요
 
 ## References
 
