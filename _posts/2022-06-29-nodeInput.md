@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Node.js에서 입출력 처리하기"
+title: "JavaScript / Node.js 입출력 처리하기"
 date: 2022-06-29 09:00:00
 categories: WEB-BACKEND
 permalink: /archivers/nodeInput
@@ -8,7 +8,7 @@ nocomments: false
 use_math: true
 ---
 
-# Node.js에서 입출력 처리하기
+# JavaScript / Node.js 입출력 처리하기
 
 ![keyboardInput](/assets/posts/2022-06-29-nodeInput/keyboardInput.gif)
 
