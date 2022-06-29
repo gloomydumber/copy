@@ -11,6 +11,8 @@ use_math: true
 # JavaScript / Node.js 입출력 처리하기
 
 ![keyboardInput](/assets/posts/2022-06-29-nodeInput/keyboardInput.gif)
+|:--:|
+| <b>Keyboard Input</b>|
 
 본 포스팅에서는 *Node.js*에서 *데이터 및 파일 입출력*을 처리 하는 방법을 알아본다.
 
@@ -110,7 +112,3 @@ _readline_ module은 ~
 <!-- [Array on mozzila.org](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array){: target="\_blank"} -->
 
 <!-- ![permasecond](/assets/posts/2020-02-21-cmdcolor/permasecond.png) -->
-
-```
-
-```
