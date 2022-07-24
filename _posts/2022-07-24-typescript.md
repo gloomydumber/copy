@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "TypeScript"
-date: 2022-07-24 12:00:00
+date: 2022-07-24 09:00:00
 categories: WEB-BACKEND
 permalink: /archivers/typescript
 nocomments: false
