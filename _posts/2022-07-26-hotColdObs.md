@@ -60,10 +60,10 @@ var hot = new Observable((observer) => {
 
 `Cold Observable`은 구독 중에 `producer`가 생성되고 활성화 되는 `Observable`을 뜻한다. 즉, 앞서 언급했듯이 `Observable`을 `function`에 비유하자면 *함수 호출*을 통해서 `producer`가 생성되고 활성화되는 것을 의미한다.
 
-- 1. creates the producer (producer를 생성)
-- 2. activates the producer (producer를 활성화)
-- 3. starts listening to the producer (producer 수신을 시작)
-- 4. unicast (단일 발신자 <-> 단일 수신자)
+- ① creates the producer (producer를 생성)
+- ② activates the producer (producer를 활성화)
+- ③ starts listening to the producer (producer 수신을 시작)
+- ④ unicast (단일 발신자 <-> 단일 수신자)
 
 `Observable`을 구독하는 순간에서야 `Observable` 선언 *내부*에서 `WebSocket`이 생성되고 수신되므로, 아래의 예제는 `cold`로 작성된 것이다.
 
@@ -83,9 +83,9 @@ const source = new Observable((observer) => {
 
 구독의 바깥 부분에서 생성되고 활성화되는 `producer`를 이용하는 `Observable`을 `Hot Observable`이라 칭한다.
 
-- 1. shares a reference to a producer (`producer`의 값을 `share`하는 형태)
-- 2. starts listening to the producer (`producer`의 발행을 수신하기 시작)
-- 3. multicast (복수의 수신자)
+- ① shares a reference to a producer (`producer`의 값을 `share`하는 형태)
+- ② starts listening to the producer (`producer`의 발행을 수신하기 시작)
+- ③ multicast (복수의 수신자)
 
 다음 예제 코드와 같이, `WebSocket`의 생성을 `Observable`의 정의 외부에 한다면 `hot Observable`이 된다.
 
@@ -114,11 +114,11 @@ source.filter((x) => x % 2 === 1).subscribe((x) => console.log("odd", x));
 
 `Cold Observable`을 `Hot`으로 만들기 전에, (`multicast`로 동작하도록 만들기 전에,) `rx`의 `Subject` 타입에 대해 알아보자. `Subject`는 다음과 같은 속성이 있다.
 
-- 1. `Observable`이다. `Observable`과 형태가 유사하고, 적용할 수 있는 `Operator` 또한 완전 동일하다.
-- 2. `Observer`이다. `Observer`를 `duck-typing`한다. 즉, `Observer`처럼 동작한다. `Observable`로서 구독되면, `next()`로 전달하는 값을 발행 및 수신을 동시에 한다.
-- 3. `multicast`한다. `subscribe()`를 통해 전달된 모든 `Observer`가 내부 `Observer` 리스트에 등록된다.
-- 4. 끝나면 끝난거다. `Subjcet`는 `unsubscribe`, `complete`, `error` 이후에는 재사용될 수 없다.
-- 5. 바로 앞의 2번 에서 언급했듯이, 그 자체로 값을 발행하면서도 수신도 한다.
+- ① `Observable`이다. `Observable`과 형태가 유사하고, 적용할 수 있는 `Operator` 또한 완전 동일하다.
+- ② `Observer`이다. `Observer`를 `duck-typing`한다. 즉, `Observer`처럼 동작한다. `Observable`로서 구독되면, `next()`로 전달하는 값을 발행 및 수신을 동시에 한다.
+- ③ `multicast`한다. `subscribe()`를 통해 전달된 모든 `Observer`가 내부 `Observer` 리스트에 등록된다.
+- ④ 끝나면 끝난거다. `Subjcet`는 `unsubscribe`, `complete`, `error` 이후에는 재사용될 수 없다.
+- ⑤ 바로 앞의 2번 에서 언급했듯이, 그 자체로 값을 발행하면서도 수신도 한다.
 
 일반적으로, `Subject`는 4개의 Observer-Pattern 안에서 `addObserver` 메소드와 함께 객체로 정의 되어있다. 여기서는 `addObserver` 메소드가 `subscribe`로 구현되어있다. ([Rx Subject Behavior JSBin](http://jsbin.com/godawic/edit?js,output){: target="\_blank"})
 
