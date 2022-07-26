@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Hot vs Cold Observables"
-date: 2022-07-26 08:00:00
+date: 2022-07-26T00:00:00Z
 categories: ReactiveX
 permalink: /archivers/hotColdObs
 nocomments: false
