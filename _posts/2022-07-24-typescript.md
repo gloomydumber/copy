@@ -10,6 +10,10 @@ use_math: true
 
 # TypeScript
 
+| ![web3means](/assets/posts/2022-07-24-typescript/tslogo.png) |
+| :----------------------------------------------------------: |
+|                      <b>TypeScript</b>                       |
+
 Studying TypeScript and Memo
 
 ## commands

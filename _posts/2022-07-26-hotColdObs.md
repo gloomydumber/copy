@@ -10,6 +10,10 @@ use_math: true
 
 # Hot vs Cold Observables
 
+| ![web3means](/assets/posts/2022-07-26-hotColdObs/reactivex_logo.png) |
+| :------------------------------------------------------------------: |
+|                <b>🥶 Observable VS. 🔥 Observable</b>                |
+
 이 내용은 동일한 제목의 영어 원문 [_Medium_ 포스트](https://benlesh.medium.com/hot-vs-cold-observables-f8094ed53339){: target="\_blank"}를 번역한 것임
 
 ## COLD is when your observable creates the producer
