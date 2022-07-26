@@ -17,7 +17,7 @@ use_math: true
 `Cold` 방식은 `Observable`이 `producer`를 생성할 때를 일컫음
 
 ```javascript
-// COLD
+// COLD 🥶
 var cold = new Observable((observer) => {
   var producer = new Producer();
   // have observer listen to producer here
@@ -29,7 +29,7 @@ var cold = new Observable((observer) => {
 `Hot` 방식은 `Observable` 밖에서 `producer`가 존재할 때를 일컫음
 
 ```javascript
-// HOT
+// HOT 🔥
 var producer = new Producer();
 var hot = new Observable((observer) => {
   // have observer listen to producer here
