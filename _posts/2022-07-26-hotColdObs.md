@@ -10,7 +10,7 @@ use_math: true
 
 # Hot vs Cold Observables
 
-| ![web3means](/assets/posts/2022-07-26-hotColdObs/reactivex_logo.png) |
+| ![reactivex](/assets/posts/2022-07-26-hotColdObs/reactivex_logo.png) |
 | :------------------------------------------------------------------: |
 |                <b>🥶 Observable VS. 🔥 Observable</b>                |
 
