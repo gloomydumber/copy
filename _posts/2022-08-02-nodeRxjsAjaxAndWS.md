@@ -16,7 +16,7 @@ use_math: true
 
 ## rxjs is for browser library
 
-우선, `rxjs`는 본래 _browser_ 환경을 위해 구현된 라이브러리 이므로, `Node.js` 환경에서 `AJAX` 또는 `WebSocket`을 이용하기 위해서는 다음과 같은 설정이 필요하다.
+`rxjs`는 본래 _browser_ 환경을 위해 구현된 라이브러리 이므로, `Node.js` 환경에서 `AJAX` 또는 `WebSocket`을 이용하기 위해서는 다음과 같은 설정이 필요하다.
 
 ### AJAX
 
@@ -25,7 +25,6 @@ use_math: true
 ```javascript
 global.XMLHttpRequest = require("xhr2"); // for Server Side Ajax
 const { ajax } = require("rxjs/ajax");
-
 const obs$ = ajax("https://api.github.com/users?per_page=5");
 obs$.subscribe((result) => console.log(result.response));
 ```
