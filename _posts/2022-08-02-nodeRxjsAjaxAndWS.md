@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "reactiveX - retry vs repeat"
+title: "rxjs AJAX & WebSocket on Node.js"
 date: 2022-08-02T00:00:00Z
 categories: ReactiveX
 permalink: /archivers/rxjsRetryRepeat
