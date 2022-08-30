@@ -57,3 +57,5 @@ webSocketSubject.subscribe(console.log);
 [🔗 rxjs/ajax on Node.js Github Issues](https://github.com/ReactiveX/rxjs/issues/2099)
 
 [🔗 WebSocket 또한 ajax와 같은 Issue 존재](https://github.com/ReactiveX/rxjs/issues/3942)
+
+https://gearheart.io/articles/auto-websocket-reconnection-with-rxjs-with-example/
