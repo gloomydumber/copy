@@ -20,7 +20,7 @@ use_math: true
 
 ### AJAX
 
-`AJAX`를 이용하기 위해서는, `xhr2` 모듈을 `rxjs` 라이브러리에 정의 된 `XMLHttpRequest` 객체를 replace해야한다.
+`AJAX`를 이용하기 위해서는, `xhr2` 모듈로 `rxjs` 라이브러리에 정의 된 `XMLHttpRequest` 객체를 replace해야한다.
 
 ```javascript
 global.XMLHttpRequest = require("xhr2"); // for Server Side Ajax
@@ -31,7 +31,7 @@ obs$.subscribe((result) => console.log(result.response));
 
 ### WebSocket
 
-`WebSocket`의 경우도 마찬가지로, `ws` 모듈을 `rxjs` 라이브러리에 정의 된 `WebSocket` 객체를 replace 해주고 난 다음 사용한다.
+`WebSocket`의 경우도 마찬가지로, `ws` 모듈로 `rxjs` 라이브러리에 정의 된 `WebSocket` 객체를 replace 해주고 난 다음 사용한다.
 
 ```javascript
 global.WebSocket = require("ws");
