@@ -1,24 +1,32 @@
 ---
 # Only the main Sass file needs front matter (the dashes are enough)
 ---
+
 @charset "utf-8";
 
-$base-font-family: "Open Sans", "Helvetica Neue", "DejaVu Sans", Arial, "PingFang SC", "Noto Sans CJK SC", "Hiragino Sans GB", Helvetica, sans-serif;
-$base-font-size:   16px;
-$small-font-size:  $base-font-size * 0.875;
+@font-face {
+  font-family: "LINESeedKRRg";
+  src: url("../font/LINESeedKRRg.otf");
+}
+
+$base-font-family: "LINESeedKRRg", "Open Sans", "Helvetica Neue", "DejaVu Sans",
+  Arial, "PingFang SC", "Noto Sans CJK SC", "Hiragino Sans GB", Helvetica,
+  sans-serif;
+$base-font-size: 16px;
+$small-font-size: $base-font-size * 0.875;
 $base-line-height: 1.5;
 // Original, modded by acoustikue
 // $base-line-height: 1.5;
 
-
-$code-font-family:   Menlo, Monaco, Consolas, "DejaVu Sans Mono", "Liberation Mono", "Courier New", Courier, SimSun, monospace;
-$code-font-size:     15px;
+$code-font-family: Menlo, Monaco, Consolas, "DejaVu Sans Mono",
+  "Liberation Mono", "Courier New", Courier, SimSun, monospace;
+$code-font-size: 15px;
 
 // Width of the content area
-$content-width:    800px;
+$content-width: 800px;
 
-$on-palm:          600px;
-$on-laptop:        800px;
+$on-palm: 600px;
+$on-laptop: 800px;
 
 $color-link: #036;
 $color-link-hover: #069;
@@ -27,22 +35,14 @@ $color-link-hover: #069;
 /* $header-bg-hover: #404040; /* modded by acoustikue */
 $header-bg: #000000; /* modded by gloomydumber(background color of nav) */
 $header-bg-hover: #292727; /* modded by gloomydumber */
-$header-link: #CFD8DC;
-$header-fg: #FFF;
+$header-link: #cfd8dc;
+$header-fg: #fff;
 
 @mixin media-query($device) {
-    @media screen and (max-width: $device) {
-        @content;
-    }
+  @media screen and (max-width: $device) {
+    @content;
+  }
 }
 
-
-
 // Import partials from `sass_dir` (defaults to `_sass`)
-@import
-        "base",
-        "animate",
-        "layout",
-        "syntax-highlighting",
-        "easybook"
-;
+@import "base", "animate", "layout", "syntax-highlighting", "easybook";
