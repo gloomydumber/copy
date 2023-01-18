@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Tips for Novice Trader"
-date: 2023-01-18T20:00:00Z
+date: 2023-01-18T12:00:00Z
 categories: INVESTMENTS
 permalink: /archivers/tipsfornovicetrader
 nocomments: false
