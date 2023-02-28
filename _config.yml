@@ -11,6 +11,7 @@ email: chromacrow@naver.com
 author: gloomydumber
 avatar: "/assets/profile_mod.png"
 profile: The Principle Of Good Faith.
+timezone: Asia/Seoul
 #twitter_username: twitter_username
 #github_username:  gloomydumber
 
@@ -23,21 +24,21 @@ profile_links:
 
 # Comment Service (Disqus)
 #  choose one and un-comment the line to active it
-disqus_shortname: gloomydumber   # get one: https://disqus.com/admin/signup/
+disqus_shortname: gloomydumber # get one: https://disqus.com/admin/signup/
 
 excerpt_separator: <!--more-->
 
 header:
-  links:             # Links on the header. Link to in-site page with a slash as prefix
+  links: # Links on the header. Link to in-site page with a slash as prefix
     About: /about/
     Archive: /archivers/ # **** NEED modded *****
     # modded by acoustikue
 
 #permalink: /archivers/:title # modded by acoustikue
 plugins:
- - jekyll-paginate
- - jekyll-gist
- - jemoji
+  - jekyll-paginate
+  - jekyll-gist
+  - jemoji
 
 # Build settings
 paginate: 5
@@ -47,8 +48,7 @@ highlighter: rouge
 markdown: kramdown
 
 defaults:
-  -
-    scope:
+  - scope:
       path: ""
       type: "posts"
     values:
