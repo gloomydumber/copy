@@ -6,6 +6,7 @@ categories: Settings
 permalink: /archivers/errortemp
 nocomments: false
 use_math: true
+published: false
 ---
 
 # Error Temp

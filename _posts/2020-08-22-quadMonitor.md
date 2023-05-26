@@ -6,6 +6,7 @@ categories: Settings
 permalink: /archivers/quadMonitor
 nocomments: false
 use_math: true
+published: false
 ---
 
 # Quad Monitor Set up
