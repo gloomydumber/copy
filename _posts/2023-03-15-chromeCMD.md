@@ -3,7 +3,7 @@ layout: post
 title: "Run commands in the Chromium Command Menu"
 date: 2023-03-15T12:00:00Z
 categories: WEB-FRONTEND
-permalink: /archivers/chromiumCommand
+permalink: /archivers/chromiumCmd
 nocomments: false
 use_math: true
 ---
