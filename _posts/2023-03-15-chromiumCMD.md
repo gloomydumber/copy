@@ -11,73 +11,73 @@ use_math: true
 # Run commands in the Chromium Command Menu
 
 |    ![memoryEater](/assets/posts/2023-03-15-chromiumCMD/memoryeatchrome.gif)     |
-| :-----------------------------------------------------------------: |
-| <b>Å©·Î¹Ì¿ò ºê¶ó¿ìÀú¿¡¼­ ¸í·É¾î È°¿ëÇÏ±â</b> |
+| :-----------------------------------------------------------------------------: |
+| <b>í¬ë¡œë¯¸ì›€ ë¸Œë¼ìš°ì €ì—ì„œ ëª…ë ¹ì–´ í™œìš©í•˜ê¸°</b> |
 
 ## Quick Refresh
 
-Å©·Î¹Ì¿ò ºê¶ó¿ìÀúÀÇ °³¹ßÀÚ µµ±¸´Â *HTML*, *CSS*, *JavaScript* µîÀ¸·Î ÀÌ·ç¾îÁø À¥ °³¹ß¿¡ °ü·ÃµÈ ¿©·¯ ´Ù¾çÇÑ ±â´ÉÀ» Á¦°øÇÑ´Ù
+í¬ë¡œë¯¸ì›€ ë¸Œë¼ìš°ì €ì˜ ê°œë°œìž ë„êµ¬ëŠ” *HTML*, *CSS*, *JavaScript* ë“±ìœ¼ë¡œ ì´ë£¨ì–´ì§„ ì›¹ ê°œë°œì— ê´€ë ¨ëœ ì—¬ëŸ¬ ë‹¤ì–‘í•œ ê¸°ëŠ¥ì„ ì œê³µí•œë‹¤
 
-±×·¯ÇÑ ´Ù¾çÇÑ ±â´ÉÀ» Á¢±ÙÇÒ ¶§ °³¹ßÀÚ µµ±¸ÀÇ UI°¡ ¾Æ´Ñ ÄÜ¼Ö ¸í·É¾î¸¦ ÅëÇØ Á¢±ÙÇÒ ¼ö ÀÖ´Âµ¥, ÀÌ¸¦ ¾Ë¾ÆµÎ¸é ºü¸£°Ô ¿øÇÏ´Â ±â´É¿¡ Á¢±ÙÇÒ ¼ö ÀÖ´Ù.
+ê·¸ëŸ¬í•œ ë‹¤ì–‘í•œ ê¸°ëŠ¥ì„ ì ‘ê·¼í•  ë•Œ ê°œë°œìž ë„êµ¬ì˜ UIê°€ ì•„ë‹Œ ì½˜ì†” ëª…ë ¹ì–´ë¥¼ í†µí•´ ì ‘ê·¼í•  ìˆ˜ ìžˆëŠ”ë°, ì´ë¥¼ ì•Œì•„ë‘ë©´ ë¹ ë¥´ê²Œ ì›í•˜ëŠ” ê¸°ëŠ¥ì— ì ‘ê·¼í•  ìˆ˜ ìžˆë‹¤.
 
-°³¹ßÀÚ µµ±¸´Â *F12* ¹× *Ctrl(command) + Shift + I* ÀÇ ´ÜÃàÅ°·Î Á¢±ÙÇÒ ¼ö ÀÖ°í, ¸í·É¾î ±â´ÉÀº °³¹ßÀÚ µµ±¸¿¡ ÁøÀÔ ÈÄ *ctrl(command) + shift + p* ¸¦ ÅëÇØ Á¢±ÙÇÑ´Ù.
+ê°œë°œìž ë„êµ¬ëŠ” *F12* ë° *Ctrl(command) + Shift + I* ì˜ ë‹¨ì¶•í‚¤ë¡œ ì ‘ê·¼í•  ìˆ˜ ìžˆê³ , ëª…ë ¹ì–´ ê¸°ëŠ¥ì€ ê°œë°œìž ë„êµ¬ì— ì§„ìž… í›„ *ctrl(command) + shift + p* ë¥¼ í†µí•´ ì ‘ê·¼í•œë‹¤.
 
-ÇØ´ç Æ÷½ºÆ®´Â °³¹ßÀÚ µµ±¸¿¡¼­ Á¦°øÇÏ´Â ¸î¸î À¯¿ëÇÑ <b>¸í·É¾î ±â´É</b>¿¡ ´ëÇØ ¾Ë¾Æº»´Ù.
+í•´ë‹¹ í¬ìŠ¤íŠ¸ëŠ” ê°œë°œìž ë„êµ¬ì—ì„œ ì œê³µí•˜ëŠ” ëª‡ëª‡ ìœ ìš©í•œ <b>ëª…ë ¹ì–´ ê¸°ëŠ¥</b>ì— ëŒ€í•´ ì•Œì•„ë³¸ë‹¤.
 
-## »ç¶óÁö´Â HTML ¿ä¼Ò µð¹ö±ëÇÏ±â
+## ì‚¬ë¼ì§€ëŠ” HTML ìš”ì†Œ ë””ë²„ê¹…í•˜ê¸°
 
-+ `Emulate a focused page` : ¾Æ·¡ÀÇ »ç·Ê¿Í °°Àº »ç¶óÁö´Â HTML ¿ä¼Ò¸¦ µð¹ö±ë ÇÒ ¶§ È°¿ë
++ `Emulate a focused page` : ì•„ëž˜ì˜ ì‚¬ë¡€ì™€ ê°™ì€ ì‚¬ë¼ì§€ëŠ” HTML ìš”ì†Œë¥¼ ë””ë²„ê¹… í•  ë•Œ í™œìš©
 
 ![01](/assets/posts/2023-03-15-chromiumCMD/first.gif)
 
-À¥ ÆäÀÌÁö¿¡´Â À§ÀÇ »ç·Ê¿Í °°ÀÌ *AutoComplete* ÇÊµå³ª Ä¿¼­ À§Ä¡¿¡ µû¶ó ³ªÅ¸³ª°Å³ª »ç¶óÁö´Â HTML ¿ä¼ÒµéÀÌ ÀÖ´Ù.
+ì›¹ íŽ˜ì´ì§€ì—ëŠ” ìœ„ì˜ ì‚¬ë¡€ì™€ ê°™ì´ *AutoComplete* í•„ë“œë‚˜ ì»¤ì„œ ìœ„ì¹˜ì— ë”°ë¼ ë‚˜íƒ€ë‚˜ê±°ë‚˜ ì‚¬ë¼ì§€ëŠ” HTML ìš”ì†Œë“¤ì´ ìžˆë‹¤.
 
-ÀÌ·¯ÇÑ ¿ä¼Ò¸¦ °³¹ßÀÚ µµ±¸¸¦ ÅëÇØ °Ë»çÇÏ°íÀÚ ¿ìÅ¬¸¯À¸·Î °Ë»ç ¹öÆ°À» Å¬¸¯ÇÏ¸é, Å¬¸¯ÇÑ ¼ø°£ `focus` °¡ ÇØÁ¦µÇ¾î¹ö·Á ÇØ´ç HTML ¿ä¼Ò¸¦ µð¹ö±ëÇÒ ¼ö ¾ø¾îÁø´Ù.
+ì´ëŸ¬í•œ ìš”ì†Œë¥¼ ê°œë°œìž ë„êµ¬ë¥¼ í†µí•´ ê²€ì‚¬í•˜ê³ ìž ìš°í´ë¦­ìœ¼ë¡œ ê²€ì‚¬ ë²„íŠ¼ì„ í´ë¦­í•˜ë©´, í´ë¦­í•œ ìˆœê°„ `focus` ê°€ í•´ì œë˜ì–´ë²„ë ¤ í•´ë‹¹ HTML ìš”ì†Œë¥¼ ë””ë²„ê¹…í•  ìˆ˜ ì—†ì–´ì§„ë‹¤.
 
 ![02](/assets/posts/2023-03-15-chromiumCMD/second.gif)
 
-ÀÌ ¶§, ¾Æ·¡¿Í °°ÀÌ ¸í·É¾î ÄÜ¼Ö¿¡ `focus` ¸¦ ÀÔ·ÂÇØÁÖ¸é, `Emulate a focused page` ¿É¼ÇÀÌ µîÀåÇÑ´Ù.
+ì´ ë•Œ, ì•„ëž˜ì™€ ê°™ì´ ëª…ë ¹ì–´ ì½˜ì†”ì— `focus` ë¥¼ ìž…ë ¥í•´ì£¼ë©´, `Emulate a focused page` ì˜µì…˜ì´ ë“±ìž¥í•œë‹¤.
 
 ![EmulateAfocusedPage](/assets/posts/2023-03-15-chromiumCMD/focus.png)
 
-ÀÌ·¸°Ô ÇÑ ÈÄ¿¡, ´Ù½Ã °Ë»ç¸¦ ½ÃµµÇÏ¸é ¾Æ·¡¿Í °°ÀÌ »ç¶óÁöÁö ¾Ê°í µð¹ö±ëÀÌ °¡´ÉÇØÁø´Ù.
+ì´ë ‡ê²Œ í•œ í›„ì—, ë‹¤ì‹œ ê²€ì‚¬ë¥¼ ì‹œë„í•˜ë©´ ì•„ëž˜ì™€ ê°™ì´ ì‚¬ë¼ì§€ì§€ ì•Šê³  ë””ë²„ê¹…ì´ ê°€ëŠ¥í•´ì§„ë‹¤.
 
 ![03](/assets/posts/2023-03-15-chromiumCMD/third.gif)
 
 ## Capture
 
-À¥ ÆäÀÌÁö¸¦ ÀÌ¹ÌÁö·Î Ä¸ÃÄÇØÁÖ´Â ±â´ÉÀ» ½ÇÇàÇÏ´Â ¸í·É¾îµéÀÌ´Ù.
+ì›¹ íŽ˜ì´ì§€ë¥¼ ì´ë¯¸ì§€ë¡œ ìº¡ì³í•´ì£¼ëŠ” ê¸°ëŠ¥ì„ ì‹¤í–‰í•˜ëŠ” ëª…ë ¹ì–´ë“¤ì´ë‹¤.
 
-*ctrl(command) + shift + m* µîÀ¸·Î *Responsive* È­¸é ¼³Á¤À» ÇÑ ÀÌÈÄ ½ÇÇàÇÏ¸é ¸ð¹ÙÀÏÀÌ³ª ÅÂºí¸´ È­¸é µîµµ Ä¸ÃÄÇÒ ¼ö ÀÖ´Ù.
+*ctrl(command) + shift + m* ë“±ìœ¼ë¡œ *Responsive* í™”ë©´ ì„¤ì •ì„ í•œ ì´í›„ ì‹¤í–‰í•˜ë©´ ëª¨ë°”ì¼ì´ë‚˜ íƒœë¸”ë¦¿ í™”ë©´ ë“±ë„ ìº¡ì³í•  ìˆ˜ ìžˆë‹¤.
 
-+ `Capture area screenshot` : ¸¶¿ì½º Ä¿¼­°¡ ½ÊÀÚ¸ð¾çÀ¸·Î ¹Ù²î¸ç, À¥ ÆäÀÌÁö¿¡¼­ µå·¡±×ÇÑ ºÎºÐ¸¸ Ä¸ÃÄÇÏ¿© ÀúÀåÇÑ´Ù.
-+ `Capture full size screenshot` : ÇöÀç È­¸é¿¡ º¸ÀÌÁö ¾Ê´Â *x, yÃà ½ºÅ©·Ñ* ºÎºÐ ¹× À¥ ÆäÀÌÁö UIÀÇ ÀüºÎ¸¦ Ä¸ÃÄÇÏ¿© ÀúÀåÇÑ´Ù.
-+ `Capture node screenshot` : *HTML node Element*¸¦ ¼±ÅÃÇÏ°í ½ÇÇàÇÏ¸é, ÇØ´ç ³ëµå ºÎºÐ¸¸À» Ä¸ÃÄÇÏ¿© ÀúÀåÇÑ´Ù.
-+ `Capture screenshot` : º¸°íÀÖ´Â È­¸é ±×´ë·Î¸¦ Ä¸ÃÄÇÏ¸ç, *½ºÅ©·Ñ¹Ù* °¡ ÀÖ´Â °æ¿ì, *½ºÅ©·Ñ¹Ù* ÀÇ ¸ð½Àµµ Ä¸ÃÄµÈ´Ù.
++ `Capture area screenshot` : ë§ˆìš°ìŠ¤ ì»¤ì„œê°€ ì‹­ìžëª¨ì–‘ìœ¼ë¡œ ë°”ë€Œë©°, ì›¹ íŽ˜ì´ì§€ì—ì„œ ë“œëž˜ê·¸í•œ ë¶€ë¶„ë§Œ ìº¡ì³í•˜ì—¬ ì €ìž¥í•œë‹¤.
++ `Capture full size screenshot` : í˜„ìž¬ í™”ë©´ì— ë³´ì´ì§€ ì•ŠëŠ” *x, yì¶• ìŠ¤í¬ë¡¤* ë¶€ë¶„ ë° ì›¹ íŽ˜ì´ì§€ UIì˜ ì „ë¶€ë¥¼ ìº¡ì³í•˜ì—¬ ì €ìž¥í•œë‹¤.
++ `Capture node screenshot` : *HTML node Element*ë¥¼ ì„ íƒí•˜ê³  ì‹¤í–‰í•˜ë©´, í•´ë‹¹ ë…¸ë“œ ë¶€ë¶„ë§Œì„ ìº¡ì³í•˜ì—¬ ì €ìž¥í•œë‹¤.
++ `Capture screenshot` : ë³´ê³ ìžˆëŠ” í™”ë©´ ê·¸ëŒ€ë¡œë¥¼ ìº¡ì³í•˜ë©°, *ìŠ¤í¬ë¡¤ë°”* ê°€ ìžˆëŠ” ê²½ìš°, *ìŠ¤í¬ë¡¤ë°”* ì˜ ëª¨ìŠµë„ ìº¡ì³ëœë‹¤.
 
 ## miscellaneous
 
-ÀÌÇÏ ºÎÅÍ´Â ±âÅ¸ Àç¹Õ´Â ±â´É µîÀ» ¼­¼ú
+ì´í•˜ ë¶€í„°ëŠ” ê¸°íƒ€ ìž¬ë°ŒëŠ” ê¸°ëŠ¥ ë“±ì„ ì„œìˆ 
 
 ### Emulate vision deficiencies
 
-+ `Emulate blurred vision` : HTML ¿ä¼ÒµéÀ» ¸ðµÎ ºí·¯ Ã³¸®ÇÏ¿© º¸¿©ÁÜ
-+ `Emulate protanopia (no red)` : HTML ¿ä¼Ò¿¡¼­ Àû»öÀ» Á¦°ÅÇÔ (UI µðÀÚÀÎ ½Ã »ö¸ÍÀ» °í·ÁÇÒ ¶§ »ç¿ë)
-+ `Emulate tritanopia (no blue)` : HTML ¿ä¼Ò¿¡¼­ Ã»»öÀ» Á¦°ÅÇÔ
-+ `Emulate deuteranopia (no green)` : HTML ¿ä¼Ò¿¡¼­ ³ì»öÀ» Á¦°ÅÇÔ
-+ `Emulate achromatopsia (no color)` : HTML ¿ä¼Ò¿¡¼­ »ö»óÀ» Á¦°ÅÇÏ°í Èæ¹éÀ¸·Î Ç¥Çö
++ `Emulate blurred vision` : HTML ìš”ì†Œë“¤ì„ ëª¨ë‘ ë¸”ëŸ¬ ì²˜ë¦¬í•˜ì—¬ ë³´ì—¬ì¤Œ
++ `Emulate protanopia (no red)` : HTML ìš”ì†Œì—ì„œ ì ìƒ‰ì„ ì œê±°í•¨ (UI ë””ìžì¸ ì‹œ ìƒ‰ë§¹ì„ ê³ ë ¤í•  ë•Œ ì‚¬ìš©)
++ `Emulate tritanopia (no blue)` : HTML ìš”ì†Œì—ì„œ ì²­ìƒ‰ì„ ì œê±°í•¨
++ `Emulate deuteranopia (no green)` : HTML ìš”ì†Œì—ì„œ ë…¹ìƒ‰ì„ ì œê±°í•¨
++ `Emulate achromatopsia (no color)` : HTML ìš”ì†Œì—ì„œ ìƒ‰ìƒì„ ì œê±°í•˜ê³  í‘ë°±ìœ¼ë¡œ í‘œí˜„
 
 ### Developer tool Theme Toggle
 
-+ `Switch to light theme` : °³¹ßÀÚ µµ±¸ÀÇ Å×¸¶¸¦ ¶óÀÌÆ® Å×¸¶·Î º¯°æ
-+ `Switch to dark theme` : °³¹ßÀÚ µµ±¸ÀÇ Å×¸¶¸¦ ´ÙÅ© Å×¸¶·Î º¯°æ
++ `Switch to light theme` : ê°œë°œìž ë„êµ¬ì˜ í…Œë§ˆë¥¼ ë¼ì´íŠ¸ í…Œë§ˆë¡œ ë³€ê²½
++ `Switch to dark theme` : ê°œë°œìž ë„êµ¬ì˜ í…Œë§ˆë¥¼ ë‹¤í¬ í…Œë§ˆë¡œ ë³€ê²½
 
 ### Open File
 
-°³¹ßÀÚ µµ±¸¿¡¼­ *ctrl(command) + shift + p* °¡ ¾Æ´Ñ, *ctrl(command) + p* ¸¦ ÀÔ·ÂÇÏ°í À¥ÆäÀÌÁö¸¦ ±¸¼ºÇÏ´Â ÆÄÀÏ(*.html*, *.css*, *.js* µîÀÇ ÆÄÀÏ)ÀÇ ÆÄÀÏ¸íÀ» ÀÔ·ÂÇÏ¸é ÇØ´ç *file* À» ¹Ù·Î ¿­ ¼ö ÀÖ´Ù.
+ê°œë°œìž ë„êµ¬ì—ì„œ *ctrl(command) + shift + p* ê°€ ì•„ë‹Œ, *ctrl(command) + p* ë¥¼ ìž…ë ¥í•˜ê³  ì›¹íŽ˜ì´ì§€ë¥¼ êµ¬ì„±í•˜ëŠ” íŒŒì¼(*.html*, *.css*, *.js* ë“±ì˜ íŒŒì¼)ì˜ íŒŒì¼ëª…ì„ ìž…ë ¥í•˜ë©´ í•´ë‹¹ *file* ì„ ë°”ë¡œ ì—´ ìˆ˜ ìžˆë‹¤.
 
 ![openFile](/assets/posts/2023-03-15-chromiumCMD/openfile.gif)
 
 ## References
 
-[? Chrome Developers ¹®¼­ ÇØ´çÇ×¸ñ](https://developer.chrome.com/docs/devtools/command-menu/)
+[ðŸ”— Chrome Developers ë¬¸ì„œ í•´ë‹¹í•­ëª©](https://developer.chrome.com/docs/devtools/command-menu/)
