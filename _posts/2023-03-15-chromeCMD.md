@@ -1,10 +1,9 @@
 ---
 layout: post
-title: "크로미움 브라우저에서 명령어 활용하기"
-date: 2023-03-15 13:20:00
+title: "Run commands in the Chromium Command Menu"
+date: 2023-03-15T12:00:00Z
 categories: WEB-FRONTEND
 permalink: /archivers/chromiumCommand
-published: true
 nocomments: false
 use_math: true
 ---
@@ -13,7 +12,7 @@ use_math: true
 
 |    ![memoryEater](/assets/posts/2023-03-15-chromeCommands/memoryeatchrome.gif)     |
 | :-----------------------------------------------------------------: |
-| <b>Run commands in the Chromium Command Menu</b> |
+| <b>크로미움 브라우저에서 명령어 활용하기</b> |
 
 ## Quick Refresh
 
