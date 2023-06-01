@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "크로미움 브라우저에서 명령어 활용하기"
-date: 2023-03-15 13:20 +0900
+date: 2023-03-15 13:20:00
 categories: WEB-FRONTEND
 permalink: /archivers/chromiumCommand
 published: true
