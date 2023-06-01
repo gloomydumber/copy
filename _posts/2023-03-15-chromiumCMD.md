@@ -10,7 +10,7 @@ use_math: true
 
 # Run commands in the Chromium Command Menu
 
-|    ![memoryEater](/assets/posts/2023-03-15-chromeCommands/memoryeatchrome.gif)     |
+|    ![memoryEater](/assets/posts/2023-03-15-chromiumCMD/memoryeatchrome.gif)     |
 | :-----------------------------------------------------------------: |
 | <b>크로미움 브라우저에서 명령어 활용하기</b> |
 
@@ -28,21 +28,21 @@ use_math: true
 
 + `Emulate a focused page` : 아래의 사례와 같은 사라지는 HTML 요소를 디버깅 할 때 활용
 
-![01](/assets/posts/2023-03-15-chromeCommands/first.gif)
+![01](/assets/posts/2023-03-15-chromiumCMD/first.gif)
 
 웹 페이지에는 위의 사례와 같이 *AutoComplete* 필드나 커서 위치에 따라 나타나거나 사라지는 HTML 요소들이 있다.
 
 이러한 요소를 개발자 도구를 통해 검사하고자 우클릭으로 검사 버튼을 클릭하면, 클릭한 순간 `focus` 가 해제되어버려 해당 HTML 요소를 디버깅할 수 없어진다.
 
-![02](/assets/posts/2023-03-15-chromeCommands/second.gif)
+![02](/assets/posts/2023-03-15-chromiumCMD/second.gif)
 
 이 때, 아래와 같이 명령어 콘솔에 `focus` 를 입력해주면, `Emulate a focused page` 옵션이 등장한다.
 
-![EmulateAfocusedPage](/assets/posts/2023-03-15-chromeCommands/focus.png)
+![EmulateAfocusedPage](/assets/posts/2023-03-15-chromiumCMD/focus.png)
 
 이렇게 한 후에, 다시 검사를 시도하면 아래와 같이 사라지지 않고 디버깅이 가능해진다.
 
-![03](/assets/posts/2023-03-15-chromeCommands/third.gif)
+![03](/assets/posts/2023-03-15-chromiumCMD/third.gif)
 
 ## Capture
 
@@ -76,7 +76,7 @@ use_math: true
 
 개발자 도구에서 *ctrl(command) + shift + p* 가 아닌, *ctrl(command) + p* 를 입력하고 웹페이지를 구성하는 파일(*.html*, *.css*, *.js* 등의 파일)의 파일명을 입력하면 해당 *file* 을 바로 열 수 있다.
 
-![openFile](/assets/posts/2023-03-15-chromeCommands/openfile.gif)
+![openFile](/assets/posts/2023-03-15-chromiumCMD/openfile.gif)
 
 ## References
 
