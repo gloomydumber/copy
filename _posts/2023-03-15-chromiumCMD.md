@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Run commands in the Chromium Command Menu"
-date: 2023-03-15T12:00:00Z
+date: 2023-03-15 10:40 +0900
 categories: WEB-FRONTEND
 permalink: /archivers/chromiumCmd
 nocomments: false
