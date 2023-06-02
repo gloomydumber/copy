@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Run commands in the Chromium Command Menu"
+title: "크로미움 브라우저에서 명령어 활용하기"
 date: 2023-03-15 10:40 +0900
 categories: WEB-FRONTEND
 permalink: /archivers/chromiumCmd
@@ -12,7 +12,7 @@ use_math: true
 
 |    ![memoryEater](/assets/posts/2023-03-15-chromiumCMD/memoryeatchrome.gif)     |
 | :-----------------------------------------------------------------------------: |
-| <b>크로미움 브라우저에서 명령어 활용하기</b> |
+| <b>CLI Of Chromium Developer tool</b> |
 
 ## Quick Refresh
 
@@ -66,6 +66,8 @@ use_math: true
 + `Emulate tritanopia (no blue)` : HTML 요소에서 청색을 제거함
 + `Emulate deuteranopia (no green)` : HTML 요소에서 녹색을 제거함
 + `Emulate achromatopsia (no color)` : HTML 요소에서 색상을 제거하고 흑백으로 표현
+
+위 기능을 적용 후에도 캡쳐 기능을 사용할 수 있는데, 블러 처리된 웹 UI를 저장하는 등으로 활용 할 수 있다.
 
 ### Developer tool Theme Toggle
 
