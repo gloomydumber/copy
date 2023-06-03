@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "jekyll에서 새로운 포스트가 나타나지 않을 때"
+title: "jekyll 블로그 이용 시 새로운 포스트가 나타나지 않을 때"
 date: 2023-04-22 10:40 +0900
 categories: ETC
 permalink: /archivers/jekyllNewpost
@@ -38,27 +38,15 @@ use_math: true
 
 아래는 대표적인 블로그 포스트 파일 형식의 예시이다.
 
-> 2011-12-31-new-years-eve-is-awesome.md
 > 2012-09-12-how-to-write-a-blog.md
 
 모든 블로그 포스트는 파일 최상단에 [🔗 `front matter`](https://jekyllrb.com/docs/front-matter/) 형식을 갖추고 있어야 한다.
 
 아래는 `front matter` 를 갖춘 포스트의 예시이다.
 
-```markdown
----
-layout: post
-title:  "Welcome to Jekyll!"
----
+{% gist 1d592496d349da963578b422ccddfe2b %}
 
-# Welcome
-
-**Hello world**, this is my first Jekyll blog post.
-
-I hope you like it!
-```
-
-## date format
+## `date` Option
 
 앞서 언급한 `front matter` 에서 포스트 작성일을 `date` 필드에 설정해주게 되는데, 이 때 `_config.yml` 에서 설정한 `timezone` 필드를 고려하여 작성해야한다.
 
@@ -72,13 +60,13 @@ I hope you like it!
 
 따라서, `date` 필드는 `timezone` 설정을 고려하여 자신의 블로그에서 표기하는 정도를 고려하여 입력하면 된다.
 
-## future Option
+## `future` Option
 
 앞서 언급한 `date` 포맷에 현재 시각보다 미래의 시각을 작성하면 포스트가 보이지 않을 수 있기 때문에 `timezone` 설정과 함께 잘 고려해야할 사항이다
 
 `_config.yml`에 `future` 옵션을 `true` 값을 설정하면 현재 시각보다 미래의 시각으로 설정한 포스트도 보이게 할 수도 있다
 
-## published Option
+## `published` Option
 
 `front matter` 에 `published: false` 옵션을 부여하면 포스트가 노출이 되지 않도록 할 수 있다
 
@@ -106,8 +94,8 @@ I hope you like it!
 + `2012-09-12-how-to-write-a-blog.md` 와 같이 파일 이름 및 확장자 형식을 확실히 할 것
 + `timezone` 을 고려한 `date` 를 지정할 것
 + 지정한 `date` 가 현재 시각에 비해 미래 시각이 아닌 것을 확인 할 것
-+ `published` 항목이 `true` 로 설정되어 있는지 확인 할 것
-+ `:` 와 같은 문자열이 제목에 있지 않도록 할 것
++ `published` 옵션이 `false` 로 설정하지 않았는지 확인 할 것
++ `:` 와 같은 문자가 제목에 포함되지 않도록 할 것
 + `utf-8` 형식으로 포스트를 작성했는지 확인 할 것
 
 ## References
