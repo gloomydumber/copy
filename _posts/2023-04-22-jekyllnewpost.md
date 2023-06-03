@@ -44,7 +44,7 @@ use_math: true
 
 아래는 `front matter` 를 갖춘 포스트의 예시이다.
 
-{% gist 1d592496d349da963578b422ccddfe2b %}
+{% gist 7c30bb39a626cb7794f16a87f05b5c19521dd796 %}
 
 ## `date` Option
 
