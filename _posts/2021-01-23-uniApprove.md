@@ -50,6 +50,6 @@ Fourth, type infinite value in uint256
 
 Approve() function executed by EtherScan Web3 API
 
-based on https://ethereum.stackexchange.com/questions/88064/how-to-manually-approve-a-token-for-swap-on-uniswap-direct-contract-interaction
+based on [? Ethereum StackExchange Question](https://ethereum.stackexchange.com/questions/88064/how-to-manually-approve-a-token-for-swap-on-uniswap-direct-contract-interaction)
 
-why contract of erc20 tokens have approve() function : https://www.reddit.com/r/UniSwap/comments/hxb74e/why_does_uniswap_require_me_to_approve_a_token/
+why contract of erc20 tokens have approve() function : [? reddit post](https://www.reddit.com/r/UniSwap/comments/hxb74e/why_does_uniswap_require_me_to_approve_a_token/)

@@ -16,6 +16,8 @@ use_math: true
 
 본 포스팅에서는 *Node.js*에서 *데이터 및 파일 입출력*을 처리 하는 방법을 알아본다.
 
+*JavaScript*로 *PS* 등을 하는 경우에도 참고하여 이용
+
 ## 출력
 
 출력의 경우, 기본적으로 *console.log*를 이용한다.
@@ -103,6 +105,18 @@ console.log("%cYin %cand %cYang", "color: red", "color: black", "color: blue");
 
 ## 입력
 
+## PS의 경우
+
+```js
+// 입력값이 한 줄일 경우
+let input = require('fs').readFileSync(filePath).toString().trim();
+```
+
+```js
+// 입력값이 여러 줄일 경우
+let input = require('fs').readFileSync(filePath).toString().trim().split(' ');
+```
+
 ### readline
 
 _readline_ module은 *Node.js*의 기본 내장 모듈이다.
@@ -179,7 +193,7 @@ _Promise_ 객체와 *process.stdin*을 활용하였다.
 
 *process.stdin*에 관한 자세한 명세 파악 확인 필요
 
-## References
+<!-- ## References -->
 
 <!-- [Array on mozzila.org](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array){: target="\_blank"} -->
 

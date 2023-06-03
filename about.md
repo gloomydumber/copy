@@ -9,7 +9,7 @@ permalink: /about/
 
 ## Gloomydumber Blog
 
-for studying Computer Science & Engineering and IFRS in Accounting
+for studying Computer Science & Engineering, Blockchain and Investments
 
 ### Education
 
