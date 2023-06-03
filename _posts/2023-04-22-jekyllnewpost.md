@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "jekyll 새로운 포스트가 나타나지 않을 때"
+title: "jekyll에서 새로운 포스트가 나타나지 않을 때"
 date: 2023-04-22 10:40 +0900
 categories: ETC
 permalink: /archivers/jekyllNewpost
@@ -18,13 +18,15 @@ use_math: true
 
 개발 블로그를 운영하기위해 여러 플랫폼이나 방법이 있지만, *github-pages*와 *jekyll*를 활용하는 방법을 사용하고 있다.
 
-*github-pages* 를 이용하면 *jekyll* 이나 *gatsby* 등을 활용하여 커스텀하여 블로그를 꾸미거나, 자신의 포스트 데이터를 비교적 본인 스스로가 관리할 수 있다.
+*github-pages* 를 이용하면 *jekyll* 이나 *gatsby* 등을 활용하여 커스텀 가능한 블로그를 꾸미거나, 자신의 포스트 데이터를 비교적 본인 스스로가 관리할 수 있다.
 
 다른 플랫폼에 글을 올렸을 때에 비해 자신의 컨텐츠가 중앙화 되는 문제가 상대적으로 덜 하다.
 
 하지만 단점도 있는데, *github-pages* 공식 명세에 따르면 *github-pages* 를 활용한 사이트의 경우 *1GB*의 용량을 넘길 수 없고 트래픽도 한 달에 *100GB*로 제한된다.
 
-또 이 포스트에서 다루는 *jekyll* 상의 명세를 잘 지키지 않을 경우에는 문제가 발생할 수 있을 것이다.
+이에 이미지는 블로그 크기에 따라 다른 클라우드 CDN을 이용하는 등의 차선책이 필요할 수도 있다.
+
+또 이 포스트에서 다루는 *jekyll* 상의 명세를 잘 지키지 않을 경우에도 문제가 발생할 수 있을 것이다.
 
 ## Jekyll Creating Posts
 
@@ -43,7 +45,7 @@ YEAR-MONTH-DAY-title.MARKUP
 2012-09-12-how-to-write-a-blog.md
 ```
 
-모든 블로그 포스트는 파일 최상단에 [`front matter`](https://jekyllrb.com/docs/front-matter/) 형식을 갖추고 있어야 한다.
+모든 블로그 포스트는 파일 최상단에 [🔗 `front matter`](https://jekyllrb.com/docs/front-matter/) 형식을 갖추고 있어야 한다.
 
 아래는 `front matter` 를 갖춘 포스트의 예시이다.
 
@@ -76,29 +78,29 @@ I hope you like it!
 
 ## future Option
 
-앞서 언급한 `date` 포맷에 현재 시각보다 미래의 시각을 작성하면 포스트가 보이지 않을 수 있기 때문에 `timezone` 설정과 함께 잘 고려해야할 사항임
+앞서 언급한 `date` 포맷에 현재 시각보다 미래의 시각을 작성하면 포스트가 보이지 않을 수 있기 때문에 `timezone` 설정과 함께 잘 고려해야할 사항이다
 
-`_config.yml`에 `future` 옵션을 `true` 값을 설정하면 현재 시각보다 미래의 시각으로 설정한 포스트도 보이게 할 수도 있음
+`_config.yml`에 `future` 옵션을 `true` 값을 설정하면 현재 시각보다 미래의 시각으로 설정한 포스트도 보이게 할 수도 있다
 
 ## published Option
 
-`front matter` 에 `published: false` 옵션을 부여하면 포스트가 노출이 되지 않도록 할 수 있음
+`front matter` 에 `published: false` 옵션을 부여하면 포스트가 노출이 되지 않도록 할 수 있다
 
-혹시나 다른 비공개 포스트의 `front matter` 를 복사하여 사용한 경우가 있을 수 있으니 주의 해야함
+혹시나 다른 비공개 포스트의 `front matter` 를 복사하여 사용한 경우가 있을 수 있으니 주의 해야한다
 
 ## : 문자
 
-포스트의 제목에 `:` 문자가 포함된 경우 새로운 포스트가 생성되지 않는데, `&#58` 과 같은 `HTML Entity` 형식으로 입력하면 잘 동작함
+포스트의 제목에 `:` 문자가 포함된 경우 새로운 포스트가 생성되지 않는데, `&#58` 과 같은 `HTML Entity` 형식으로 입력하면 잘 동작한다
 
 ## UTF-8 Format
 
 ![jekyll-utf8-problem](/assets/posts/2023-04-22-jekyllnewpost/jekyllutf8.png)
 
-상기 이미지는 *github-pages* 를 통해 `jekyll` 을 빌드할 때 발생한 에러 로그임
+상기 이미지는 *github-pages* 를 통해 `jekyll` 을 빌드할 때 발생한 에러 로그이다
 
-포스트 파일이 `utf-8` 포맷으로 작성되지 않으면 이미지와 같이 `invaild byte sequence in UTF-8` 과 같은 에러를 표출함
+포스트 파일이 `utf-8` 포맷으로 작성되지 않으면 이미지와 같이 `invaild byte sequence in UTF-8` 과 같은 에러를 표출한다
 
-*vs code*에서 *C/C++* 언어에서 한글을 이용하려고 `EUC-KR` 작성하던 설정이 포스트에도 반영되 발견한 현상
+*vs code* 에서 *C/C++* 언어에서 한글을 이용하려고 `EUC-KR` 작성하던 설정이 포스트에도 반영되어 발견한 현상이다
 
 ## Summary
 
@@ -115,7 +117,11 @@ I hope you like it!
 ## References
 
 [🔗 jekyll 공식 명세 - Posts](https://jekyllrb.com/docs/posts/)
+
 [🔗 Github Pages 공식 명세 - Usage limits](https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages#usage-limits)
+
 [🔗 Github-Pages 용량, 트래픽 해결을 위한 원드라이브 이미지 호스팅에 관한 포스트](https://pioneergu.github.io/posts/jekyll-github-blog-image-hosting/)
+
 [🔗 관련 stackoverflow 질문](https://stackoverflow.com/questions/30625044/jekyll-post-not-generated?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa)
+
 [🔗 관련 post](https://thecodinglog.github.io/ruby/2018/05/25/jekyll.html)
