@@ -32,18 +32,14 @@ use_math: true
 
 *jekyll* 블로그에서 새로운 포스트를 작성하기 위해서는 `_posts` 폴더 아래에 이하와 같은 포맷으로 파일을 작성한다.
 
-```bash
-YEAR-MONTH-DAY-title.MARKUP
-```
+> YEAR-MONTH-DAY-title.MARKUP
 
 `YEAR` 는 4자리의 숫자이며, `MONTH` 와 `DAY` 는 모두 2자리의 숫자 형식이여야한다. `MARKUP` 은 확장자이다.
 
 아래는 대표적인 블로그 포스트 파일 형식의 예시이다.
 
-```bash
-2011-12-31-new-years-eve-is-awesome.md
-2012-09-12-how-to-write-a-blog.md
-```
+> 2011-12-31-new-years-eve-is-awesome.md
+> 2012-09-12-how-to-write-a-blog.md
 
 모든 블로그 포스트는 파일 최상단에 [🔗 `front matter`](https://jekyllrb.com/docs/front-matter/) 형식을 갖추고 있어야 한다.
 
@@ -100,7 +96,7 @@ I hope you like it!
 
 포스트 파일이 `utf-8` 포맷으로 작성되지 않으면 이미지와 같이 `invaild byte sequence in UTF-8` 과 같은 에러를 표출한다
 
-*vs code* 에서 *C/C++* 언어에서 한글을 이용하려고 `EUC-KR` 작성하던 설정이 포스트에도 반영되어 발견한 현상이다
+*vs code* 에서 *C/C++* 언어 작성시에 한글을 이용하려고 `EUC-KR` 포맷으로 작성하던 설정이 포스트 파일 포맷에도 반영되어 발견한 현상이다
 
 ## Summary
 
