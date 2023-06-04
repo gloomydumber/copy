@@ -105,7 +105,7 @@ console.log("%cYin %cand %cYang", "color: red", "color: black", "color: blue");
 
 ## 입력
 
-## PS의 경우
+### PS의 경우
 
 ```js
 // 입력값이 한 줄일 경우

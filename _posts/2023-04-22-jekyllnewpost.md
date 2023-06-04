@@ -42,10 +42,6 @@ use_math: true
 
 모든 블로그 포스트는 파일 최상단에 [🔗 `front matter`](https://jekyllrb.com/docs/front-matter/) 형식을 갖추고 있어야 한다.
 
-아래는 `front matter` 를 갖춘 포스트의 예시이다.
-
-{% gist 7c30bb39a626cb7794f16a87f05b5c19521dd796 %}
-
 ## `date` Option
 
 앞서 언급한 `front matter` 에서 포스트 작성일을 `date` 필드에 설정해주게 되는데, 이 때 `_config.yml` 에서 설정한 `timezone` 필드를 고려하여 작성해야한다.
@@ -94,7 +90,7 @@ use_math: true
 + `2012-09-12-how-to-write-a-blog.md` 와 같이 파일 이름 및 확장자 형식을 확실히 할 것
 + `timezone` 을 고려한 `date` 를 지정할 것
 + 지정한 `date` 가 현재 시각에 비해 미래 시각이 아닌 것을 확인 할 것
-+ `published` 옵션이 `false` 로 설정하지 않았는지 확인 할 것
++ `published` 옵션이 `false` 로 설정되지 않았는지 확인 할 것
 + `:` 와 같은 문자가 제목에 포함되지 않도록 할 것
 + `utf-8` 형식으로 포스트를 작성했는지 확인 할 것
 
