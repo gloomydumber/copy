@@ -22,6 +22,8 @@ use_math: true
 
 개발자 도구는 *F12* 및 *Ctrl(command) + Shift + I* 의 단축키로 접근할 수 있고, 명령어 기능은 개발자 도구에 진입 후 *ctrl(command) + shift + p* 를 통해 접근한다.
 
+이는 Electorn 및 chromium을 기반으로한 Visual Studio Code의 Command Palette의 단축키와 동일한 것이다.
+
 해당 포스트는 개발자 도구에서 제공하는 몇몇 유용한 <b>명령어 기능</b>에 대해 알아본다.
 
 ## 사라지는 HTML 요소 디버깅하기

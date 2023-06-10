@@ -6,6 +6,7 @@ categories: WEB-FRONTEND
 permalink: /archivers/chromeExtension
 nocomments: false
 use_math: true
+published: false
 ---
 
 # Chrome Extension 개발 관련 POSTING
