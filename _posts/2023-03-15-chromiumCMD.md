@@ -46,6 +46,16 @@ use_math: true
 
 ![03](/assets/posts/2023-03-15-chromiumCMD/third.gif)
 
+또 다른 방법으로는 개발자 도구 콘솔 창에 아래의 JavaScript 코드를 붙여넣어 디버깅 할 수 있다
+
+```js
+(()=>{
+    setTimeout(()=>{
+        debugger
+    }, 5000)
+})()
+```
+
 ## Capture
 
 웹 페이지를 이미지로 캡쳐해주는 기능을 실행하는 명령어들이다.
