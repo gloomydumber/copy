@@ -18,11 +18,13 @@ use_math: true
 
 HTTP 연결은 TCP에 기반해 있고, TCP 커넥션은 연결 성립 이후 자체적으로 '튜닝' 되는데, 연결 초기에는 커넥션의 최대 속도를 제한하고 데이터가 성공적으로 전송됨에 따라서 속도 제한을 높여나간다. 이러한 TCP의 특징을 느린 시작(Slow Start)라 하는데, 이는 Congestion Control 알고리즘의 일부로 Congestion Control 알고리즘은 인터넷의 급작스러운 부하와 혼잡을 방지하는 역할을 한다.
 
-이러한 혼잡 제어 기능 떄문에, 새로운 커넥션은 이미 어느 정도 데이터를 주고받은 '튜닝 된 커넥션보다 느리다. '튜닝'된 커넥션은 막 성립된 새로운 커넥션 보다 더 빠르기 때문에, HTTP에는 이미 존재하는 커넥션을 재사용하는 기능이 있다.
+이러한 혼잡 제어 기능 떄문에, 새로운 커넥션은 이미 어느 정도 데이터를 주고받은 '튜닝' 된 커넥션보다 느리다. '튜닝'된 커넥션은 막 성립된 새로운 커넥션 보다 더 빠르기 때문에, HTTP에는 이미 존재하는 커넥션을 재사용하는 기능이 있다.
 
 HTTP 통신은 TCP 커넥션 위에서 이루어지는 것이고, HTTP 통신 자체는 비연결성(connectionless) 통신이지만, TCP 통신은 연결 지향(Connection-oriented) 통신이기 때문에 TCP라는 비교적 지속적인 연결 위에서 각각의 HTTP 통신이 단절적(비연결성)으로 이루어지고 있다고 이해할 수 있다.
 
-가령, API 요청을 HTTP 프로토콜을 통해 진행 할 때, 같은 서버에 요청을 3번 해야하는 경우, 3번 각각 동안 각기 다른 TCP 연결을 성립시키는 방법도 있지만, 단 한 번만 TCP 연결을 성립시키고, 해당 연결 상에서 3번의 모든 HTTP 연결을 처리할 수 있다는 뜻이다.
+따라서, HTTP 통신이 비연결성을 지니고 있으면서도, TCP의 연결 지향적인 특징을 활용하면, 좀 더 효율적인 통신을 할 수 있다.
+
+가령, API 요청을 HTTP 프로토콜을 통해 진행 할 때, 같은 서버에 요청을 3번 해야하는 경우, 3번 각각 동안 각기 다른 TCP 연결을 성립시키는 방법도 있지만, 단 한 번만 TCP 연결을 성립시키고, 해당 연결 상에서 3번의 모든 HTTP 연결을 처리할 수 있다는 것이다.
 
 전자와 같이 3번 동안 각각 각기 다른 TCP 연결을 성립하고자하면, 각 연결마다 '튜닝'이 진행되어야 하기 때문에, 후자와 같이 이미 성립 된 최초의 TCP 연결을 활용하는 것보다 비효율적이고 느릴 것이다.
 
@@ -110,7 +112,7 @@ req.end();
 // const secondReqWithPersistentConnection = https.request(options, (res) => { ... }) // 'options'의 agent 변수가 다시 재활용 된다.
 ```
 
-이번에는 `new https.Agent()` 를 통해, `keepAlive` 옵션을 명시적으로(explitcly) 작성해주었다.
+이번에는 `new https.Agent()` 를 통해, `keepAlive` 옵션을 명시적으로(explictly) 작성해주었다.
 
 이렇게 명시적으로 작성해주어야 Persistence Connection이 성립되고, 미리 불변(`const`)으로 선언해둔 `agent` 변수를 활용하여 다시 요청을 하면 기존 성립된 TCP 연결을 활용하는 HTTP 통신을 할 수 있다.
 
@@ -124,13 +126,13 @@ req.end();
 this.keepAlive = this.options.keepAlive || false;
 ```
 
-기본적으로 사용자가 설정한 값을 갖되, 기본적으로 `false` 값이 적용되어 있다.
+사용자가 설정한 값을 갖되, 설정이 없을시에는 기본적으로는 `false` 값이 적용되어 있다.
 
 한편, [Node.js 공식 문서의 new Agents() 항목](https://nodejs.org/api/http.html#new-agentoptions)을 보면, 옵션에서 나타내는 `KeepAlive` 필드와 HTTP 헤더에서의 `keep-alive` 값을 혼동하지말라는 내용이 있다.
 
 > `keepAlive` <boolean> Keep sockets around even when there are no outstanding requests, so they can be used for future requests without having to reestablish a TCP connection. Not to be confused with the `keep-alive` value of the Connection header. `The Connection: keep-alive` header is always sent when using an agent except when the Connection header is explicitly specified or when the keepAlive and maxSockets options are respectively set to `false` and `Infinity`, in which case `Connection: close` will be used. Default: `false`.
 
-헤더에 `keep-alive`가 표기되어 있다고 본인이 Persistence Connection을 이용하고 있다고 착각할 수 있다. 소위 *멍청한 프록시* 등 여러 요인이 있지만 헤더 자체에 `keep-alive` 가 표기되어있다고 해서, 실제로 HTTP 통신들이 동일한 단일의 TCP 연결을 활용하여 Persistence COnnection이 이루어지고 있는지는 별도의 문제다.
+헤더에 `keep-alive`가 표기되어 있다고 본인이 Persistence Connection을 이용하고 있다고 착각할 수 있다. 소위 *멍청한 프록시* 등 여러 요인이 있지만 헤더 자체에 `keep-alive` 가 표기되어있다고 해서, 실제로 HTTP 통신들이 동일한 단일의 TCP 연결을 활용하여 Persistence Connection이 이루어지고 있는지는 별도의 문제다.
 
 가령, 두 번째 예제 코드에서 각각의 서버 호출에서 각기 다른 `agent` 를 `keepAlive` 옵션을 `true`로 설정하고 보내면, 두 호출모두 헤더 자체에는 `keep-alive`라고 표기되어 있겠지만, 그 둘은 별개의 TCP 연결을 통해 이루어진 HTTP 요청이다.
 
