@@ -196,7 +196,7 @@ axios.get('https://jsonplaceholder.typicode.com', { httpsAgent })
   })
 ```
 
-이렇듯 각 라이브러리마다 Keep Alive, Persistence Connection, forever 등 각기 다른 용어를 쓰고 있고, 설정 방법이 큰 맥락은 동일하나 자세히 다를 수 있고, Persistence Connection의 특성 상 헤더의 `keep-Alive` 값을 통해 확인하는 것이 아니라 직접 성립되었는지 확인도 필요하므로 실제로 Persistence Connection이 성립되었는지 꼼꼼히 구현해야 하곘다.
+이렇듯 각 라이브러리마다 Keep Alive, Persistence Connection, forever 등 각기 다른 용어를 쓰고 있고, 설정 방법이 큰 맥락은 동일하나 세부적으로는 다를 수 있고, Persistence Connection의 특성 상 헤더의 `keep-Alive` 값을 통해 확인하는 것이 아니라 직접 성립되었는지 확인도 필요하므로 실제로 Persistence Connection이 성립되었는지 꼼꼼한 구현이 요구된다.
 
 ## Rust (`tokio` / `reqwest`)
 
