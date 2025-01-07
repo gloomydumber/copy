@@ -140,9 +140,9 @@ this.keepAlive = this.options.keepAlive || false;
 
 기본적으로 `request` 및 `axios` 등 비동기 호출 라이브러리들은 앞서언급한 Node.js의 `http` 및 `https`에 기반한다.
 
-이에, `reuqest`든 `axios` 든 호출 그 자체는 내부적으로 `http` 및 `https`의 설정을 통해 이루어진다.
+이에, `request`든 `axios` 든 호출 그 자체는 내부적으로 `http` 및 `https`의 설정을 통해 이루어진다.
 
-`request` 라이브러리의 경우, *depreacted* 되어 언급하기 적절하지 않으나, Keep Alive라는 용어가 아닌, `forever` 라는 이름의 옵션 필드를 통해 Persistence Connection을 설정한다.
+`request` 라이브러리의 경우, *depreacted* 된 옛날 모듈이기 때문에 어떻게 구현되었나 살펴보기에 시의성이 적절하지 않지만, 굳이 따져보자면 Keep Alive라는 용어가 아닌, `forever` 라는 이름의 옵션 필드를 통해 Persistence Connection을 설정한다.
 
 `axios` 라이브러리의 경우, 아래와 같이 `http` 및 `https` 모듈의 `Agent`를 `KeepAlive` 옵션에 `true`를 주어 Axios Instance 생성하거나, 요청 옵션에 `Agent`를 주입하는 등 두 가지 방법 등으로 구현한다.
 
