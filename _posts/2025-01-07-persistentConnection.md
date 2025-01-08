@@ -68,7 +68,7 @@ https.get(url, (res) => {
 
 하지만 위와 같이 작성하는 경우에는, Persistence Connection을 성립시키지 못한다.
 
-물론, 예제 코드에서는 단 한번의 HTTP 요청만이 이루어지고 있으니, 애초에 Persistence Connection의 방식으로 요청할 필요는 없지만 추후에 다시 `https://jsonplaceholder.typicode.com` 이라는 서버에 요청을 보내야 한다고 가정해보자.
+물론, 예제 코드에서는 단 한번의 HTTP 요청만이 이루어지고 있으니, 애초에 Persistence Connection의 방식으로 요청할 필요는 없지만 곧바로 다시 `https://jsonplaceholder.typicode.com` 이라는 동일한 서버에 또 다른 요청을 보내야 한다고 가정해보자.
 
 ```js
 const https = require('https');
@@ -109,10 +109,12 @@ req.on('error', (err) => {
 // End the request
 req.end();
 
-// const secondReqWithPersistentConnection = https.request(options, (res) => { ... }) // 'options'의 agent 변수가 다시 재활용 된다.
+// 미리 생성된 TCP 연결 활용!
+// `options`의 `agent` 변수가 다시 재활용 된다.
+const secondReqWithPersistentConnection = https.request(options, (res) => { ... }) 
 ```
 
-이번에는 `new https.Agent()` 를 통해, `keepAlive` 옵션을 명시적으로(explictly) 작성해주었다.
+이번에는 `new https.Agent()` 를 통해, `keepAlive` 옵션을 `true`라는 값으로 명시적으로(explictly) 작성해주었다.
 
 이렇게 명시적으로 작성해주어야 Persistence Connection이 성립되고, 미리 불변(`const`)으로 선언해둔 `agent` 변수를 활용하여 다시 요청을 하면 기존 성립된 TCP 연결을 활용하는 HTTP 통신을 할 수 있다.
 
@@ -140,7 +142,7 @@ this.keepAlive = this.options.keepAlive || false;
 
 기본적으로 `request` 및 `axios` 등 비동기 호출 라이브러리들은 앞서언급한 Node.js의 `http` 및 `https`에 기반한다.
 
-이에, `request`든 `axios` 든 호출 그 자체는 내부적으로 `http` 및 `https`의 설정을 통해 이루어진다.
+즉, `request`든 `axios` 든 호출 그 자체는 내부적으로 `http` 및 `https`의 설정을 통해 이루어진다.
 
 `request` 라이브러리의 경우, *depreacted* 된 옛날 모듈이기 때문에 어떻게 구현되었나 살펴보기에 시의성이 적절하지 않지만, 굳이 따져보자면 Keep Alive라는 용어가 아닌, `forever` 라는 이름의 옵션 필드를 통해 Persistence Connection을 설정한다.
 
@@ -196,14 +198,81 @@ axios.get('https://jsonplaceholder.typicode.com', { httpsAgent })
   })
 ```
 
+또, 아래와 같이 `timeout` 및 `freeSocketTimeout` 등 Persistence Connection 관련 여러 설정을 할 수 있다.
+
+```js
+const agentWithOptions = new Agent({
+  timeout: 60000,
+  freeSocketTimeout: 30000,
+});
+```
+
 이렇듯 각 라이브러리마다 Keep Alive, Persistence Connection, forever 등 각기 다른 용어를 쓰고 있고, 설정 방법이 큰 맥락은 동일하나 세부적으로는 다를 수 있고, Persistence Connection의 특성 상 헤더의 `keep-Alive` 값을 통해 확인하는 것이 아니라 직접 성립되었는지 확인도 필요하므로 실제로 Persistence Connection이 성립되었는지 꼼꼼한 구현이 요구된다.
 
-## Rust (`tokio` / `reqwest`)
+## Rust (`tokio` 및 `reqwest`, `hyper` 등)
 
-TODO: 작성중
+먼저 각 라이브에 대해 아주 간단하게 서술하자면,
+
+`tokio`는 Rust 비동기 프로그래밍에서 사용되는 `runtime`이고, `reqwest`는 `tokio`를 기반으로한 HTTP Client Library이다.
+
+한편, `hyper`는 좀 더 lower level에서의 HTTP 구현을 담당하는데, 버전 1.0 이전에는 `tokio`를 비동기 런타임으로 사용하였지만, 이제는 runtime-agnostic하게 변경되어 어떤 런타임이든 사용할 수 있다.
+
+이 포스트에서는 `reqwest`의 Persistence Connection 예제 코드를 다룬다.
+
+아래는 `reqwest`의 공식 문서에서 제공하는 [Making a GET Request](https://docs.rs/reqwest/latest/reqwest/#making-a-get-request) 예제 코드이다.
+
+```rs
+let body = reqwest::get("https://www.rust-lang.org")
+    .await?
+    .text()
+    .await?;
+
+println!("body = {body:?}");
+```
+
+바로 아래에 아래와 같이 keep-alive Cconnection pooling을 이용하려면, `Client`를 만들고 사용하라고 서술되어 있다.
+
+> **NOTE:** If you plan to perform multiple requests, it is best to create a `Client` and reuse it, taking advantage of keep-alive connection pooling.
+
+이를 반영하면,
+
+```rust
+let client = reqwest::Client::new();
+
+let body = client.get("https://www.rust-lang.org")
+    .await?
+    .text()
+    .await?;
+
+println!("body = {body:?}");
+
+let second_body_with_persis_cxn = client.get("https://www.rust-lang.org")
+    .await?
+    .text()
+    .await?;
+
+println!("persist connection body = {body:?}");
+```
+
+이와 같이 `Client`를 이용해 Persistence Connection을 이용할 수 있다.
+
+또, 아래와 같이 `Clinet::builder()`를 이용해 Persistence Connection 관련 여러 설정이 가능하다.
+
+```rust
+let client = reqwest::Client::builder()
+    .pool_max_idle_per_host(5) // Limit idle connections per host
+    .pool_idle_timeout(Duration::from_secs(30)) // Set idle timeout
+    .build()?;
+```
+
+[reqwest 공식 문서의 `pool_idle_timeout`](https://docs.rs/reqwest/latest/reqwest/struct.ClientBuilder.html#method.pool_idle_timeout)에 따르면 디폴트값으로 90초가 설정되어있고, `None`을 전달하면 tiemout을 두지 않는 것으로 한다.
+
+이는 앞서언급하였듯이 서버 및 클라이언트가 이를 허용해주냐에 따라 다를 수 있으므로 주의해서 이용한다.
 
 ## References
 
 [🔗 TCP Congestion Control - Wikipedia](https://en.wikipedia.org/wiki/TCP_congestion_control)
 
 [🔗 HTTP Persistent Connection - Wikipedia](https://en.wikipedia.org/wiki/HTTP_persistent_connection)
+
+[🔗 reqwest crate Official docs](https://docs.rs/reqwest/latest/reqwest/)
