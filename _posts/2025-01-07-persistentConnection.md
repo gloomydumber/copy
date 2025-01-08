@@ -146,7 +146,7 @@ this.keepAlive = this.options.keepAlive || false;
 
 `request` 라이브러리의 경우, *depreacted* 된 옛날 모듈이기 때문에 어떻게 구현되었나 살펴보기에 시의성이 적절하지 않지만, 굳이 따져보자면 Keep Alive라는 용어가 아닌, `forever` 라는 이름의 옵션 필드를 통해 Persistence Connection을 설정한다.
 
-`axios` 라이브러리의 경우, 아래와 같이 `http` 및 `https` 모듈의 `Agent`를 `KeepAlive` 옵션에 `true`를 주어 Axios Instance 생성하거나, 요청 옵션에 `Agent`를 주입하는 등 두 가지 방법 등으로 구현한다.
+`axios` 라이브러리의 경우, 아래와 같이 `http` 및 `https` 모듈의 `Agent`를 `KeepAlive` 옵션에 `true`를 주어 Axios Instance를 생성하거나, 요청 옵션에 `Agent`를 주입하는 등 두 가지 방법 등으로 구현한다.
 
 ```js
 // 1. on the instance
