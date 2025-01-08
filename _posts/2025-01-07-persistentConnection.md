@@ -136,7 +136,7 @@ this.keepAlive = this.options.keepAlive || false;
 
 헤더에 `keep-alive`가 표기되어 있다고 본인이 Persistence Connection을 이용하고 있다고 착각할 수 있다. 소위 *멍청한 프록시* 등 여러 요인이 있지만 헤더 자체에 `keep-alive` 가 표기되어있다고 해서, 실제로 HTTP 통신들이 동일한 단일의 TCP 연결을 활용하여 Persistence Connection이 이루어지고 있는지는 별도의 문제다.
 
-가령, 두 번째 예제 코드에서 각각의 서버 호출에서 각기 다른 `agent` 를 `keepAlive` 옵션을 `true`로 설정하고 보내면, 두 호출모두 헤더 자체에는 `keep-alive`라고 표기되어 있겠지만, 그 둘은 별개의 TCP 연결을 통해 이루어진 HTTP 요청이다.
+가령, 두 번째 예제 코드에서 각각의 서버 호출에서 각기 다른 `agent` 를 `keepAlive` 옵션을 `true`로 설정하고 보내면, 두 호출 모두 헤더 자체에는 `keep-alive`라고 표기되어 있겠지만, 그 둘은 별개의 TCP 연결을 통해 이루어진 HTTP 요청이다.
 
 ## Node.js (`request` 및 `axios`)
 
