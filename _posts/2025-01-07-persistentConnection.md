@@ -211,7 +211,7 @@ const agentWithOptions = new Agent({
 
 ## Rust (`tokio` 및 `reqwest`, `hyper` 등)
 
-먼저 각 라이브에 대해 아주 간단하게 서술하자면,
+먼저 각 크레이트에 대해 아주 간단하게 서술하자면,
 
 `tokio`는 Rust 비동기 프로그래밍에서 사용되는 `runtime`이고, `reqwest`는 `tokio`를 기반으로한 HTTP Client Library이다.
 
