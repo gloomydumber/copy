@@ -157,21 +157,21 @@ const instance = axios.create({
 });
 
 instance.get('/')
-    .then(res => {
-        // ...
-    })
-    .catch(error => {
-        // ...
-    });
+  .then(res => {
+      // ...
+  })
+  .catch(error => {
+      // ...
+  });
 
 // 미리 생성된 TCP 연결 활용!
-    instance.get('/')
-    .then(res => {
-        // ...
-    })
-    .catch(error => {
-        // ...
-    });
+instance.get('/')
+  .then(res => {
+      // ...
+  })
+  .catch(error => {
+      // ...
+  });
 
 
 // 2. on the request
@@ -215,7 +215,7 @@ const agentWithOptions = new Agent({
 
 `tokio`는 Rust 비동기 프로그래밍에서 사용되는 `runtime`이고, `reqwest`는 `tokio`를 기반으로한 HTTP Client Library이다.
 
-한편, `hyper`는 좀 더 lower level에서의 HTTP 구현을 담당하는데, 버전 1.0 이전에는 `tokio`를 비동기 런타임으로 사용하였지만, 이제는 runtime-agnostic하게 변경되어 어떤 런타임이든 사용할 수 있다.
+한편, `hyper`는 좀 더 lower level에서의 HTTP 통신 로직을 구현하는 crate인데, 버전 1.0 이전에는 `tokio`를 비동기 런타임으로 사용하였지만, 이제는 runtime-agnostic하게 변경되어 어떤 런타임이든 사용할 수 있다.
 
 이 포스트에서는 `reqwest`의 Persistence Connection 예제 코드를 다룬다.
 
@@ -230,7 +230,7 @@ let body = reqwest::get("https://www.rust-lang.org")
 println!("body = {body:?}");
 ```
 
-바로 아래에 아래와 같이 keep-alive Cconnection pooling을 이용하려면, `Client`를 만들고 사용하라고 서술되어 있다.
+바로 아래에 아래와 같이 keep-alive Connection pooling을 이용하려면, `Client`를 만들고 사용하라고 서술되어 있다.
 
 > **NOTE:** If you plan to perform multiple requests, it is best to create a `Client` and reuse it, taking advantage of keep-alive connection pooling.
 
